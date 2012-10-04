@@ -4,7 +4,7 @@
     <head>
     <title>HappyEdit</title>
     <style>
-        html {
+        body {
             width: 100%;
             height: 100%;
             text-align: center;
@@ -80,6 +80,48 @@
             margin-top: 10px;
             font-size: 11px;
         }
+        .backers {
+            display: inline-block;
+            width: 560px;
+            background: #ccc;
+            text-shadow: none;
+            margin: 50px 0;
+        }
+        .backers * {
+            color: #333;
+        }
+        .backers h3 {
+            margin: 25px 0;
+            text-align: center;
+        }
+        .backers {
+            padding: 0 10px 10px 10px;
+            text-align: left;
+        }
+        .backer {
+            position: relative;
+            text-align: left;
+        }
+        .backer img {
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+        .backer {
+            display: inline-block;
+            width: 215px;
+            padding-left: 60px;
+            margin-bottom: 25px;
+            font-size: 14px;
+            vertical-align: top;
+        }
+        .backer p {
+        }
+        .backer a {
+            font-size: 12px;
+            display: block;
+            margin-top: 5px;
+        }
     </style>
     </head>
     <body>
@@ -94,6 +136,29 @@
         <iframe width="560" height="315" src="http://www.youtube.com/embed/AydXPhX7s-E" frameborder="0" allowfullscreen></iframe>
         <div class="indiegogo-section">
             <a class="indiegogo action" target="_blank" href="http://www.indiegogo.com/happyedit?a=1061258">Back This Project</a>
+        </div>
+        <div class="backers">
+            <h3>What Our Backers Say</h3>
+            <div class="backer">
+                <img src="oleksandr.jpeg"></img>
+                <p>"Can't wait to have this thing working! This is exactly what I want every time using MacVim."</p>
+                <a href="http://www.indiegogo.com/individuals/38822" target="_blank">Oleksandr Kravets</a>
+            </div>
+            <div class="backer">
+                <img src="william.jpeg"></img>
+                <p>"Vim + a sane UI??? Sign me up!"</p>
+                <a href="http://www.indiegogo.com/individuals/1573830" target="_blank">William Seabird</a>
+            </div>
+            <div class="backer">
+                <img src="jan.jpeg"></img>
+                <p>"Go go go! We need more good web-based editors."</p>
+                <a href="http://www.indiegogo.com/individuals/545071" target="_blank">Jan-Christoph Borchardt</a>
+            </div>
+            <div class="backer">
+                <img src="stephan.jpeg"></img>
+                <p>"Love vim, would be great to see this project happen."</p>
+                <a href="http://www.indiegogo.com/individuals/1573330" target="_blank">Stephan Hoyer</a>
+            </div>
         </div>
     </body>
 </html>
