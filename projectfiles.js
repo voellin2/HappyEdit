@@ -60,8 +60,7 @@ var ProjectFiles = {
             suggestions.push({
                 title: split.pop(),
                 extra: capFileName(autoCompletion, 60 - self.host.length) + ' @ ' + self.host,
-                rel: autoCompletion,
-                onclick: CommandLine.fileSuggestionClickCallback
+                rel: autoCompletion
             });
         }
         return suggestions;

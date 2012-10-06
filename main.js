@@ -18,7 +18,7 @@ var COMMANDS = [
             mac: "Command-T",
         },
         callback: function() {
-            CommandLine.show('');
+            window.happyEdit.commandLine.show('');
         }
     },
     {
@@ -70,8 +70,8 @@ function HappyEdit() {
     self.editor = ace.edit("editor");
     self.$editor = document.getElementById('editor');
     self.currentFile;
+    self.commandLine = new CommandLine(self);
 
-    CommandLine.init();
     Settings.init();
     Menu.init();
     TopBar.init();
@@ -87,7 +87,7 @@ function HappyEdit() {
     window.onresize();
 
     window.onkeydown = function(event) {
-        if (!CommandLine.isVisible() && !Settings.isVisible()) {
+        if (!self.commandLine.isVisible() && !Settings.isVisible()) {
             self.editor.focus();
         }
     };
@@ -132,19 +132,19 @@ function HappyEdit() {
 
     self.editor.getKeyboardHandler().actions[':'] = {
         fn: function(editor, range, count, param) {
-            CommandLine.show(":");
+            self.commandLine.show(":");
         }
     };
 
     self.editor.getKeyboardHandler().actions['/'] = {
         fn: function(editor, range, count, param) {
-            CommandLine.show("/");
+            self.commandLine.show("/");
         }
     };
 
     self.editor.getKeyboardHandler().actions['?'] = {
         fn: function(editor, range, count, param) {
-            CommandLine.show("?");
+            self.commandLine.show("?");
         }
     };
 
