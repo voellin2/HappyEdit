@@ -15,8 +15,8 @@ function Tab(file) {
         addClass(self.$view, 'selected');
         TopBar.selectedTab = self;
 
-        if (self.file !== window.currentFile) {
-            window.switchToFile(self.file, false);
+        if (self.file !== window.happyEdit.currentFile) {
+            window.happyEdit.switchToFile(self.file, false);
         }
     };
 

@@ -10,13 +10,13 @@ var CommandLine = {
         "w": {
             hideCommandLine: true,
             fn: function(args) {
-                window.currentFile.save();
+                window.happyEdit.currentFile.save();
             }
         },
         "q": {
             hideCommandLine: true,
             fn: function(args) {
-                window.closeFile(window.currentFile);
+                window.happyEdit.closeFile(window.happyEdit.currentFile);
             }
         },
         "e": {
@@ -24,7 +24,7 @@ var CommandLine = {
             fn: function(args) {
                 var filename = args.join(' ');
                 if (filename) {
-                    openRemoteFile(filename);
+                    window.happyEdit.openRemoteFile(filename);
                 } else {
                     throw "Bad filename";
                 }
@@ -164,10 +164,10 @@ var CommandLine = {
     fileSuggestionClickCallback: function() {
         CommandLine.hide();
         var filename = this.getAttribute('rel');
-        if (window.files.hasOwnProperty(filename)) {
-            window.switchToFile(window.files[filename]);
+        if (window.happyEdit.files.hasOwnProperty(filename)) {
+            window.happyEdit.switchToFile(window.happyEdit.files[filename]);
         } else {
-            window.openRemoteFile(filename)
+            window.happyEdit.openRemoteFile(filename)
         }
     },
 
@@ -195,9 +195,9 @@ var CommandLine = {
         var key;
         var file;
         var suggestions = [];
-        for (key in window.files) {
-            if (window.files.hasOwnProperty(key)) {
-                var file = window.files[key];
+        for (key in window.happyEdit.files) {
+            if (window.happyEdit.files.hasOwnProperty(key)) {
+                var file = window.happyEdit.happyEdit.files[key];
                 suggestions.push({
                     title: file.basename,
                     extra: file.displayPath,

@@ -1,23 +1,4 @@
-var files = {};
-var editor;
-var editorElement;
-var currentFile;
-
-window.onkeydown = function(event) {
-    if (!CommandLine.isVisible() && !Settings.isVisible()) {
-        window.editor.focus();
-    }
-};
-
-function updateSize() {
-    var w = window.innerWidth;
-    var h = window.innerHeight - document.querySelector('#top').offsetHeight;
-
-    editorElement.style.width = w + 'px';
-    editorElement.style.height = h + 'px';
-}
-
-COMMANDS = [
+var COMMANDS = [
     {
         name: "openFile",
         title: "Open Local File",
@@ -26,7 +7,7 @@ COMMANDS = [
             mac: "Command-O",
         },
         callback: function() {
-            openLocalFile();
+            window.happyEdit.openLocalFile();
         }
     },
     {
@@ -48,7 +29,7 @@ COMMANDS = [
             mac: "Command-S",
         },
         callback: function() {
-            window.currentFile.save();
+            window.happyEdit.currentFile.save();
         }
     },
     {
@@ -78,14 +59,17 @@ COMMANDS = [
             mac: "Command-W",
         },
         callback: function() {
-            closeFile(window.currentFile);
+            window.happyEdit.closeFile(window.happyEdit.currentFile);
         }
     }
 ];
 
-window.onload = function() {
-    editor = ace.edit("editor");
-    editorElement = document.getElementById('editor');
+function HappyEdit() {
+    var self = this;
+    self.files = {};
+    self.editor = ace.edit("editor");
+    self.$editor = document.getElementById('editor');
+    self.currentFile;
 
     CommandLine.init();
     Settings.init();
@@ -94,17 +78,26 @@ window.onload = function() {
     ProjectFiles.init();
 
     window.onresize = function(event) {
-        updateSize();
+        var w = window.innerWidth;
+        var h = window.innerHeight - document.querySelector('#top').offsetHeight;
+
+        self.$editor.style.width = w + 'px';
+        self.$editor.style.height = h + 'px';
     }
+    window.onresize();
 
-    updateSize();
+    window.onkeydown = function(event) {
+        if (!CommandLine.isVisible() && !Settings.isVisible()) {
+            self.editor.focus();
+        }
+    };
 
-    editor.setKeyboardHandler(require("ace/keyboard/vim").handler);
-    editor.setAnimatedScroll(true);
+    self.editor.setKeyboardHandler(require("ace/keyboard/vim").handler);
+    self.editor.setAnimatedScroll(true);
 
     for (var i = 0; i < COMMANDS.length; i += 1) {
         var command = COMMANDS[i];
-        editor.commands.addCommand({
+        self.editor.commands.addCommand({
             name: command.name,
             bindKey: {
                 win: command.shortcut.win,
@@ -118,7 +111,7 @@ window.onload = function() {
     for (var i = 1; i < 10; i += 1) {
         (function() {
             var keyNum = i;
-            editor.commands.addCommand({
+            self.editor.commands.addCommand({
                 name: "selectTab" + i,
                 bindKey: {
                     win: "Ctrl-" + keyNum,
@@ -137,96 +130,100 @@ window.onload = function() {
         }());
     }
 
-    editor.getKeyboardHandler().actions[':'] = {
+    self.editor.getKeyboardHandler().actions[':'] = {
         fn: function(editor, range, count, param) {
             CommandLine.show(":");
         }
     };
 
-    editor.getKeyboardHandler().actions['/'] = {
+    self.editor.getKeyboardHandler().actions['/'] = {
         fn: function(editor, range, count, param) {
             CommandLine.show("/");
         }
     };
 
-    editor.getKeyboardHandler().actions['?'] = {
+    self.editor.getKeyboardHandler().actions['?'] = {
         fn: function(editor, range, count, param) {
             CommandLine.show("?");
         }
     };
-};
 
-function switchToFile(file, updateTabs) {
-    window.currentFile = file;
-    window.editor.setSession(file.getSession());
+    self.switchToFile = function(file, updateTabs) {
+        self.currentFile = file;
+        self.editor.setSession(file.getSession());
 
-    if (updateTabs || updateTabs === undefined) {
-        TopBar.updateView(file);
-    }
-}
-
-function getNumberOfOpenFiles() {
-    return TopBar.tabs.length;
-}
-
-function closeFile(file) {
-    if (getNumberOfOpenFiles() > 1) {
-        var tab = TopBar.getTabForFile(file);
-        tab.close(true);
-        delete files[currentFile.name];
-    } else {
-        window.close();
-    }
-}
-
-function getOrLoadRemoteFile(filename, callback) {
-    if (window.files.hasOwnProperty(filename)) {
-        callback(window.files[filename]);
-        return;
-    }
-
-    var xhr = new XMLHttpRequest();
-    var url = ProjectFiles.host + '/files/' + filename;
-    xhr.open("GET", url);
-    xhr.onreadystatechange = function() {
-        var file;
-        if (xhr.readyState == 4) {
-            file = new RemoteFile(filename, xhr.responseText);
-            files[filename] = file;
-            callback(file);
+        if (updateTabs || updateTabs === undefined) {
+            TopBar.updateView(file);
         }
-    };
-    xhr.send();
-}
+    }
 
-function openRemoteFile(filename) {
-    var file;
+    self.getNumberOfOpenFiles = function() {
+        return TopBar.tabs.length;
+    }
 
-    getOrLoadRemoteFile(filename, function(file) {
-        window.switchToFile(file);
-    });
-}
+    self.closeFile = function(file) {
+        if (getNumberOfOpenFiles() > 1) {
+            var tab = TopBar.getTabForFile(file);
+            tab.close(true);
+            delete self.files[self.currentFile.name];
+        } else {
+            window.close();
+        }
+    }
 
-function openLocalFile() {
-    chrome.fileSystem.chooseEntry(function(fileEntry) {
-        if (chrome.runtime.lastError) {
-            console.log(chrome.runtime.lastError.message);
+    self.getOrLoadRemoteFile = function(filename, callback) {
+        if (self.files.hasOwnProperty(filename)) {
+            callback(self.files[filename]);
             return;
         }
-        fileEntry.file(function(f) {
-            var reader = new FileReader();
-            reader.onload = function() {
-                var file;
-                if (window.files.hasOwnProperty(fileEntry.name)) {
-                    file = window.files[fileEntry.name];
-                } else {
-                    file = new LocalFile(fileEntry, reader.result);
-                    files[fileEntry.name] = file;
-                }
-                window.switchToFile(file);
-            };
-            reader.readAsText(f);
+
+        var xhr = new XMLHttpRequest();
+        var url = ProjectFiles.host + '/files/' + filename;
+        xhr.open("GET", url);
+        xhr.onreadystatechange = function() {
+            var file;
+            if (xhr.readyState == 4) {
+                file = new RemoteFile(filename, xhr.responseText);
+                self.files[filename] = file;
+                callback(file);
+            }
+        };
+        xhr.send();
+    }
+
+    self.openRemoteFile = function(filename) {
+        var file;
+
+        self.getOrLoadRemoteFile(filename, function(file) {
+            self.switchToFile(file);
         });
-    });
+    }
+
+    self.openLocalFile = function() {
+        chrome.fileSystem.chooseEntry(function(fileEntry) {
+            if (chrome.runtime.lastError) {
+                console.log(chrome.runtime.lastError.message);
+                return;
+            }
+            fileEntry.file(function(f) {
+                var reader = new FileReader();
+                reader.onload = function() {
+                    var file;
+                    if (self.files.hasOwnProperty(fileEntry.name)) {
+                        file = self.files[fileEntry.name];
+                    } else {
+                        file = new LocalFile(fileEntry, reader.result);
+                        self.files[fileEntry.name] = file;
+                    }
+                    self.switchToFile(file);
+                };
+                reader.readAsText(f);
+            });
+        });
+    }
 }
+
+window.onload = function() {
+    window.happyEdit = new HappyEdit();
+};
 
