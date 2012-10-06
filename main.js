@@ -39,7 +39,7 @@ var COMMANDS = [
             mac: "Command-Shift-]",
         },
         callback: function() {
-            TopBar.nextTab();
+            window.happyEdit.topBar.nextTab();
         }
     },
     {
@@ -49,7 +49,7 @@ var COMMANDS = [
             mac: "Command-Shift-[",
         },
         callback: function() {
-            TopBar.prevTab();
+            window.happyEdit.topBar.prevTab();
         }
     },
     {
@@ -71,11 +71,10 @@ function HappyEdit() {
     self.$editor = document.getElementById('editor');
     self.currentFile;
     self.commandLine = new CommandLine(self);
-
-    Settings.init();
-    Menu.init();
-    TopBar.init();
-    ProjectFiles.init();
+    self.settings = new Settings(self);
+    self.menu = new Menu(self);
+    self.topBar = new TopBar(self);
+    self.projectFiles = new ProjectFiles();
 
     window.onresize = function(event) {
         var w = window.innerWidth;
@@ -87,7 +86,7 @@ function HappyEdit() {
     window.onresize();
 
     window.onkeydown = function(event) {
-        if (!self.commandLine.isVisible() && !Settings.isVisible()) {
+        if (!self.commandLine.isVisible() && !self.settings.isVisible()) {
             self.editor.focus();
         }
     };
@@ -120,11 +119,11 @@ function HappyEdit() {
                 },
                 exec: function() {
                     var tabIndex = keyNum;
-                    if (tabIndex > TopBar.tabs.length) {
-                        tabIndex = TopBar.tabs.length;
+                    if (tabIndex > self.topBar.tabs.length) {
+                        tabIndex = self.topBar.tabs.length;
                     }
                     tabIndex -= 1;
-                    TopBar.selectTabAtIndex(tabIndex);
+                    self.topBar.selectTabAtIndex(tabIndex);
                 }
             });
         }());
@@ -153,17 +152,17 @@ function HappyEdit() {
         self.editor.setSession(file.getSession());
 
         if (updateTabs || updateTabs === undefined) {
-            TopBar.updateView(file);
+            self.topBar.updateView(file);
         }
     }
 
     self.getNumberOfOpenFiles = function() {
-        return TopBar.tabs.length;
+        return self.topBar.tabs.length;
     }
 
     self.closeFile = function(file) {
         if (getNumberOfOpenFiles() > 1) {
-            var tab = TopBar.getTabForFile(file);
+            var tab = self.topBar.getTabForFile(file);
             tab.close(true);
             delete self.files[self.currentFile.name];
         } else {
@@ -178,7 +177,7 @@ function HappyEdit() {
         }
 
         var xhr = new XMLHttpRequest();
-        var url = ProjectFiles.host + '/files/' + filename;
+        var url = self.projectFiles.host + '/files/' + filename;
         xhr.open("GET", url);
         xhr.onreadystatechange = function() {
             var file;

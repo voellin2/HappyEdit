@@ -1,4 +1,4 @@
-function Tab(file) {
+function Tab(file, topBar) {
     var self = this;
     this.file = file;
     this.$title = document.createElement('span');
@@ -8,12 +8,12 @@ function Tab(file) {
     this.$view.appendChild(this.$title);
 
     this.select = function() {
-        if (TopBar.selectedTab) {
-            removeClass(TopBar.selectedTab.$view, 'selected');
+        if (topBar.selectedTab) {
+            removeClass(topBar.selectedTab.$view, 'selected');
         }
 
         addClass(self.$view, 'selected');
-        TopBar.selectedTab = self;
+        topBar.selectedTab = self;
 
         if (self.file !== window.happyEdit.currentFile) {
             window.happyEdit.switchToFile(self.file, false);
@@ -21,111 +21,101 @@ function Tab(file) {
     };
 
     this.close = function(selectClosestSibling) {
-        var i = TopBar.getIndexForTab(this);
+        var i = topBar.getIndexForTab(this);
         if (selectClosestSibling) {
             var closestSibling;
-            if (i === TopBar.tabs.length - 1) {
-                closestSibling = TopBar.tabs[i - 1];
+            if (i === topBar.tabs.length - 1) {
+                closestSibling = topBar.tabs[i - 1];
             } else {
-                closestSibling = TopBar.tabs[i + 1];
+                closestSibling = topBar.tabs[i + 1];
             }
             closestSibling.select();
         }
-        TopBar.tabs.splice(i, 1);
-        TopBar.$tabs.removeChild(this.$view);
+        topBar.tabs.splice(i, 1);
+        topBar.$tabs.removeChild(this.$view);
     };
 
     this.$view.onclick = this.select;
 };
 
-var TopBar = {
-    $view: null,
-    $menuButton: null,
-    $closeButton: null,
-    $minButton: null,
-    $maxButton: null,
-    $tabs: null,
-    selectedTab: null,
-    tabs: [],
+function TopBar(happyEdit) {
+    var self = this;
+    self.selectedTab = null;
+    self.tabs = [];
+    self.$view = document.querySelector('#top');
+    self.$menuButton = self.$view.querySelector('.menu');
+    self.$closeButton = self.$view.querySelector('.controls .close');
+    self.$minButton = self.$view.querySelector('.controls .min');
+    self.$maxButton = self.$view.querySelector('.controls .max');
+    self.$tabs = self.$view.querySelector('.tabs');
 
-    init: function() {
-        var self = this;
+    self.$menuButton.onclick = function() {
+        happyEdit.menu.show();
+    };
 
-        self.$view = document.querySelector('#top');
-        self.$menuButton = self.$view.querySelector('.menu');
-        self.$closeButton = self.$view.querySelector('.controls .close');
-        self.$minButton = self.$view.querySelector('.controls .min');
-        self.$maxButton = self.$view.querySelector('.controls .max');
-        self.$tabs = self.$view.querySelector('.tabs');
+    self.$closeButton.onclick = function() {
+        window.close();
+    };
 
-        self.$menuButton.onclick = function() {
-            Menu.show();
-        };
+    self.$minButton.onclick = function() {
+        chrome.app.window.current().minimize();
+    };
 
-        self.$closeButton.onclick = function() {
-            window.close();
-        };
-
-        self.$minButton.onclick = function() {
-            chrome.app.window.current().minimize();
+    self.$maxButton.onclick = function() {
+        if (this.getAttribute('class') === 'restore') {
+            chrome.app.window.current().restore();
+            this.setAttribute('class', '');
+        } else {
+            chrome.app.window.current().maximize();
+            this.setAttribute('class', 'restore');
         }
+    };
 
-        self.$maxButton.onclick = function() {
-            if (this.getAttribute('class') === 'restore') {
-                chrome.app.window.current().restore();
-                this.setAttribute('class', '');
-            } else {
-                chrome.app.window.current().maximize();
-                this.setAttribute('class', 'restore');
-            }
-        }
-    },
-
-    getTabForFile: function(file) {
+    self.getTabForFile = function(file) {
         var i;
         for (i = 0; i < this.tabs.length; i += 1) {
             if (file === this.tabs[i].file) {
                 return this.tabs[i];
             }
         }
-    },
+    };
 
-    getIndexForTab: function(tab) {
+    self.getIndexForTab = function(tab) {
         var i;
         for (i = 0; i < this.tabs.length; i += 1) {
             if (tab === this.tabs[i]) {
                 return i;
             }
         }
-    },
+    };
 
-    selectTabAtIndex: function(i) {
+    self.selectTabAtIndex = function(i) {
         if (i >= this.tabs.length) {
             i = 0;
         } else if (i < 0) {
             i = this.tabs.length - 1;
         }
         this.tabs[i].select();
-    },
+    };
 
-    nextTab: function() {
+    self.nextTab = function() {
         var i = this.getIndexForTab(this.selectedTab);
         this.selectTabAtIndex(i += 1);
-    },
+    };
 
-    prevTab: function() {
+    self.prevTab = function() {
         var i = this.getIndexForTab(this.selectedTab);
         this.selectTabAtIndex(i -= 1);
-    },
+    };
 
-    updateView: function(file) {
+    self.updateView = function(file) {
         var self = this;
         var tab = self.getTabForFile(file);
         if (tab === undefined) {
-            tab = new Tab(file);
+            tab = new Tab(file, self);
             self.tabs.push(tab);
             self.$tabs.appendChild(tab.$view);
         }
         tab.select();
-    }
+    };
 }

@@ -1,21 +1,18 @@
 /**
  * System to retrieve file list from a remote server.
  */
-var ProjectFiles = {
-    autoSuggestList: null,
-    host: null,
+function ProjectFiles() {
+    var self = this;
+    self.autoSuggestList = null;
+    self.host = null;
     
-    init: function() {
-        var self = this;
-        Storage.get('settings', {}, function(data) {
-            if (data.remoteServer) {
-                self.load(data.remoteServer);
-            }
-        });
-    },
+    Storage.get('settings', {}, function(data) {
+        if (data.remoteServer) {
+            self.load(data.remoteServer);
+        }
+    });
     
-    load: function(host) {
-        var self = this;
+    self.load = function(host) {
         var xhr = new XMLHttpRequest();
         var url = host + '/files';
 
@@ -38,18 +35,17 @@ var ProjectFiles = {
         };
     
         xhr.send();
-    },
+    };
 
-    isConnected: function() {
+    self.isConnected = function() {
         return Boolean(this.host);
-    },
+    };
     
     /**
      * Gets a list of auto completions in the format expected by the
      * CommandLine
      */
-    getSuggestions: function(q) {
-        var self = this;
+    self.getSuggestions = function(q) {
         var suggestions = [];
         var i;
         var autoCompletions = this.autoSuggestList.getSuggestions(q);
@@ -64,5 +60,5 @@ var ProjectFiles = {
             });
         }
         return suggestions;
-    }
+    };
 };

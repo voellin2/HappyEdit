@@ -1,49 +1,45 @@
-var Menu = {
-    $topButton: null,
-    $popup: null,
-    $blocker: null,
+function Menu(happyEdit) {
+    var self = this;
+    self.$topButton = null;
+    self.$popup = null;
+    self.$blocker = null;
     
-    init: function() {
-        var self = this;
-        
-        self.$topButton = document.querySelector('#top .menu');
-        self.$popup = document.querySelector('.popup.menu');
-        self.$blocker = document.querySelector('.blocker.menu');
+    self.$topButton = document.querySelector('#top .menu');
+    self.$popup = document.querySelector('.popup.menu');
+    self.$blocker = document.querySelector('.blocker.menu');
 
-        var $fragment = document.createDocumentFragment();
-        for (var i = 0; i < COMMANDS.length; i += 1) {
-            var command = COMMANDS[i];
-            if (!command.title) {
-                continue;
-            }
-            var $li = HTML.createMenuOption({
-                title: command.title,
-                className: command.name,
-                shortcut: command.shortcut.mac,
-                callback: command.callback
-            });
-            self.$popup.appendChild($li);
+    var $fragment = document.createDocumentFragment();
+    for (var i = 0; i < COMMANDS.length; i += 1) {
+        var command = COMMANDS[i];
+        if (!command.title) {
+            continue;
         }
-
         var $li = HTML.createMenuOption({
-            title: 'Settings',
-            className: 'settings',
-            callback: function() {
-                Settings.show();
-                Menu.hide();
-            }
+            title: command.title,
+            className: command.name,
+            shortcut: command.shortcut.mac,
+            callback: command.callback
         });
         self.$popup.appendChild($li);
+    }
 
-        self.$popup.appendChild($fragment);
-    },
+    var $li = HTML.createMenuOption({
+        title: 'Settings',
+        className: 'settings',
+        callback: function() {
+            happyEdit.settings.show();
+            self.hide();
+        }
+    });
+    self.$popup.appendChild($li);
 
-    isVisible: function() {
+    self.$popup.appendChild($fragment);
+
+    self.isVisible = function() {
         return this.$popup.style.display === 'block';
-    },
+    };
 
-    show: function() {
-        var self = this;
+    self.show = function() {
         addClass(self.$topButton, 'active');
 
         self.$blocker.onclick = function() {
@@ -57,14 +53,13 @@ var Menu = {
         setTimeout(function() {
             editor.blur();
         }, 100);
-    },
+    };
     
-    hide: function() {
-        var self = this;
+    self.hide = function() {
         self.$popup.style.display = 'none';
         self.$blocker.style.display = 'none';
         editor.focus();
 
         removeClass(self.$topButton, 'active');
-    }
+    };
 };

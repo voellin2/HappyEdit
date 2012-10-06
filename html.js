@@ -34,7 +34,7 @@ var HTML = {
         $li.setAttribute('rel', args.rel);
         $li.onclick = function() {
             callback();
-            Menu.hide();
+            window.happyEdit.menu.hide();
         };
 
         if (args.shortcut) {

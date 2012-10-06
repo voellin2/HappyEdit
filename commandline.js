@@ -209,8 +209,8 @@ function CommandLine(happyEdit) {
     };
 
     self.getAutoCompleteSuggestions = function(s) {
-        if (ProjectFiles.isConnected()) {
-            var suggestions = ProjectFiles.getSuggestions(s).map(function(x) {
+        if (happyEdit.projectFiles.isConnected()) {
+            var suggestions = happyEdit.projectFiles.getSuggestions(s).map(function(x) {
                 var y = x;
                 y.onclick = self.fileSuggestionClickCallback;
                 return y;

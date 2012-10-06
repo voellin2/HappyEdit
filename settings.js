@@ -1,26 +1,22 @@
-var Settings = {
-    $popup: null,
-    $saveButton: null,
-    $blocker: null,
-    
-    init: function() {
-        var self = this;
-        
-        self.$popup = document.querySelector('.popup.settings');
-        self.$blocker = document.querySelector('.blocker.settings');
-        self.$saveButton = self.$popup.querySelector('input[type=submit]');
+function Settings(happyEdit) {
+    var self = this;
+    self.$popup = null;
+    self.$saveButton = null;
+    self.$blocker = null;
 
-        self.$popup.querySelector('.close').addEventListener('click', function(event) {
-            self.hide();
-        });
-    
-        self.$saveButton.addEventListener('click', function(event) {
-            self.save();
-        });
-    },
+    self.$popup = document.querySelector('.popup.settings');
+    self.$blocker = document.querySelector('.blocker.settings');
+    self.$saveButton = self.$popup.querySelector('input[type=submit]');
 
-    save: function() {
-        var self = this;
+    self.$popup.querySelector('.close').addEventListener('click', function(event) {
+        self.hide();
+    });
+
+    self.$saveButton.addEventListener('click', function(event) {
+        self.save();
+    });
+
+    self.save = function() {
         var settings = {
             ignoredExtensions: [],
             remoteServer: null,
@@ -41,21 +37,19 @@ var Settings = {
         settings.remoteServer = self.$popup.querySelector('input.remote').value;
 
         if (settings.remoteServer) {
-            ProjectFiles.load(settings.remoteServer);
+            happyEdit.projectFiles.load(settings.remoteServer);
         }
 
         Storage.set('settings', settings);
 
         self.hide();
-    },
+    };
 
-    isVisible: function() {
+    self.isVisible = function() {
         return this.$popup.style.display === 'block';
-    },
+    };
 
-    show: function() {
-        var self = this;
-
+    self.show = function() {
         self.$blocker.onclick = function() {
             self.hide();
         };
@@ -66,22 +60,21 @@ var Settings = {
         Storage.get('settings', {}, function(data) {
             if (data.ignoredExtensions) {
                 self.$popup.querySelector('input.ignored_extensions').value = data.ignoredExtensions.join(',');
+            } else {
+                self.$popup.querySelector('input.ignored_extensions').value = '';
             }
-            if (data.remoteServer) {
-                self.$popup.querySelector('input.remote').value = data.remoteServer;
-            }
+            self.$popup.querySelector('input.remote').value = data.remoteServer || ''; 
         });
 
         // Focusing on text input right away does not work for some reason.
         setTimeout(function() {
-            editor.blur();
+            happyEdit.editor.blur();
         }, 100);
-    },
+    };
     
-    hide: function() {
-        var self = this;
+    self.hide = function() {
         self.$popup.style.display = 'none';
         self.$blocker.style.display = 'none';
-        editor.focus();
-    }
+        happyEdit.editor.focus();
+    };
 };
