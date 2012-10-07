@@ -9,51 +9,6 @@ function CommandLine(happyEdit) {
     self.$suggestions= document.querySelector('.popup.command-line ul');
     self.$blocker = document.querySelector('.blocker.command-line');
 
-    self.commands = {
-        "w": {
-            hideCommandLine: true,
-            fn: function(args) {
-                happyEdit.currentFile.save();
-            }
-        },
-        "q": {
-            hideCommandLine: true,
-            fn: function(args) {
-                happyEdit.closeFile(happyEdit.currentFile);
-            }
-        },
-        "e": {
-            hideCommandLine: true,
-            fn: function(args) {
-                var filename = args.join(' ');
-                if (filename) {
-                    happyEdit.openRemoteFile(filename);
-                } else {
-                    throw "Bad filename";
-                }
-            }
-        },
-        "ls": {
-            hideCommandLine: false,
-            fn: function(args) {
-                self.showOpenBuffers();
-            }
-        },
-        "settings": {
-            hideCommandLine: true,
-            fn: function(args) {
-                Settings.show();
-            }
-        },
-        "grep": {
-            hideCommandLine: false,
-            fn: function(args) {
-                var q = args.join(' ');
-                self.grep(q);
-            }
-        }
-    };
-
     (function() {
         var runKeyUpHandler = false;
         self.$input.onkeydown = function(event) {
@@ -245,37 +200,43 @@ function CommandLine(happyEdit) {
         xhr.send();
     };
 
+    /**
+     * Handles a :<command>, /<search> or CommandT request.
+     */
     self.executeCommand = function(value) {
         var self = this;
         if (value[0] === ":") {
-            var cmd = value.split(":")[1];
-            var split = cmd.split(' ');
-            var cmd = split.splice(0, 1);
-            var args = split;
+            var split = value.split(":")[1].split(' ');
+            var cmd = split[0];
+            var args = split.length > 1 ? split[1] : '';
+            var args = args.split(' ');
             if (isNumeric(cmd)) {
-                editor.gotoLine(cmd);
+                happyEdit.editor.gotoLine(cmd);
                 self.hide();
             } else {
                 self.runCommand(cmd, args);
             }
         } else if (value[0] === "/") {
             var needle = value.split('/')[1];
-            editor.find(needle);
+            happyEdit.editor.find(needle);
             self.hide();
         } else if (value[0] === "?") {
             var needle = value.split('?')[1];
-            editor.findPrevious(needle);
+            happyEdit.editor.findPrevious(needle);
             self.hide();
         } else {
             self.openSelectedSuggestion();
         }
     };
 
+    /**
+     * Handles a :<command>.
+     */
     self.runCommand = function(cmd, args) {
         var self = this;
-        if (this.commands.hasOwnProperty(cmd)) {
-            var command = this.commands[cmd];
-            command.fn(args);
+        var command = happyEdit.commands.getCommandByName(cmd);
+        if (command) {
+            command.callback(args);
             if (command.hideCommandLine) {
                 self.hide();
             }

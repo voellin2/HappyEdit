@@ -9,19 +9,17 @@ function Menu(happyEdit) {
     self.$blocker = document.querySelector('.blocker.menu');
 
     var $fragment = document.createDocumentFragment();
-    for (var i = 0; i < COMMANDS.length; i += 1) {
-        var command = COMMANDS[i];
-        if (!command.title) {
-            continue;
+    happyEdit.commands.each(function(command) {
+        if (command.title) {
+            var $li = HTML.createMenuOption({
+                title: command.title,
+                className: command.name,
+                shortcut: command.shortcut.mac,
+                callback: command.callback
+            });
+            self.$popup.appendChild($li);
         }
-        var $li = HTML.createMenuOption({
-            title: command.title,
-            className: command.name,
-            shortcut: command.shortcut.mac,
-            callback: command.callback
-        });
-        self.$popup.appendChild($li);
-    }
+    });
 
     var $li = HTML.createMenuOption({
         title: 'Settings',
