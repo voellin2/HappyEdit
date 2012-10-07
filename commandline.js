@@ -61,8 +61,10 @@ function CommandLine(happyEdit) {
             }
             runKeyUpHandler = false;
 
-            if (this.value[0] !== ':' && this.value[0] !== '/' && this.value[0] !== '?') {
-                self.getAutoCompleteSuggestions(this.value);
+            if (this.value[0] === ':' && this.value.length > 1) {
+                self.getCommandSuggestions(this.value.split(':')[1]);
+            } else if (this.value[0] !== '/' && this.value[0] !== '?') {
+                self.getCommandTSuggestions(this.value);
             } else {
                 self.clearSuggestions();
             }
@@ -77,7 +79,11 @@ function CommandLine(happyEdit) {
         if (this.suggestionElements) {
             var $elem = this.suggestionElements[this.selectedSuggestionIndex];
             var title = $elem.querySelector('.title').innerHTML;
-            this.$input.value = title;
+            if (this.$input.value && this.$input.value[0] === ':') {
+                this.$input.value = ':' + title;
+            } else {
+                this.$input.value = title;
+            }
         }
     };
 
@@ -123,6 +129,13 @@ function CommandLine(happyEdit) {
         }
     };
 
+    self.commandSuggestionClickCallback = function() {
+        self.hide();
+        var commandName = this.getAttribute('rel');
+        var command = happyEdit.commands.getCommandByName(commandName);
+        command.callback();
+    };
+
     self.fillSuggestionsList = function(suggestions) {
         var self = this;
         var fragment = document.createDocumentFragment();
@@ -161,7 +174,7 @@ function CommandLine(happyEdit) {
         self.fillSuggestionsList(suggestions);
     };
 
-    self.getAutoCompleteSuggestions = function(s) {
+    self.getCommandTSuggestions = function(s) {
         if (happyEdit.projectFiles.isConnected()) {
             var suggestions = happyEdit.projectFiles.getSuggestions(s).map(function(x) {
                 var y = x;
@@ -170,6 +183,15 @@ function CommandLine(happyEdit) {
             });
             self.fillSuggestionsList(suggestions);
         }
+    };
+
+    self.getCommandSuggestions = function(s) {
+        var suggestions = happyEdit.commands.getSuggestions(s).map(function(x) {
+            var y = x;
+            y.onclick = self.commandSuggestionClickCallback;
+            return y;
+        });
+        self.fillSuggestionsList(suggestions);
     };
 
     self.grep = function(q) {

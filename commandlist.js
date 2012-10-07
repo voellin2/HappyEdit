@@ -22,6 +22,7 @@ function CommandList(happyEdit) {
         },
         {
             name: "ls",
+            title: "Show Open Buffers",
             hideCommandLine: false,
             callback: function(args) {
                 happyEdit.commandLine.showOpenBuffers();
@@ -93,6 +94,10 @@ function CommandList(happyEdit) {
         }
     ];
 
+    self.autoCompletions = new AutoSuggestList(self._commands.map(function(x) {
+        return x.name;
+    }));
+
     self.each = function(callback) {
         var i;
         for (i = 0; i < self._commands.length; i += 1) {
@@ -109,5 +114,27 @@ function CommandList(happyEdit) {
                 return command;
             }
         }
+    };
+
+    /**
+     * Gets a list of auto completions in the format expected by the
+     * CommandLine.
+     */
+    self.getSuggestions = function(q) {
+        var suggestions = [];
+        var i;
+        var autoCompletions = self.autoCompletions.getSuggestions(q);
+        var autoCompletion;
+        var command;
+        for (i = 0; i < autoCompletions.length; i += 1) {
+            autoCompletion = autoCompletions[i];
+            command = self.getCommandByName(autoCompletion);
+            suggestions.push({
+                title: command.name,
+                extra: command.title || '',
+                rel: command.name,
+            });
+        }
+        return suggestions;
     };
 }
