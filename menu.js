@@ -10,7 +10,7 @@ function Menu(happyEdit) {
 
     var $fragment = document.createDocumentFragment();
     happyEdit.commands.each(function(command) {
-        if (command.title) {
+        if (command.showInMenu) {
             var $li = HTML.createMenuOption({
                 title: command.title,
                 className: command.name,

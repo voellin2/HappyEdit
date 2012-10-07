@@ -2,14 +2,8 @@ function CommandList(happyEdit) {
     var self = this;
     self._commands = [
         {
-            name: "quit",
-            hideCommandLine: true,
-            callback: function(args) {
-                happyEdit.closeFile(happyEdit.currentFile);
-            }
-        },
-        {
             name: "e",
+            title: "Edit File",
             hideCommandLine: true,
             callback: function(args) {
                 var filename = args.join(' ');
@@ -31,6 +25,7 @@ function CommandList(happyEdit) {
         {
             name: "openLocalFile",
             title: "Open Local File",
+            showInMenu: true,
             shortcut: {
                 win: "Ctrl-O",
                 mac: "Command-O",
@@ -42,6 +37,7 @@ function CommandList(happyEdit) {
         {
             name: "commandT",
             title: "Open Remote File",
+            showInMenu: true,
             shortcut: {
                 win: "Ctrl-T",
                 mac: "Command-T",
@@ -52,7 +48,8 @@ function CommandList(happyEdit) {
         },
         {
             name: "w",
-            title: "Save",
+            title: "Save Current File",
+            showInMenu: true,
             hideCommandLine: true,
             shortcut: {
                 win: "Ctrl-S",
@@ -64,6 +61,7 @@ function CommandList(happyEdit) {
         },
         {
             name: "nextTab",
+            title: "Select Next Tab",
             shortcut: {
                 win: "Ctrl-Tab",
                 mac: "Command-Shift-]",
@@ -74,6 +72,7 @@ function CommandList(happyEdit) {
         },
         {
             name: "prevTab",
+            title: "Select Previous Tab",
             shortcut: {
                 win: "Ctrl-Shift-Tab",
                 mac: "Command-Shift-[",
@@ -84,6 +83,7 @@ function CommandList(happyEdit) {
         },
         {
             name: "closeFile",
+            title: "Close Current file",
             shortcut: {
                 win: "Ctrl-W",
                 mac: "Command-W",
@@ -91,7 +91,15 @@ function CommandList(happyEdit) {
             callback: function() {
                 happyEdit.closeFile(happyEdit.currentFile);
             }
-        }
+        },
+        {
+            name: "q",
+            title: "Quit HappyEdit",
+            hideCommandLine: true,
+            callback: function(args) {
+                happyEdit.closeFile(happyEdit.currentFile);
+            }
+        },
     ];
 
     self.autoCompletions = new AutoSuggestList(self._commands.map(function(x) {
