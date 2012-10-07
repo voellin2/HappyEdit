@@ -45,7 +45,6 @@
             </ul>
         </div>
         <div class="popup settings" style="display:none">
-            <span class="close">X</span>
             <h2>Settings</h2>
 
             <label>Ignore these extensions (separate with ','):</label>
@@ -55,7 +54,8 @@
             <input type="text" class="remote" placeholder="http://localhost:8888" />
 
             <div class="actions">
-                <input type="submit" class="send" value="Save" />
+                <input class="action clickme send" type="submit" value="Save" />
+                <button class="action cancel">Cancel</button>
             </div>
         </div>
         <span id="notification">Saving</span>

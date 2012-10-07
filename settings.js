@@ -8,7 +8,7 @@ function Settings(happyEdit) {
     self.$blocker = document.querySelector('.blocker.settings');
     self.$saveButton = self.$popup.querySelector('input[type=submit]');
 
-    self.$popup.querySelector('.close').addEventListener('click', function(event) {
+    self.$popup.querySelector('.cancel').addEventListener('click', function(event) {
         self.hide();
     });
 
