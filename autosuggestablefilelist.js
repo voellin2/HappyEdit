@@ -37,7 +37,7 @@ function AutoSuggestableFileList(data) {
             }
         }
     
-        add(filename, filename, true);
+        add(filename.toLowerCase(), filename, true);
         parts = filename.split('/');
         parts.forEach(function(part, i) {
             add(part, filename, i === (parts.length - 1));
@@ -80,6 +80,7 @@ function AutoSuggestableFileList(data) {
         var i;
         var key = '';
         var hash = self.trie;
+        q = q.toLowerCase();
     
         for (i = 0; i < q.length; i += 1) {
             key += q[i];

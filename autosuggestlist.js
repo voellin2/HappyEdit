@@ -14,15 +14,16 @@ function AutoSuggestList(data) {
         var i = 0;
         var key = '';
         var hash = self.trie;
+        var sLowerCase = s.toLowerCase();
 
-        for (i = 0; i < s.length; i += 1) {
-            key += s[i];
+        for (i = 0; i < sLowerCase.length; i += 1) {
+            key += sLowerCase[i];
             if (!hash.hasOwnProperty(key)) {
                 hash[key] = {};
             }
             hash = hash[key];
 
-            if (i === s.length - 1) {
+            if (i === sLowerCase.length - 1) {
                 hash['fullString'] = s;
             }
         }
@@ -64,6 +65,7 @@ function AutoSuggestList(data) {
         var i;
         var key = '';
         var hash = self.trie;
+        q = q.toLowerCase();
     
         for (i = 0; i < q.length; i += 1) {
             key += q[i];

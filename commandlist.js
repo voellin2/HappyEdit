@@ -108,9 +108,10 @@ function CommandList(happyEdit) {
     self.getCommandByName = function(name) {
         var i;
         var command;
+        name = name.toLowerCase();
         for (i = 0; i < self._commands.length; i += 1) {
             command = self._commands[i];
-            if (command.name === name) {
+            if (command.name.toLowerCase() === name) {
                 return command;
             }
         }
