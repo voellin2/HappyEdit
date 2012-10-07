@@ -1,11 +1,13 @@
 function CommandLine(happyEdit) {
     var self = this;
-    self.$input = null;
-    self.$popup = null;
-    self.$blocker = null;
+
     self.visible = false;
     self.selectedSuggestionIndex = null;
-    self.suggestions = [];
+
+    self.$popup = document.querySelector('.popup.command-line');
+    self.$input = document.querySelector('.popup.command-line input');
+    self.$suggestions= document.querySelector('.popup.command-line ul');
+    self.$blocker = document.querySelector('.blocker.command-line');
 
     self.commands = {
         "w": {
@@ -52,69 +54,65 @@ function CommandLine(happyEdit) {
         }
     };
 
-    var self = this;
-    var runKeyUpHandler = false;
-    self.$popup = document.querySelector('.popup.command-line');
-    self.$input = document.querySelector('.popup.command-line input');
-    self.$suggestions= document.querySelector('.popup.command-line ul');
-    self.$blocker = document.querySelector('.blocker.command-line');
+    (function() {
+        var runKeyUpHandler = false;
+        self.$input.onkeydown = function(event) {
+            keyCode = event.keyCode;
 
-    self.$input.onkeydown = function(event) {
-        keyCode = event.keyCode;
-
-        if (event.ctrlKey && (keyCode === 78 || keyCode === 74)) {
-            keyCode = 40;
-        } else if (event.ctrlKey && (keyCode === 80 || keyCode === 75)) {
-            keyCode = 38;
-        }
-
-        switch (keyCode) {
-            case 27:
-            self.hide();
-            break;
-
-            case 40:
-            self.navigateSuggestionDown();
-            break;
-
-            case 38:
-            self.navigateSuggestionUp();
-            break;
-
-            case 17:
-            // do nothing, it was just the ctrl key lifted up
-            break;
-
-            case 9: // Tab
-            self.enterTextFromFirstSuggestion();
-            event.preventDefault();
-            break;
-
-            case 13:
-            if (self.hasSuggestions()) {
-                self.openSelectedSuggestion();
-            } else {
-                self.executeCommand(this.value);
+            if (event.ctrlKey && (keyCode === 78 || keyCode === 74)) {
+                keyCode = 40;
+            } else if (event.ctrlKey && (keyCode === 80 || keyCode === 75)) {
+                keyCode = 38;
             }
-            break;
 
-            default:
-            runKeyUpHandler = true;
-        }
-    };
+            switch (keyCode) {
+                case 27:
+                self.hide();
+                break;
 
-    self.$input.onkeyup = function(event) {
-        if (!runKeyUpHandler) {
-            return;
-        }
-        runKeyUpHandler = false;
+                case 40:
+                self.navigateSuggestionDown();
+                break;
 
-        if (this.value[0] !== ':' && this.value[0] !== '/' && this.value[0] !== '?') {
-            self.getAutoCompleteSuggestions(this.value);
-        } else {
-            self.clearSuggestions();
-        }
-    };
+                case 38:
+                self.navigateSuggestionUp();
+                break;
+
+                case 17:
+                // do nothing, it was just the ctrl key lifted up
+                break;
+
+                case 9: // Tab
+                self.enterTextFromFirstSuggestion();
+                event.preventDefault();
+                break;
+
+                case 13:
+                if (self.hasSuggestions()) {
+                    self.openSelectedSuggestion();
+                } else {
+                    self.executeCommand(this.value);
+                }
+                break;
+
+                default:
+                runKeyUpHandler = true;
+            }
+        };
+
+        self.$input.onkeyup = function(event) {
+            if (!runKeyUpHandler) {
+                return;
+            }
+            runKeyUpHandler = false;
+
+            if (this.value[0] !== ':' && this.value[0] !== '/' && this.value[0] !== '?') {
+                self.getAutoCompleteSuggestions(this.value);
+            } else {
+                self.clearSuggestions();
+            }
+        };
+    }());
 
     self.hasSuggestions = function() {
         return Boolean(this.suggestionElements && this.suggestionElements.length);
