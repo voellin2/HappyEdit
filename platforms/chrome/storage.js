@@ -16,7 +16,7 @@ var Storage = {
             callback(defaultValue);
         }
     },
-    
+
     set: function(key, val, callback) {
         if (chrome && chrome.storage && chrome.storage.local) {
             var items = {};
