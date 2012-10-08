@@ -52,6 +52,9 @@ def build_target(name):
                 'CHANGELOG.txt',
                 'build',
             ]
+        elif dir == os.path.join(root_dir, 'ace'):
+            ret += files
+            ret.remove('build')
         return ret
     shutil.copytree(root_dir, target_dir, ignore=ignore)
 
