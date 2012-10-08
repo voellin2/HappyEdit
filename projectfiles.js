@@ -6,12 +6,6 @@ function ProjectFiles() {
     self.autoSuggestList = null;
     self.host = null;
     
-    Storage.get('settings', {}, function(data) {
-        if (data.remoteServer) {
-            self.load(data.remoteServer);
-        }
-    });
-    
     self.load = function(host) {
         var xhr = new XMLHttpRequest();
         var url = host + '/files';
@@ -61,4 +55,10 @@ function ProjectFiles() {
         }
         return suggestions;
     };
+
+    Storage.get('settings', {}, function(data) {
+        if (data.remoteServer) {
+            self.load(data.remoteServer);
+        }
+    });
 };
