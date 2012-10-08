@@ -1,0 +1,242 @@
+h2,
+ul {
+    margin: 0;
+    padding: 0;
+}
+li {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+body {
+    margin: 0;
+    font-family: "Lucida Grande";
+    font-size: 11px;
+    font-variant: normal;
+    overflow: hidden;
+}
+#notification {
+    text-align: center;
+    position: fixed;
+    visibility: hidden;
+    width: 200px;
+    top: 0;
+    left: 50%;
+    margin-left: -100px;
+    background: rgb(163, 26, 20);
+    color: white;
+    border-radius: 5px;
+    border-color: solid rgb(163, 26, 20);
+    border: 1px;
+}
+.blocker {
+    z-index: 99;
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0);
+    margin: 0;
+    padding: 0;
+}
+.popup {
+    z-index: 100;
+    display: none;
+    position: absolute;
+    width: 480px;
+    height: auto;
+    padding: 10px;
+    top: 70px;
+    left: 50%;
+    margin-left: -250px;
+    border-radius: 4px;
+    background: white;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    background: rgb(240, 240, 240);
+}
+.popup input,
+.popup .action {
+    outline: none;
+    border: 0;
+    background: rgb(220, 220, 220);
+    padding: 5px;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.popup .close {
+    position: absolute;
+    right: 10px;
+    cursor: pointer;
+}
+.popup label {
+    display: block;
+    margin: 10px 0 5px 0;
+}
+.command-line {
+    max-height: 70%;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+.command-line input {
+    width: 100%;
+    font-size: 22px;
+}
+.command-line ul {
+    margin: 10px 0 0 0;
+}
+.command-line li {
+    padding: 5px;
+    font-size: 16px;
+}
+.command-line li:hover,
+.menu li:hover,
+.popup.settings input[type=submit],
+.command-line li.hover {
+    background: rgb(93, 52, 249);
+    color: white;
+}
+.command-line li:hover .extra,
+.command-line li.hover .extra {
+    color: #ddd;
+}
+.command-line li .title {
+    display: block;
+}
+.command-line li .extra {
+    display: block;
+    font-size: 11px;
+    color: #777
+}
+#editor {
+    -webkit-widget-region: region(control rectangle);
+}
+#top {
+    padding: 10px 10px 0 10px;
+    height: 26px;
+    font-size: 13px;
+    color: #333;
+    text-shadow: 0px 1px 1px rgba(255, 255, 255, 0.8);
+    background:-webkit-linear-gradient(top, #EEE 0%, #CCC 100%);
+    background:-moz-linear-gradient(top, #EEE 0%, #CCC 100%);
+    background:-ms-linear-gradient(top, #EEE 0%, #CCC 100%);
+    background:-o-linear-gradient(top, #EEE 0%, #CCC 100%);
+    background:linear-gradient(top, #EEE 0%, #CCC 100%);
+    border-bottom: 1px solid #999;
+    -webkit-user-select: none;
+}
+#top .tabs {
+    display: inline-block;
+}
+#top .tabs li {
+    border-radius: 2px 2px 0 0;
+    padding: 0 5px;
+    border: 1px solid #999;
+    border-left: 0;
+    box-shadow: inset 0 1px 1px #eee;
+    background: #ddd;
+}
+#top .tabs li:first-child {
+    border-left: 1px solid #999;
+}
+#top .tabs li:hover {
+    background: #eee;
+}
+#top .tabs .selected {
+    background: white;
+    position: relative;
+    border-bottom: 0;
+    padding-bottom: 1px;
+}
+#top .tabs li.selected:hover {
+    background: white;
+}
+#top .tabs li {
+    line-height: 25px;
+    vertical-align: middle;
+    display: inline-block;
+}
+#top .controls {
+    display: inline-block;
+    margin-right: 3px;
+}
+#top .controls div {
+    margin-right: 3px;
+    vertical-align: top;
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 10px;
+    background:-webkit-linear-gradient(top, #666 0%, #aaa 100%);
+    color: #eee;
+    line-height: 10px;
+    text-align: center;
+    font-size: 9px;
+    font-weight: bold;
+    text-shadow: 0px 1px 1px #333;
+    border: 1px solid #666
+}
+#top .controls div:hover {
+    background: #aaa;
+}
+#top .controls div:active {
+    background: #666
+}
+#top .menu {
+    padding: 5px;
+    border: 1px solid transparent;
+    position: absolute;
+    right: 3px;
+    top: 6px;
+}
+#top .menu:hover,
+#top .menu:active,
+#top .menu.active {
+    border: 1px solid #aaa;
+    border-radius: 4px;
+    background:-webkit-linear-gradient(top, #EEE 0%, #CCC 100%);
+}
+#top .menu:active,
+#top .menu.active {
+    background: #ccc;
+    box-shadow: inset 0 0 3px #666;
+}
+#top .menu span {
+    display: block;
+    width: 13px;
+    height: 3px;
+    margin-bottom: 2px;
+    background: #555;
+}
+#top .menu span:last-child {
+    margin-bottom: 0;
+}
+.popup.menu {
+    position: absolute;
+    display: block;
+    width: auto;
+    top: 33px;
+    right: 0;
+    margin: 0;
+    padding: 0;
+}
+.popup.settings .actions .action {
+    float: right;
+}
+.popup.menu li {
+    font-size: 12px;
+    padding: 6px;
+}
+.popup.menu li .shortcut {
+    float: right;
+}
+.popup.settings .action:active {
+    background: rgb(127, 127, 127);
+    box-shadow: inset 0 0 5px black;
+}
+.popup.settings .clickme:active {
+    background: rgb(73, 32, 229);
+    box-shadow: inset 0 0 5px black;
+}

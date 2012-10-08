@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>HappyEdit</title>
+        <meta charset="utf-8">
+        <link href="main.css" type="text/css" rel="stylesheet" />
+        <script src="ace/build/src/ace.js" type="text/javascript" charset="utf-8"></script>
+        <script src="ace/build/src/keybinding-vim.js" type="text/javascript" charset="utf-8"></script>
+        <script src="ace/build/src/mode-diff.js" type="text/javascript" charset="utf-8"></script>
+        <script src="ace/build/src/mode-javascript.js" type="text/javascript" charset="utf-8"></script>
+        <script src="ace/build/src/mode-html.js" type="text/javascript" charset="utf-8"></script>
+        <script src="ace/build/src/mode-css.js" type="text/javascript" charset="utf-8"></script>
+        <script src="ace/build/src/mode-json.js" type="text/javascript" charset="utf-8"></script>
+        <script src="ace/build/src/mode-python.js" type="text/javascript" charset="utf-8"></script>
+        <script src="ace/build/src/mode-php.js" type="text/javascript" charset="utf-8"></script>
+        <script src="platforms/browser/storage.js" type="text/javascript" charset="utf-8"></script>
+        <script src="utils.js" type="text/javascript" charset="utf-8"></script>
+        <script src="autosuggestlist.js" type="text/javascript" charset="utf-8"></script>
+        <script src="autosuggestablefilelist.js" type="text/javascript" charset="utf-8"></script>
+        <script src="commandlist.js" type="text/javascript" charset="utf-8"></script>
+        <script src="commandline.js" type="text/javascript" charset="utf-8"></script>
+        <script src="settings.js" type="text/javascript" charset="utf-8"></script>
+        <script src="menu.js" type="text/javascript" charset="utf-8"></script>
+        <script src="topbar.js" type="text/javascript" charset="utf-8"></script>
+        <script src="projectfiles.js" type="text/javascript" charset="utf-8"></script>
+        <script src="file.js" type="text/javascript" charset="utf-8"></script>
+        <script src="html.js" type="text/javascript" charset="utf-8"></script>
+        <script src="main.js" type="text/javascript" charset="utf-8"></script>
+    </head>
+    <body>
+        <div class="blocker command-line">
+        </div>
+        <div class="blocker settings">
+        </div>
+        <div class="blocker menu">
+        </div>
+        <div class="popup command-line" style="display:none">
+            <div>
+                <input type="text" class="cmd" />
+                <ul class="suggestions filelist"></ul>
+            </div>
+        </div>
+        <div class="menu popup" style="display: none">
+            <ul>
+            </ul>
+        </div>
+        <div class="popup settings" style="display:none">
+            <h2>Settings</h2>
+
+            <label>Ignore these extensions (separate with ','):</label>
+            <input type="text" class="ignored_extensions" placeholder=".pyc,.scss" />
+
+            <label>Remote server:</label>
+            <input type="text" class="remote" placeholder="http://localhost:8888" />
+
+            <div class="actions">
+                <input class="action clickme send" type="submit" value="Save" />
+                <button class="action cancel">Cancel</button>
+            </div>
+        </div>
+        <span id="notification">Saving</span>
+
+        <div id="top">
+            <div class="controls">
+                <div class="close">x</div>
+                <div class="min">-</div>
+                <div class="max">+</div>
+            </div>
+            <ul class="tabs"></ul>
+            <span class="menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </span>
+        </div>
+
+        <div id="editor"></div>
+
+    </body>
+</html>
