@@ -60,7 +60,7 @@ function CommandList(happyEdit) {
             }
         },
         {
-            name: "nextTab",
+            name: "tabnext",
             title: "Select Next Tab",
             shortcut: {
                 win: "Ctrl-Tab",
@@ -71,7 +71,7 @@ function CommandList(happyEdit) {
             }
         },
         {
-            name: "prevTab",
+            name: "tabprevious",
             title: "Select Previous Tab",
             shortcut: {
                 win: "Ctrl-Shift-Tab",
