@@ -228,8 +228,9 @@ body {
 .popup.menu {
     position: absolute;
     display: block;
-    width: auto;
+    width: 170px;
     top: 33px;
+    left: auto;
     right: 0;
     margin: 0;
     padding: 0;
