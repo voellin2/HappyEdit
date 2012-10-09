@@ -56,6 +56,39 @@ function isNumeric(num) {
     return parseFloat(num).toString() == num;
 }
 
+/**
+ * Returns if OS is "windows", "mac", "unix" or "linux". Default: "windows".
+ */
+function getOS() {
+    var os = "win";
+    if (navigator.appVersion.indexOf("Win")!=-1) os = "windows";
+    if (navigator.appVersion.indexOf("Mac")!=-1) os = "mac";
+    if (navigator.appVersion.indexOf("X11")!=-1) os = "unix";
+    if (navigator.appVersion.indexOf("Linux")!=-1) os = "linux";
+    return os;
+}
+
+function getMacOrWin() {
+    if (getOS() === "mac") {
+        return "mac";
+    }
+    return "win";
+}
+
+function getShortcutForCommand(command) {
+    var os = getMacOrWin();
+    var shortcut = null;
+
+    if (command.shortcut && command.shortcut.hasOwnProperty(os)) {
+        shortcut = command.shortcut[os];
+        shortcut = shortcut.replace('-', '');
+        shortcut = shortcut.replace('Command', '⌘');
+        shortcut = shortcut.replace('Shift', '⇧');
+    }
+
+    return shortcut;
+}
+
 var ajax = {
     get: function(url, callback) {
         var xhr = new XMLHttpRequest();

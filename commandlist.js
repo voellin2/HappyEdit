@@ -141,6 +141,7 @@ function CommandList(happyEdit) {
             suggestions.push({
                 title: command.name,
                 extra: command.title || '',
+                shortcut: getShortcutForCommand(command),
                 rel: command.name,
             });
         }

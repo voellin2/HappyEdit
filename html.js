@@ -3,6 +3,7 @@ var HTML = {
         var $li = document.createElement('li');
         var $title = document.createElement('span');
         var $extra = document.createElement('span');
+        var $shortcut = document.createElement('span');
 
         $title.setAttribute('class', 'title');
         $title.innerHTML = args.title,
@@ -15,6 +16,12 @@ var HTML = {
             $extra.setAttribute('class', 'extra');
             $extra.innerHTML = args.extra;
             $li.appendChild($extra);
+        }
+
+        if (args.shortcut) {
+            $shortcut.setAttribute('class', 'shortcut');
+            $shortcut.innerHTML = args.shortcut;
+            $li.appendChild($shortcut);
         }
 
         return $li;

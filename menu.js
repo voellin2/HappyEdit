@@ -14,7 +14,7 @@ function Menu(happyEdit) {
             var $li = HTML.createMenuOption({
                 title: command.title,
                 className: command.name,
-                shortcut: command.shortcut ? command.shortcut.mac : null,
+                shortcut: getShortcutForCommand(command),
                 callback: command.callback
             });
             self.$popup.appendChild($li);

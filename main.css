@@ -90,6 +90,7 @@ body {
 .command-line li {
     padding: 5px;
     font-size: 16px;
+    position: relative;
 }
 .command-line li:hover,
 .menu li:hover,
@@ -98,6 +99,12 @@ body {
     background: rgb(93, 52, 249);
     color: white;
 }
+.command-line li .extra,
+.command-line li .shortcut {
+    color: #777
+}
+.command-line li:hover .shortcut,
+.command-line li.hover .shortcut,
 .command-line li:hover .extra,
 .command-line li.hover .extra {
     color: #ddd;
@@ -108,7 +115,12 @@ body {
 .command-line li .extra {
     display: block;
     font-size: 11px;
-    color: #777
+}
+.command-line li .shortcut {
+    position: absolute;
+    right: 5px;
+    top: 10px;
+    font-size: 20px;
 }
 #editor {
     -webkit-widget-region: region(control rectangle);
