@@ -241,6 +241,7 @@ body {
 .popup.menu li {
     font-size: 12px;
     padding: 6px;
+    cursor: default;
 }
 .popup.menu li .shortcut {
     float: right;
