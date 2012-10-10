@@ -173,6 +173,7 @@ body {
 #top .controls {
     display: inline-block;
     margin-right: 3px;
+    cursor: default;
 }
 #top .controls div {
     margin-right: 3px;
@@ -188,7 +189,7 @@ body {
     font-size: 9px;
     font-weight: bold;
     text-shadow: 0px 1px 1px #333;
-    border: 1px solid #666
+    border: 1px solid #666;
 }
 #top .controls div:hover {
     background: #aaa;
