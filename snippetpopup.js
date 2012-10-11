@@ -8,6 +8,16 @@ function SnippetPopup(happyEdit) {
     self.$textarea = self.$popup.querySelector('textarea');
     self.snippet = null;
 
+    self.$backButton.onclick = function() {
+        self.hide();
+        happyEdit.commandLine.show(null);
+    };
+
+    self.$useButton.onclick = function() {
+        self.hide();
+        happyEdit.editor.insert(self.snippet.code);
+    };
+
     self.$blocker.onclick = function() {
         self.hide();
     };
@@ -40,13 +50,11 @@ function SnippetPopup(happyEdit) {
         var keyCode = event.keyCode;
         switch (keyCode) {
             case 13:
-            self.hide();
-            happyEdit.editor.insert(self.snippet.code);
+            self.$useButton.onclick();
             break;
 
             case 27:
-            happyEdit.commandLine.show(null);
-            self.hide();
+            self.$backButton.onclick();
             break;
         }
     };
