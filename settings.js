@@ -69,12 +69,23 @@ function Settings(happyEdit) {
         // Focusing on text input right away does not work for some reason.
         setTimeout(function() {
             happyEdit.editor.blur();
+            happyEdit.setGlobalKeyboardHandler(self.globalKeyboardHandler);
         }, 100);
+    };
+
+    self.globalKeyboardHandler = function(event) {
+        var keyCode = event.keyCode;
+        switch (keyCode) {
+            case 27:
+            self.hide();
+            break;
+        }
     };
     
     self.hide = function() {
         self.$popup.style.display = 'none';
         self.$blocker.style.display = 'none';
+        happyEdit.setGlobalKeyboardHandler(null);
         happyEdit.editor.focus();
     };
 };

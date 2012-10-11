@@ -285,6 +285,10 @@ function CommandLine(happyEdit) {
         return this.$popup.style.display === 'block';
     };
 
+    self.globalKeyboardHandler = function(event) {
+        self.$input.focus();
+    };
+
     self.show = function(startingChar) {
         var self = this;
 
@@ -302,6 +306,7 @@ function CommandLine(happyEdit) {
         setTimeout(function() {
             editor.blur();
             self.$input.focus();
+            happyEdit.setGlobalKeyboardHandler(self.globalKeyboardHandler);
         }, 100);
     };
 
@@ -309,6 +314,7 @@ function CommandLine(happyEdit) {
         var self = this;
         self.$popup.style.display = 'none';
         self.$blocker.style.display = 'none';
+        happyEdit.setGlobalKeyboardHandler(null);
         editor.focus();
     };
 }

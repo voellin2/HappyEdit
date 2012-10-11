@@ -12,6 +12,7 @@ function HappyEdit() {
     self.menu = new Menu(self);
     self.topBar = new TopBar(self);
     self.projectFiles = new ProjectFiles();
+    self.globalKeyboardHandler = null;
 
     window.onresize = function(event) {
         var w = window.innerWidth;
@@ -23,9 +24,15 @@ function HappyEdit() {
     window.onresize();
 
     window.onkeydown = function(event) {
-        if (!self.commandLine.isVisible() && !self.settings.isVisible()) {
+        if (self.globalKeyboardHandler) {
+            self.globalKeyboardHandler(event);
+        } else {
             self.editor.focus();
         }
+    };
+
+    self.setGlobalKeyboardHandler = function(handler) {
+        self.globalKeyboardHandler = handler;
     };
 
     self.editor.setKeyboardHandler(require("ace/keyboard/vim").handler);
