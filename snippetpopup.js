@@ -6,6 +6,7 @@ function SnippetPopup(happyEdit) {
     self.$backButton = self.$popup.querySelector('.actions .back');
     self.$useButton = self.$popup.querySelector('.actions .use');
     self.$textarea = self.$popup.querySelector('textarea');
+    self.snippet = null;
 
     self.$blocker.onclick = function() {
         self.hide();
@@ -21,6 +22,7 @@ function SnippetPopup(happyEdit) {
     self.setSnippet = function(snippet) {
         self.$title.innerHTML = snippet.title;
         self.$textarea.innerHTML = snippet.code;
+        self.snippet = snippet;
     };
 
     self.show = function() {
@@ -39,6 +41,7 @@ function SnippetPopup(happyEdit) {
         switch (keyCode) {
             case 13:
             self.hide();
+            happyEdit.editor.insert(self.snippet.code);
             break;
 
             case 27:
