@@ -289,6 +289,10 @@ function CommandLine(happyEdit) {
         self.$input.focus();
     };
 
+    /**
+     * Display the command line. If startingChar is null, the last state will
+     * be preserved.
+     */
     self.show = function(startingChar) {
         var self = this;
 
@@ -296,9 +300,12 @@ function CommandLine(happyEdit) {
             self.hide();
         };
 
-        self.$input.value = startingChar;
-        self.$suggestions.innerHTML = '';
-        self.$suggestions.style.display = 'none';
+        if (startingChar !== null) {
+            self.$input.value = startingChar;
+            self.$suggestions.innerHTML = '';
+            self.$suggestions.style.display = 'none';
+        }
+
         self.$popup.style.display = 'block';
         self.$blocker.style.display = 'block';
 

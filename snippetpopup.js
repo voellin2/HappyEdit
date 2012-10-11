@@ -42,6 +42,7 @@ function SnippetPopup(happyEdit) {
             break;
 
             case 27:
+            happyEdit.commandLine.show(null);
             self.hide();
             break;
         }
