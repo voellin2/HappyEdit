@@ -57,6 +57,7 @@ body {
     background: rgb(240, 240, 240);
 }
 .popup input,
+.popup textarea,
 .popup .action {
     outline: none;
     border: 0;
@@ -94,7 +95,7 @@ body {
 }
 .command-line li:hover,
 .menu li:hover,
-.popup.settings input[type=submit],
+.popup .clickme,
 .command-line li.hover {
     background: rgb(93, 52, 249);
     color: white;
@@ -236,8 +237,12 @@ body {
     margin: 0;
     padding: 0;
 }
-.popup.settings .actions .action {
+.popup .actions {
+    margin-top: 5px;
+}
+.popup .actions .action {
     float: right;
+    margin-left: 5px;
 }
 .popup.menu li {
     font-size: 12px;
@@ -247,11 +252,15 @@ body {
 .popup.menu li .shortcut {
     float: right;
 }
-.popup.settings .action:active {
+.popup .action:active {
     background: rgb(127, 127, 127);
     box-shadow: inset 0 0 5px black;
 }
-.popup.settings .clickme:active {
+.popup .clickme:active {
     background: rgb(73, 32, 229);
     box-shadow: inset 0 0 5px black;
+}
+.popup.snippet textarea {
+    width: 100%;
+    height: 300px;
 }

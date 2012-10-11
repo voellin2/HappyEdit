@@ -61,8 +61,22 @@ function CommandLine(happyEdit) {
             }
             runKeyUpHandler = false;
 
+            var split,
+                command,
+                args;
+
             if (this.value[0] === ':' && this.value.length > 1) {
-                self.getCommandSuggestions(this.value.split(':')[1]);
+                if (this.value.indexOf(' ') === -1) {
+                    self.getCommandSuggestions(this.value.split(':')[1]);
+                } else {
+                    split = this.value.split(':')[1].split(' ');
+                    command = split[0];
+                    args = split[1];
+                    command = happyEdit.commands.getCommandByName(command);
+                    if (command) {
+                        command.autoComplete(args);
+                    }
+                }
             } else if (this.value[0] !== '/' && this.value[0] !== '?') {
                 self.getCommandTSuggestions(this.value);
             } else {

@@ -6,6 +6,8 @@ function HappyEdit() {
     self.currentFile;
     self.commands = new CommandList(self);
     self.commandLine = new CommandLine(self);
+    self.snippetPopup = new SnippetPopup(self);
+    self.snippets = new SnippetsAPI(self.commandLine, self.snippetPopup);
     self.settings = new Settings(self);
     self.menu = new Menu(self);
     self.topBar = new TopBar(self);
@@ -160,5 +162,6 @@ function HappyEdit() {
 
 window.onload = function() {
     window.happyEdit = new HappyEdit();
+    window.happyEdit.snippets.showSnippet('123');
 };
 

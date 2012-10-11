@@ -17,6 +17,8 @@
         <script src="utils.js" type="text/javascript" charset="utf-8"></script>
         <script src="autosuggestlist.js" type="text/javascript" charset="utf-8"></script>
         <script src="autosuggestablefilelist.js" type="text/javascript" charset="utf-8"></script>
+        <script src="snippets.js" type="text/javascript" charset="utf-8"></script>
+        <script src="snippetpopup.js" type="text/javascript" charset="utf-8"></script>
         <script src="commandlist.js" type="text/javascript" charset="utf-8"></script>
         <script src="commandline.js" type="text/javascript" charset="utf-8"></script>
         <script src="settings.js" type="text/javascript" charset="utf-8"></script>
@@ -33,6 +35,8 @@
         <div class="blocker settings">
         </div>
         <div class="blocker menu">
+        </div>
+        <div class="blocker snippet">
         </div>
         <div class="popup command-line" style="display:none">
             <div>
@@ -56,6 +60,14 @@
             <div class="actions">
                 <input class="action clickme send" type="submit" value="Save" />
                 <button class="action cancel">Cancel</button>
+            </div>
+        </div>
+        <div class="snippet popup" style="display: none">
+            <h2 class="title"></h2>
+            <textarea></textarea>
+            <div class="actions">
+                <span class="action clickme">Use Snippet</span>
+                <span class="action">Back</span>
             </div>
         </div>
         <span id="notification">Saving</span>

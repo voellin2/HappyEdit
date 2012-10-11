@@ -15,6 +15,17 @@ function CommandList(happyEdit) {
             }
         },
         {
+            name: "snippet",
+            title: "Search for code snippets",
+            hideCommandLine: false,
+            autoComplete: function(s) {
+                happyEdit.snippets.fillCommandLineWithAutoCompletions(s);
+            },
+            callback: function(args) {
+                happyEdit.snippets.fillCommandLineWithAutoCompletions(s);
+            }
+        },
+        {
             name: "ls",
             title: "Show Open Buffers",
             hideCommandLine: false,
