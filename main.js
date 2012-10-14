@@ -169,6 +169,5 @@ function HappyEdit() {
 
 window.onload = function() {
     window.happyEdit = new HappyEdit();
-    window.happyEdit.snippets.showSnippet('123');
 };
 
