@@ -5,7 +5,7 @@ function SnippetsAPI(commandLine, snippetPopup) {
     self.snippets = [];
 
     self.search = function(q, callback) {
-        var url = 'http://localhost:8080/api/search?lang=python&q=' + encodeURIComponent(q);
+        var url = 'http://snippets.happyedit.se/api/search?lang=python&q=' + encodeURIComponent(q);
         var xhr = new XMLHttpRequest();
         xhr.open("GET", url);
 
