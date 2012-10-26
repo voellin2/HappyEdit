@@ -104,13 +104,21 @@ function CommandList(happyEdit) {
             }
         },
         {
+            name: "openMenu",
+            title: "Open Menu",
+            hideCommandLine: true,
+            callback: function(args) {
+                happyEdit.menu.show();
+            }
+        },
+        {
             name: "q",
             title: "Quit HappyEdit",
             hideCommandLine: true,
             callback: function(args) {
                 happyEdit.closeFile(happyEdit.currentFile);
             }
-        },
+        }
     ];
 
     self.autoCompletions = new AutoSuggestList(self._commands.map(function(x) {
