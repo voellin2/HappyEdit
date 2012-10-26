@@ -4,6 +4,7 @@ function HappyEdit() {
     self.editor = ace.edit("editor");
     self.$editor = document.getElementById('editor');
     self.currentFile;
+    self.eventSystem = new EventSystem();
     self.commands = new CommandList(self);
     self.commandLine = new CommandLine(self);
     self.snippetPopup = new SnippetPopup(self);
@@ -11,7 +12,8 @@ function HappyEdit() {
     self.settings = new Settings(self);
     self.menu = new Menu(self);
     self.topBar = new TopBar(self);
-    self.projectFiles = new ProjectFiles();
+    self.projectFiles = new ProjectFiles(self.eventSystem);
+    self.pinger = new Pinger(self.eventSystem);
     self.globalKeyboardHandler = null;
 
     window.onresize = function(event) {

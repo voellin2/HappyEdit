@@ -211,11 +211,25 @@ class NotFoundHandler:
         ])
         return [msg]
 
+class PingHandler:
+
+    def __call__(self, environ, start_response):
+        if environ['REQUEST_METHOD'] == 'GET' and environ['PATH_INFO'] == '/ping':
+            msg = "pong"
+            start_response("200 OK", [
+                ('Access-Control-Allow-Origin', '*'),
+                ('Content-Type', 'text/plain'),
+                ('Content-Length', str(len(msg))),
+            ])
+            return [msg]
+        return self.next_handler(environ, start_response)
+
 def main():
     path = os.path.dirname(os.path.abspath(sys.argv[0]))
     cwd = os.getcwd()
 
     handlers = []
+    handlers.append(PingHandler())
     handlers.append(GrepHandler(cwd))
     handlers.append(ProjectInfoHandler(cwd))
     handlers.append(FileListing(cwd))

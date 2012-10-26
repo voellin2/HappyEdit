@@ -1,7 +1,7 @@
 /**
  * System to retrieve file list from a remote server.
  */
-function ProjectFiles() {
+function ProjectFiles(eventSystem) {
     var self = this;
     self.autoSuggestList = null;
     self.host = null;
@@ -24,6 +24,9 @@ function ProjectFiles() {
                 if (xhr.responseText) {
                     var json = JSON.parse(xhr.responseText);
                     self.autoSuggestList.load(json);
+                    eventSystem.callEventListeners('connected', host);
+                } else {
+                    eventSystem.callEventListeners('connection_problem', host);
                 }
             }
         };

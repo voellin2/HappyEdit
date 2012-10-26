@@ -217,15 +217,29 @@ body {
     background: #ccc;
     box-shadow: inset 0 0 3px #666;
 }
-#top .menu span {
+#top .menu .line {
     display: block;
     width: 13px;
     height: 3px;
     margin-bottom: 2px;
     background: #555;
 }
-#top .menu span:last-child {
+#top .menu .line:nth-child(3) {
     margin-bottom: 0;
+}
+#top .menu .indicator {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    display: block;
+    width: 5px;
+    height: 5px;
+}
+#top .menu .indicator.connected {
+    background: green;
+}
+#top .menu .indicator.connection-problem {
+    background: red;
 }
 .popup.menu {
     position: absolute;
