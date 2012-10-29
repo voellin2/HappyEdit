@@ -37,7 +37,7 @@ function Settings(happyEdit) {
         settings.remoteServer = self.$popup.querySelector('input.remote').value;
 
         if (settings.remoteServer) {
-            happyEdit.projectFiles.load(settings.remoteServer);
+            happyEdit.happyServer.load(settings.remoteServer);
         }
 
         Storage.set('settings', settings);

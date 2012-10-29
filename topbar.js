@@ -44,27 +44,10 @@ function TopBar(happyEdit) {
     self.tabs = [];
     self.$view = document.querySelector('#top');
     self.$menuButton = self.$view.querySelector('.menu');
-    self.$indicator = self.$view.querySelector('.menu .indicator');
     self.$closeButton = self.$view.querySelector('.controls .close');
     self.$minButton = self.$view.querySelector('.controls .min');
     self.$maxButton = self.$view.querySelector('.controls .max');
     self.$tabs = self.$view.querySelector('.tabs');
-
-    happyEdit.eventSystem.addEventListener('connected', function() {
-        console.log('connected');
-        addClass(self.$indicator, 'connected');
-        removeClass(self.$indicator, 'connection-problem');
-    });
-
-    happyEdit.eventSystem.addEventListener('connection_problem', function() {
-        addClass(self.$indicator, 'connection-problem');
-        removeClass(self.$indicator, 'connected');
-    });
-
-    happyEdit.eventSystem.addEventListener('disconnected', function() {
-        removeClass(self.$indicator, 'connected');
-        removeClass(self.$indicator, 'connection-problem');
-    });
 
     self.$menuButton.onclick = function() {
         happyEdit.menu.show();

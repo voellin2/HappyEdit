@@ -6,7 +6,7 @@ function ProjectFiles(eventSystem) {
     self.autoSuggestList = null;
     self.host = null;
     
-    self.load = function(host) {
+    eventSystem.addEventListener('connected', function(host) {
         var xhr = new XMLHttpRequest();
         var url = host + '/files';
 
@@ -24,15 +24,12 @@ function ProjectFiles(eventSystem) {
                 if (xhr.responseText) {
                     var json = JSON.parse(xhr.responseText);
                     self.autoSuggestList.load(json);
-                    eventSystem.callEventListeners('connected', host);
-                } else {
-                    eventSystem.callEventListeners('connection_problem', host);
                 }
             }
         };
     
         xhr.send();
-    };
+    });
 
     self.isConnected = function() {
         return Boolean(this.host);
@@ -58,10 +55,4 @@ function ProjectFiles(eventSystem) {
         }
         return suggestions;
     };
-
-    Storage.get('settings', {}, function(data) {
-        if (data.remoteServer) {
-            self.load(data.remoteServer);
-        }
-    });
 };

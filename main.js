@@ -5,6 +5,7 @@ function HappyEdit() {
     self.$editor = document.getElementById('editor');
     self.currentFile;
     self.eventSystem = new EventSystem();
+    self.happyServer = new HappyServer(self.eventSystem);
     self.commands = new CommandList(self);
     self.commandLine = new CommandLine(self);
     self.snippetPopup = new SnippetPopup(self);
@@ -12,13 +13,14 @@ function HappyEdit() {
     self.settings = new Settings(self);
     self.menu = new Menu(self);
     self.topBar = new TopBar(self);
+    self.bottomBar = new BottomBar(self);
     self.projectFiles = new ProjectFiles(self.eventSystem);
     self.pinger = new Pinger(self.eventSystem);
     self.globalKeyboardHandler = null;
 
     window.onresize = function(event) {
         var w = window.innerWidth;
-        var h = window.innerHeight - document.querySelector('#top').offsetHeight;
+        var h = window.innerHeight - document.querySelector('#top').offsetHeight - document.querySelector('#bottom').offsetHeight;
 
         self.$editor.style.width = w + 'px';
         self.$editor.style.height = h + 'px';
