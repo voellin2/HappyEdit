@@ -24,7 +24,7 @@ function BottomBar(happyEdit) {
     });
 
     happyEdit.eventSystem.addEventListener('disconnected', function(host) {
-        self.$indicatorText.innerHTML = '';
+        self.$indicatorText.innerHTML = 'Not connected';
 
         addClass(self.$indicator, 'disconnected');
 

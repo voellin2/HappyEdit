@@ -266,7 +266,6 @@ body {
 }
 
 #bottom {
-    height: 20px;
     line-height: 20px;
     background: blue;
     position: fixed;
