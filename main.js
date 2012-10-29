@@ -9,7 +9,7 @@ function HappyEdit() {
     self.commands = new CommandList(self);
     self.commandLine = new CommandLine(self);
     self.snippetPopup = new SnippetPopup(self);
-    self.snippets = new SnippetsAPI(self.commandLine, self.snippetPopup);
+    self.snippets = new SnippetsAPI(self);
     self.settings = new Settings(self);
     self.menu = new Menu(self);
     self.topBar = new TopBar(self);

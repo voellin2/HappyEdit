@@ -1,11 +1,11 @@
-function SnippetsAPI(commandLine, snippetPopup) {
+function SnippetsAPI(happyEdit) {
     var self = this;
-    self.commandLine = commandLine;
-    self.snippetPopup = snippetPopup;
+    self.commandLine = happyEdit.commandLine;
+    self.snippetPopup = happyEdit.snippetPopup;
     self.snippets = [];
 
-    self.search = function(q, callback) {
-        var url = 'http://snippets.happyedit.se/api/search?lang=python&q=' + encodeURIComponent(q);
+    self.search = function(q, lang, callback) {
+        var url = 'http://snippets.happyedit.se/api/search?lang=' + lang + '&q=' + encodeURIComponent(q);
         var xhr = new XMLHttpRequest();
         xhr.open("GET", url);
 
@@ -57,7 +57,8 @@ function SnippetsAPI(commandLine, snippetPopup) {
                     clearTimeout(timer);
                 }
                 timer = setTimeout(function() {
-                    self.search(q, function(snippets) {
+                    var lang = happyEdit.currentFile.getMode().name;
+                    self.search(q, lang, function(snippets) {
                         var i;
                         var suggestions = [];
                         for (i = 0; i < snippets.length; i += 1) {
