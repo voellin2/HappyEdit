@@ -81,6 +81,12 @@ body {
     overflow-y: auto;
     overflow-x: hidden;
 }
+.command-line .loading-animation {
+    position: absolute;
+    top: 25px;
+    right: 15px;
+    display: none;
+}
 .command-line input {
     width: 100%;
     font-size: 22px;
@@ -300,4 +306,62 @@ body {
 #bottom .right {
     float: right;
     margin-right: 10px;
+}
+
+/** LOADING ANIMATION
+ ****************************************************************************/
+
+.loading-animation {
+    text-align: center;
+}
+.loading-animation div {
+    background: #333;
+    border-radius: 15px;
+    width:10px;
+    height:10px;
+    display: inline-block;
+    margin-left: 5px;
+    opacity:0.1;
+    -webkit-animation-name: loading-animation;
+    -webkit-animation-duration: 2s;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-direction: linear;
+    -moz-animation-name: loading-animation;
+    -moz-animation-duration: 2s;
+    -moz-animation-iteration-count: infinite;
+    -moz-animation-direction: linear;
+    animation-name: loading-animation;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    animation-direction: linear;
+}
+.loading-animation div:first-child {
+    margin-left: 0;
+}
+.loading-animation div:nth-child(1) {
+    -webkit-animation-delay: .0s;
+    -moz-animation-delay: .0s;
+    animation-delay: .0s;
+}
+.loading-animation div:nth-child(2) {
+    -webkit-animation-delay: .2s;
+    -moz-animation-delay: .2s;
+    animation-delay: .2s;
+}
+.loading-animation div:nth-child(3) {
+    -webkit-animation-delay: .4s;
+    -moz-animation-delay: .4s;
+    animation-delay: .4s;
+}
+@-webkit-keyframes loading-animation {
+    0%   { -webkit-transform: scale(1.0); opacity:1.0; }
+    100% { -webkit-transform: scale(1.0); opacity:0.1; }
+}
+@-moz-keyframes loading-animation {
+    0%   { -moz-transform: scale(1.0); opacity:1.0; }
+    100% { -moz-transform: scale(1.0); opacity:0.1; }
+}
+@keyframes loading-animation {
+    0%   { transform: scale(1.0); opacity:1.0; }
+    100% { transform: scale(1.0); opacity:0.1; }
 }

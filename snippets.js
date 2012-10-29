@@ -52,6 +52,7 @@ function SnippetsAPI(commandLine, snippetPopup) {
         var timer;
         self.fillCommandLineWithAutoCompletions = function(q) {
             if (q.length > 1) {
+                self.commandLine.showLoading();
                 if (timer) {
                     clearTimeout(timer);
                 }
@@ -69,6 +70,7 @@ function SnippetsAPI(commandLine, snippetPopup) {
                             });
                         }
                         self.commandLine.fillSuggestionsList(suggestions);
+                        self.commandLine.hideLoading();
                     });
                 }, 500);
             } else {

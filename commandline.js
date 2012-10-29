@@ -6,6 +6,7 @@ function CommandLine(happyEdit) {
 
     self.$popup = document.querySelector('.popup.command-line');
     self.$input = document.querySelector('.popup.command-line input');
+    self.$loadingAnimation = document.querySelector('.popup.command-line .loading-animation');
     self.$suggestions= document.querySelector('.popup.command-line ul');
     self.$blocker = document.querySelector('.blocker.command-line');
     self.runKeyUpHandler = false;
@@ -287,6 +288,14 @@ function CommandLine(happyEdit) {
 
     self.globalKeyboardHandler = function(event) {
         self.$input.focus();
+    };
+
+    self.showLoading = function() {
+        self.$loadingAnimation.style.display = 'block';
+    };
+
+    self.hideLoading = function() {
+        self.$loadingAnimation.style.display = 'none';
     };
 
     /**
