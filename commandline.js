@@ -8,9 +8,9 @@ function CommandLine(happyEdit) {
     self.$input = document.querySelector('.popup.command-line input');
     self.$suggestions= document.querySelector('.popup.command-line ul');
     self.$blocker = document.querySelector('.blocker.command-line');
+    self.runKeyUpHandler = false;
 
     (function() {
-        var runKeyUpHandler = false;
         self.$input.onkeydown = function(event) {
             keyCode = event.keyCode;
 
@@ -51,15 +51,15 @@ function CommandLine(happyEdit) {
                 break;
 
                 default:
-                runKeyUpHandler = true;
+                self.runKeyUpHandler = true;
             }
         };
 
         self.$input.onkeyup = function(event) {
-            if (!runKeyUpHandler) {
+            if (!self.runKeyUpHandler) {
                 return;
             }
-            runKeyUpHandler = false;
+            self.runKeyUpHandler = false;
 
             var split,
                 command,
@@ -302,6 +302,8 @@ function CommandLine(happyEdit) {
 
         if (startingChar !== null) {
             self.$input.value = startingChar;
+            self.runKeyUpHandler = true;
+            self.$input.onkeyup();
             self.$suggestions.innerHTML = '';
             self.$suggestions.style.display = 'none';
         }
