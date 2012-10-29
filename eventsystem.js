@@ -2,6 +2,7 @@ function EventSystem() {
     var self = this;
 
     self.listeners = {
+        'file_changed': [],
         'connected': [],
         'connection_problem': [],
         'disconnected': []

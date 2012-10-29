@@ -3,7 +3,8 @@ function BottomBar(happyEdit) {
 
     self.$view = document.querySelector('#bottom');
     self.$indicator = self.$view.querySelector('.indicator');
-    self.$indicatorText = self.$view.querySelector('.text');
+    self.$indicatorText = self.$indicator.querySelector('.text');
+    self.$langauge = self.$view.querySelector('.language');
 
     happyEdit.eventSystem.addEventListener('connected', function(host) {
         self.$indicatorText.innerHTML = 'Connected to ' + host;
@@ -30,5 +31,9 @@ function BottomBar(happyEdit) {
 
         removeClass(self.$indicator, 'connected');
         removeClass(self.$indicator, 'connection-problem');
+    });
+
+    happyEdit.eventSystem.addEventListener('file_changed', function(file) {
+        self.$langauge.innerHTML = file.getMode().name;
     });
 }

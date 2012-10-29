@@ -103,6 +103,8 @@ function HappyEdit() {
         if (updateTabs || updateTabs === undefined) {
             self.topBar.updateView(file);
         }
+
+        self.eventSystem.callEventListeners('file_changed', file);
     }
 
     self.getNumberOfOpenFiles = function() {
