@@ -1,5 +1,7 @@
 HappyEdit is a Vim-inspired text editor with modern features. It is based on modern web technologies and feels like a native app.
 
+**NOTE:** HappyEdit is currently in the prototype stage and is not ready for actual use yet.
+
 Try it out
 ----------
 
