@@ -27,7 +27,7 @@ function CommandList(happyEdit) {
         },
         {
             name: "stackoverflow",
-            title: "Search StackOverflow",
+            title: "Search Stack Overflow",
             hideCommandLine: false,
             autoComplete: function(s) {
                 happyEdit.stackOverflow.fillCommandLineWithAutoCompletions(s);
