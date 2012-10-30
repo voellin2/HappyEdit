@@ -6,6 +6,7 @@ function SnippetPopup(happyEdit) {
     self.$backButton = self.$popup.querySelector('.actions .back');
     self.$useButton = self.$popup.querySelector('.actions .use');
     self.$textarea = self.$popup.querySelector('textarea');
+    self.$answer = self.$popup.querySelector('.answer');
     self.snippet = null;
 
     self.$backButton.onclick = function() {
@@ -15,7 +16,7 @@ function SnippetPopup(happyEdit) {
 
     self.$useButton.onclick = function() {
         self.hide();
-        happyEdit.editor.insert(self.snippet.code);
+        happyEdit.editor.insert(self.snippet.code || self.snippet.answer);
     };
 
     self.$blocker.onclick = function() {
@@ -31,7 +32,20 @@ function SnippetPopup(happyEdit) {
 
     self.setSnippet = function(snippet) {
         self.$title.innerHTML = snippet.title;
-        self.$textarea.innerHTML = snippet.code;
+
+        self.$textarea.style.display = 'none';
+        self.$answer.style.display = 'none';
+
+        if (snippet.code) {
+            self.$textarea.innerHTML = snippet.code;
+            self.$textarea.style.display = 'block';
+        }
+
+        if (snippet.answer) {
+            self.$answer.innerHTML = snippet.answer;
+            self.$answer.style.display = 'block';
+        }
+
         self.snippet = snippet;
     };
 

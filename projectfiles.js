@@ -44,6 +44,11 @@ function ProjectFiles(eventSystem) {
         var i;
         var autoCompletions = this.autoSuggestList.getSuggestions(q);
         var autoCompletion;
+
+        if (!autoCompletions) {
+            return;
+        }
+
         for (i = 0; i < autoCompletions.length; i += 1) {
             autoCompletion = autoCompletions[i];
             var split = autoCompletion.split(PATH_SEPARATOR);

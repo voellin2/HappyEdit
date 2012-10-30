@@ -1,7 +1,8 @@
-function SnippetsAPI(happyEdit) {
+function StackOverflow(happyEdit) {
     var self = this;
     self.commandLine = happyEdit.commandLine;
     self.snippetPopup = happyEdit.snippetPopup;
+    self.titlesMap = {};
 
     self.search = function(q, lang, callback) {
         var url = "http://api.stackexchange.com/2.1/search/advanced?title=" + q + "&tagged=" + lang + "&accepted=true&site=stackoverflow";
@@ -11,8 +12,20 @@ function SnippetsAPI(happyEdit) {
         xhr.onreadystatechange = function() {
             if (xhr.readyState == 4) {
                 var json = JSON.parse(xhr.responseText);
-                console.log('stackoverflow response', json);
-                callback(json);
+                var snippets = [];
+                console.log('stackoverflow questions', json);
+
+                for (var i = 0; i < json.items.length; i += 1) {
+                    var question = json.items[i];
+                    snippets.push({
+                        accepted_answer_id: question.accepted_answer_id,
+                        tags: question.tags,
+                        title: question.title
+                    });
+                    self.titlesMap[question.accepted_answer_id] = question.title;
+                }
+
+                callback(json.items);
             }
         };
 
@@ -23,27 +36,36 @@ function SnippetsAPI(happyEdit) {
         throw "Not implemented yet";
     };
 
-    self.loadSnippet = function(id, callback) {
-        var i;
-        var snippet;
-        for (i = 0; i < self.snippets.length; i += 1) {
-            snippet = self.snippets[i];
-            if (snippet.url === id) {
+    self.loadSnippet = function(accepted_answer_id, callback) {
+        var url = 'http://api.stackexchange.com/2.1/answers/' + accepted_answer_id + '?site=stackoverflow&filter=withbody';
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", url);
+
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4) {
+                var json = JSON.parse(xhr.responseText);
+                var text = json.items[0].body;
+                console.log('stackoverflow answer', text);
+                callback({
+                    title: self.titlesMap[accepted_answer_id],
+                    answer: text
+                });
                 callback(snippet);
             }
-        }
+        };
+
+        xhr.send();
     };
 
     self.snippetClickCallback = function() {
-        var snippetId = this.getAttribute('rel');
-        self.showSnippet(snippetId);
+        var answerId = this.getAttribute('rel');
+        self.showSnippet(answerId);
     };
 
-    self.showSnippet = function(id) {
+    self.showSnippet = function(accepted_answer_id) {
         self.commandLine.hide();
-        self.snippetPopup.showLoading();
         self.snippetPopup.show();
-        self.loadSnippet(id, function(snippet) {
+        self.loadSnippet(accepted_answer_id, function(snippet) {
             self.snippetPopup.setSnippet(snippet);
         });
     };
@@ -57,7 +79,8 @@ function SnippetsAPI(happyEdit) {
                     clearTimeout(timer);
                 }
                 timer = setTimeout(function() {
-                    var lang = happyEdit.currentFile.getMode().name;
+                    //var lang = happyEdit.currentFile.getMode().name;
+                    var lang = 'python';
                     self.search(q, lang, function(snippets) {
                         var i;
                         var suggestions = [];
@@ -65,8 +88,8 @@ function SnippetsAPI(happyEdit) {
                             var snippet = snippets[i];
                             suggestions.push({
                                 title: snippet.title,
-                                extra: snippet.lang,
-                                rel: snippet.url,
+                                extra: snippet.tags.join(', '),
+                                rel: snippet.accepted_answer_id,
                                 onclick: self.snippetClickCallback
                             });
                         }

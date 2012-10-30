@@ -10,6 +10,7 @@ function HappyEdit() {
     self.commandLine = new CommandLine(self);
     self.snippetPopup = new SnippetPopup(self);
     self.snippets = new SnippetsAPI(self);
+    self.stackOverflow = new StackOverflow(self);
     self.settings = new Settings(self);
     self.menu = new Menu(self);
     self.topBar = new TopBar(self);
@@ -175,8 +176,8 @@ function HappyEdit() {
 
 window.onload = function() {
     window.happyEdit = new HappyEdit();
-    window.happyEdit.snippetPopup.show();
-    /*window.happyEdit.snippetPopup.setSnippet({
+    /*window.happyEdit.snippetPopup.show();
+    window.happyEdit.snippetPopup.setSnippet({
         title: "Hello World",
         code: "import somestuff\n\nprint hello world\nprint 'ok'\nend"
     });*/
