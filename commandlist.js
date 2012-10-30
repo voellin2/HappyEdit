@@ -26,6 +26,17 @@ function CommandList(happyEdit) {
             }
         },
         {
+            name: "stackoverflow",
+            title: "Search StackOverflow",
+            hideCommandLine: false,
+            autoComplete: function(s) {
+                happyEdit.stackOverflow.fillCommandLineWithAutoCompletions(s);
+            },
+            callback: function(args) {
+                happyEdit.stackOverflow.fillCommandLineWithAutoCompletions(s);
+            }
+        },
+        {
             name: "ls",
             title: "Show Open Buffers",
             hideCommandLine: false,

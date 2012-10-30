@@ -175,5 +175,10 @@ function HappyEdit() {
 
 window.onload = function() {
     window.happyEdit = new HappyEdit();
+    window.happyEdit.snippetPopup.show();
+    /*window.happyEdit.snippetPopup.setSnippet({
+        title: "Hello World",
+        code: "import somestuff\n\nprint hello world\nprint 'ok'\nend"
+    });*/
 };
 
