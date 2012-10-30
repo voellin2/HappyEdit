@@ -16,7 +16,20 @@ function SnippetPopup(happyEdit) {
 
     self.$useButton.onclick = function() {
         self.hide();
-        happyEdit.editor.insert(self.snippet.code || self.snippet.answer);
+        var res = '';
+        if (self.snippet.code) {
+            res = self.snippet.code;
+        } else {
+            var tmpElem = document.createElement('div');
+            tmpElem.innerHTML = self.snippet.answer;
+            var codeElements = tmpElem.querySelectorAll('code');
+            for (var i = 0; i < codeElements.length; i += 1) {
+                res += codeElements[i].innerHTML + '\n\n';
+            }
+            window.res = res;
+            res = res.replace(/&gt;/g, '>');
+        }
+        happyEdit.editor.insert(res);
     };
 
     self.$blocker.onclick = function() {
