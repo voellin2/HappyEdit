@@ -62,24 +62,26 @@
             margin: 25px 0;
             box-shadow: 0 10px 50px black;
         }
-        .sponsor-slot p {
-            color: #ccc;
+        .sponsors {
+            background: #ccc;
+        }
+        .sponsors > * {
+            display: inline-block;
+            text-shadow: none;
         }
         .sponsor-slot {
-            display: inline-block;
-            padding: 20px;
-            border: 2px dashed white;
-            background: #666;
             color: #ccc;
+            vertical-align: middle;
             text-shadow: none;
             border-radius: 4px;
             font-size: 14px;
         }
-        .sponsor-slot .buy {
+        .sponsors .buy {
             display: inline-block;
             padding: 1px;
             margin-top: 10px;
             font-size: 11px;
+            text-decoration: underline;
         }
         .backers {
             display: inline-block;
@@ -128,12 +130,17 @@
     <body>
         <h1>HappyEdit</h1>
         <h2>The modern Vim-inspired text editor</h2>
+
         <div class="sponsors">
-            <div class="sponsor-slot">
-                <p>Your company logo here</p>
-                <a class="action buy" target="_blank" href="https://www.indiegogo.com/projects/242550/pledges/new?perk_amt=1000&perk_id=587902">$1,000</a>
+            <h2>Sponsors:</h2>
+            <div class="sponsor-slot heroku">
+                <a href="http://heroku.com" target="_blank" title="Heroku - Cloud Application Platform">
+                    <img src="heroku-logo-light-234x60.png" />
+                </a>
             </div>
+            <a class="buy" href="mailto:per@happyedit.se" target="_blank">Get your company listed here</a>
         </div>
+
         <iframe width="560" height="315" src="http://www.youtube.com/embed/AydXPhX7s-E" frameborder="0" allowfullscreen></iframe>
         <div class="indiegogo-section">
             <a class="indiegogo action" target="_blank" href="http://www.indiegogo.com/happyedit?a=1061258">Back This Project</a>
