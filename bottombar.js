@@ -35,7 +35,7 @@ function BottomBar(happyEdit) {
     });
 
     happyEdit.eventSystem.addEventListener('file_changed', function(file) {
-        self.$langauge.innerHTML = file.getMode().name;
+        self.$langauge.innerHTML = 'Mode: ' + file.getMode().name;
         self.$type.innerHTML = file.getType();
     });
 }
