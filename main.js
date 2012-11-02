@@ -172,6 +172,11 @@ function HappyEdit() {
             });
         });
     }
+
+    // INIT LOGIC
+    var f = new ParentLessFile('', self);
+    self.files[f.name] = f;
+    self.switchToFile(f);
 }
 
 window.onload = function() {

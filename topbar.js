@@ -1,4 +1,4 @@
-function Tab(file, topBar) {
+function Tab(file, topBar, happyEdit) {
     var self = this;
     this.file = file;
     this.$title = document.createElement('span');
@@ -15,8 +15,8 @@ function Tab(file, topBar) {
         addClass(self.$view, 'selected');
         topBar.selectedTab = self;
 
-        if (self.file !== window.happyEdit.currentFile) {
-            window.happyEdit.switchToFile(self.file, false);
+        if (self.file !== happyEdit.currentFile) {
+            happyEdit.switchToFile(self.file, false);
         }
     };
 
@@ -112,7 +112,7 @@ function TopBar(happyEdit) {
         var self = this;
         var tab = self.getTabForFile(file);
         if (tab === undefined) {
-            tab = new Tab(file, self);
+            tab = new Tab(file, self, happyEdit);
             self.tabs.push(tab);
             self.$tabs.appendChild(tab.$view);
         }

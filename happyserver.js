@@ -1,6 +1,7 @@
 function HappyServer(eventSystem) {
     var self = this;
     self.host = null;
+    self.isConnected = false;
 
     /** Called when server settings is configured. **/
     self.load = function(host) {
@@ -24,6 +25,18 @@ function HappyServer(eventSystem) {
         };
     
         xhr.send();
+    };
+
+    // If pinger notices a connection problem, we catch that.
+    eventSystem.addEventListener('connection_problem', function(host) {
+        self._isConnected = false;
+    });
+    eventSystem.addEventListener('connected', function(host) {
+        self._isConnected = true;
+    });
+
+    self.isConnected = function() {
+        return self._isConnected;
     };
 
     Storage.get('settings', {}, function(data) {

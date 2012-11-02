@@ -139,3 +139,26 @@ function LocalFile(fileEntry, body) {
 
 LocalFile.prototype = new AbstractFile();
 LocalFile.constructor = LocalFile;
+
+/**
+ * ParentLessFile
+ */
+function ParentLessFile(body, happyEdit) {
+    var self = this;
+
+    var title = 'untitled';
+
+    AbstractFile.call(this, title, body);
+    this.basename = title;
+
+    this.save = function() {
+        if (happyEdit.happyServer.isConnected()) {
+            alert('save as remote file');
+        } else {
+            alert('open local save-as dialog');
+        }
+    };
+};
+
+ParentLessFile.prototype = new AbstractFile();
+ParentLessFile.constructor = ParentLessFile;
