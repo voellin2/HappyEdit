@@ -5,6 +5,7 @@ function BottomBar(happyEdit) {
     self.$indicator = self.$view.querySelector('.indicator');
     self.$indicatorText = self.$indicator.querySelector('.text');
     self.$langauge = self.$view.querySelector('.language');
+    self.$type = self.$view.querySelector('.type');
 
     happyEdit.eventSystem.addEventListener('connected', function(host) {
         self.$indicatorText.innerHTML = 'Connected to ' + host;
@@ -35,5 +36,6 @@ function BottomBar(happyEdit) {
 
     happyEdit.eventSystem.addEventListener('file_changed', function(file) {
         self.$langauge.innerHTML = file.getMode().name;
+        self.$type.innerHTML = file.getType();
     });
 }

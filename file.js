@@ -34,6 +34,10 @@ var modes = [
 function AbstractFile(name, body) {
     var self = this;
 
+    this.getType = function() {
+        throw "Missing implementation";
+    };
+
     this.getSession = function() {
         return this.session;
     };
@@ -102,6 +106,10 @@ function RemoteFile(name, body) {
 
         xhr.send(params);
     };
+
+    this.getType = function() {
+        return "Remote file";
+    };
 };
 
 RemoteFile.prototype = new AbstractFile();
@@ -135,6 +143,10 @@ function LocalFile(fileEntry, body) {
             });
         });
     };
+
+    this.getType = function() {
+        return "Local file";
+    };
 };
 
 LocalFile.prototype = new AbstractFile();
@@ -157,6 +169,10 @@ function ParentLessFile(body, happyEdit) {
         } else {
             alert('open local save-as dialog');
         }
+    };
+
+    this.getType = function() {
+        return "Unsaved File";
     };
 };
 
