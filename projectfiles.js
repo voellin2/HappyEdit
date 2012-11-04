@@ -45,18 +45,16 @@ function ProjectFiles(eventSystem) {
         var autoCompletions = this.autoSuggestList.getSuggestions(q);
         var autoCompletion;
 
-        if (!autoCompletions) {
-            return;
-        }
-
-        for (i = 0; i < autoCompletions.length; i += 1) {
-            autoCompletion = autoCompletions[i];
-            var split = autoCompletion.split(PATH_SEPARATOR);
-            suggestions.push({
-                title: split.pop(),
-                extra: capFileName(autoCompletion, 60 - self.host.length) + ' @ ' + self.host,
-                rel: autoCompletion
-            });
+        if (autoCompletions) {
+            for (i = 0; i < autoCompletions.length; i += 1) {
+                autoCompletion = autoCompletions[i];
+                var split = autoCompletion.split(PATH_SEPARATOR);
+                suggestions.push({
+                    title: split.pop(),
+                    extra: capFileName(autoCompletion, 60 - self.host.length) + ' @ ' + self.host,
+                    rel: autoCompletion
+                });
+            }
         }
         return suggestions;
     };
