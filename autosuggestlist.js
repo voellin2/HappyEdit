@@ -33,9 +33,12 @@ function AutoSuggestList(data) {
      * (Re)indexes the source data array.
      */
     self.index = function() {
-        self.data.forEach(function(s, i) {
+        var i;
+        var s;
+        for (i = 0; i < self.data.length; i += 1) {
+            s = self.data[i];
             self._makeAutoSuggestable(s);
-        });
+        }
     };
     
     /**
@@ -69,12 +72,33 @@ function AutoSuggestList(data) {
     
         for (i = 0; i < q.length; i += 1) {
             key += q[i];
-            hash = hash[key];
-            if (i === q.length - 1) {
-                return self.getKeys(hash);
+            if (hash.hasOwnProperty(key)) {
+                hash = hash[key];
+                if (i === q.length - 1) {
+                    return self.getKeys(hash);
+                }
+            } else {
+                return [];
             }
         }
     };
 
     self.index();
+}
+
+if (typeof window === 'undefined') {
+    (function() {
+        var assert = require('assert');
+        var x = new AutoSuggestList(['tabnew', 'tabnext', 'tabprevious']);
+
+        var suggestions = x.getSuggestions('tabne');
+        assert.equal(suggestions.length, 2);
+        assert.equal(suggestions[0], 'tabnew');
+
+        var suggestions = x.getSuggestions('tabp');
+        assert.equal(suggestions.length, 1);
+        assert.equal(suggestions[0], 'tabprevious');
+
+        console.log('Tests OK');
+    }());
 }
