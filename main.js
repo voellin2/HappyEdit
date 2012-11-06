@@ -1,5 +1,6 @@
 function HappyEdit() {
     var self = this;
+    self.bufferCounter = 0;
     self.files = {};
     self.editor = ace.edit("editor");
     self.$editor = document.getElementById('editor');
@@ -113,18 +114,32 @@ function HappyEdit() {
     }
 
     self.closeFile = function(file) {
-        if (getNumberOfOpenFiles() > 1) {
+        if (self.getNumberOfOpenFiles() > 1) {
             var tab = self.topBar.getTabForFile(file);
             tab.close(true);
-            delete self.files[self.currentFile.name];
+            delete self.files[self.currentFile.id];
         } else {
             window.close();
         }
     }
 
+    self.getBufferByFilename = function(filename) {
+        var key;
+        var buffer;
+        for (key in self.files) {
+            if (self.files.hasOwnProperty(key)) {
+                buffer = self.files[key];
+                if (buffer.filename === filename) {
+                    return buffer;
+                }
+            }
+        }
+    }
+
     self.getOrLoadRemoteFile = function(filename, callback) {
-        if (self.files.hasOwnProperty(filename)) {
-            callback(self.files[filename]);
+        var buffer = self.getBufferByFilename(filename);
+        if (buffer) {
+            callback(buffer);
             return;
         }
 
@@ -134,8 +149,8 @@ function HappyEdit() {
         xhr.onreadystatechange = function() {
             var file;
             if (xhr.readyState == 4) {
-                file = new Buffer(filename, xhr.responseText);
-                self.files[filename] = file;
+                file = new Buffer(self.bufferCounter++, filename, xhr.responseText);
+                self.files[file.id] = file;
                 callback(file);
             }
         };
@@ -150,10 +165,13 @@ function HappyEdit() {
         });
     }
 
-    // INIT LOGIC
-    var f = new Buffer('Untitled', '');
-    self.files[f.name] = f;
-    self.switchToFile(f);
+    self.openDummyBuffer = function() {
+        var buffer = new Buffer(self.bufferCounter++, null, '');
+        self.files[buffer.id] = buffer;
+        self.switchToFile(buffer);
+    };
+
+    self.openDummyBuffer();
 }
 
 window.onload = function() {

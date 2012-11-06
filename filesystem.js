@@ -83,6 +83,10 @@ function RemoteFileSystem(eventSystem) {
                 document.querySelector('#notification').style.visibility = 'hidden';
                 console.log(xhr.responseText);
                 buffer.session.getUndoManager().reset();
+
+                if (!buffer.filename) {
+                    buffer.rename(filename);
+                }
             }
         };
 

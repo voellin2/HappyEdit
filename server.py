@@ -103,7 +103,7 @@ class SaveHandler():
         if environ['REQUEST_METHOD'] == 'POST' and environ['PATH_INFO'].startswith('/files'):
             filename = self.path + os.path.sep + os.path.join(environ['PATH_INFO'][7:])
             # The file must be under the cwd
-            if self.path not in  os.path.realpath(filename):
+            if self.path not in os.path.realpath(filename):
                 msg = 'Forbidden'
                 start_response("403 Forbidden", [
                     ('Access-Control-Allow-Origin', '*'),

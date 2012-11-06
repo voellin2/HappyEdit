@@ -70,6 +70,17 @@ function CommandList(happyEdit) {
             }
         },
         {
+            name: "tabnew",
+            title: "Open a new tab",
+            shortcut: {
+                win: "Ctrl-N",
+                mac: "Command-N",
+            },
+            callback: function() {
+                happyEdit.openDummyBuffer();
+            }
+        },
+        {
             name: "tabnext",
             title: "Select Next Tab",
             shortcut: {
