@@ -1,7 +1,7 @@
 /**
- * System to retrieve file list from a remote server.
+ * System to read and write files from a remote server.
  */
-function ProjectFiles(eventSystem) {
+function RemoteFileSystem(eventSystem) {
     var self = this;
     self.autoSuggestList = null;
     self.host = null;
@@ -14,7 +14,7 @@ function ProjectFiles(eventSystem) {
         self.autoSuggestList = new AutoSuggestableFileList();
     
         /*if (ignoredExtensions) {
-            url = HOST + '/files?ignored_extensions=' + ignoredExtensions.join(',');
+            url = self.host + '/files?ignored_extensions=' + ignoredExtensions.join(',');
         }*/
     
         xhr.open("GET", url);
@@ -57,5 +57,29 @@ function ProjectFiles(eventSystem) {
             }
         }
         return suggestions;
+    };
+
+    /**
+     * Write a buffer to the remote server.
+     */
+    self.write = function(buffer) {
+        var xhr = new XMLHttpRequest();
+        var url = self.host + '/files/' + encodeURIComponent(buffer.filename);
+        var params = 'body=' + encodeURIComponent(buffer.session.getValue());
+
+        xhr.open("POST", url);
+        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+        document.querySelector('#notification').style.visibility = 'visible';
+
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4) {
+                document.querySelector('#notification').style.visibility = 'hidden';
+                console.log(xhr.responseText);
+                editor.getSession().getUndoManager().reset();
+            }
+        };
+
+        xhr.send(params);
     };
 };

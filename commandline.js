@@ -190,8 +190,8 @@ function CommandLine(happyEdit) {
     };
 
     self.getCommandTSuggestions = function(s) {
-        if (happyEdit.projectFiles.isConnected()) {
-            var suggestions = happyEdit.projectFiles.getSuggestions(s).map(function(x) {
+        if (happyEdit.fileSystem.isConnected()) {
+            var suggestions = happyEdit.fileSystem.getSuggestions(s).map(function(x) {
                 var y = x;
                 y.onclick = self.fileSuggestionClickCallback;
                 return y;

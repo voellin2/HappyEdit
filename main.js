@@ -15,7 +15,7 @@ function HappyEdit() {
     self.menu = new Menu(self);
     self.topBar = new TopBar(self);
     self.bottomBar = new BottomBar(self);
-    self.projectFiles = new ProjectFiles(self.eventSystem);
+    self.fileSystem = new RemoteFileSystem(self.eventSystem);
     self.pinger = new Pinger(self.eventSystem);
     self.globalKeyboardHandler = null;
 
@@ -99,7 +99,7 @@ function HappyEdit() {
 
     self.switchToFile = function(file, updateTabs) {
         self.currentFile = file;
-        self.editor.setSession(file.getSession());
+        self.editor.setSession(file.session);
 
         if (updateTabs || updateTabs === undefined) {
             self.topBar.updateView(file);
@@ -129,7 +129,7 @@ function HappyEdit() {
         }
 
         var xhr = new XMLHttpRequest();
-        var url = self.projectFiles.host + '/files/' + filename;
+        var url = self.fileSystem.host + '/files/' + filename;
         xhr.open("GET", url);
         xhr.onreadystatechange = function() {
             var file;
@@ -150,31 +150,8 @@ function HappyEdit() {
         });
     }
 
-    self.openLocalFile = function() {
-        chrome.fileSystem.chooseEntry(function(fileEntry) {
-            if (chrome.runtime.lastError) {
-                console.log(chrome.runtime.lastError.message);
-                return;
-            }
-            fileEntry.file(function(f) {
-                var reader = new FileReader();
-                reader.onload = function() {
-                    var file;
-                    if (self.files.hasOwnProperty(fileEntry.name)) {
-                        file = self.files[fileEntry.name];
-                    } else {
-                        file = new LocalFile(fileEntry, reader.result);
-                        self.files[fileEntry.name] = file;
-                    }
-                    self.switchToFile(file);
-                };
-                reader.readAsText(f);
-            });
-        });
-    }
-
     // INIT LOGIC
-    var f = new ParentLessFile('', self);
+    var f = new Buffer('Untitled', '');
     self.files[f.name] = f;
     self.switchToFile(f);
 }

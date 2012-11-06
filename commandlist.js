@@ -45,20 +45,8 @@ function CommandList(happyEdit) {
             }
         },
         {
-            name: "openLocalFile",
-            title: "Open Local File",
-            showInMenu: true,
-            shortcut: {
-                win: "Ctrl-O",
-                mac: "Command-O",
-            },
-            callback: function() {
-                happyEdit.openLocalFile();
-            }
-        },
-        {
-            name: "commandT",
-            title: "Open Remote File",
+            name: "openFile",
+            title: "Open File",
             showInMenu: true,
             shortcut: {
                 win: "Ctrl-T",
@@ -78,7 +66,7 @@ function CommandList(happyEdit) {
                 mac: "Command-S",
             },
             callback: function() {
-                happyEdit.currentFile.save();
+                happyEdit.fileSystem.save(happyEdit.currentFile);
             }
         },
         {
