@@ -24,15 +24,6 @@ function BottomBar(happyEdit) {
         removeClass(self.$indicator, 'connected');
     });
 
-    happyEdit.eventSystem.addEventListener('disconnected', function(host) {
-        self.$indicatorText.innerHTML = 'Not connected';
-
-        addClass(self.$indicator, 'disconnected');
-
-        removeClass(self.$indicator, 'connected');
-        removeClass(self.$indicator, 'connection-problem');
-    });
-
     happyEdit.eventSystem.addEventListener('file_changed', function(file) {
         self.$langauge.innerHTML = 'Mode: ' + file.getMode().name;
     });

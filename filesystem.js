@@ -19,10 +19,10 @@ function RemoteFileSystem(eventSystem) {
             xhr.open("GET", url);
             xhr.onreadystatechange = function() {
                 if (xhr.readyState == 4) {
-                    if (!xhr.responseText) {
+                    if (!xhr.responseText && !self.connectionProblem) {
                         self.connectionProblem = true;
                         eventSystem.callEventListeners('connection_problem', host);
-                    } else if (self.connectionProblem) {
+                    } else if (xhr.responseText && self.connectionProblem) {
                         self.connectionProblem = false;
                         eventSystem.callEventListeners('connected', host);
                     }
@@ -30,10 +30,6 @@ function RemoteFileSystem(eventSystem) {
             };
             xhr.send();
         }, 5000);
-    });
-
-    eventSystem.addEventListener('disconnected', function(host) {
-        window.clearInterval(self.interval);
     });
     
     eventSystem.addEventListener('connected', function(host) {
