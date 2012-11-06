@@ -134,7 +134,7 @@ function HappyEdit() {
         xhr.onreadystatechange = function() {
             var file;
             if (xhr.readyState == 4) {
-                file = new RemoteFile(filename, xhr.responseText);
+                file = new Buffer(filename, xhr.responseText);
                 self.files[filename] = file;
                 callback(file);
             }
