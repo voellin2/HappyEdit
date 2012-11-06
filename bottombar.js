@@ -17,7 +17,7 @@ function BottomBar(happyEdit) {
     });
 
     happyEdit.eventSystem.addEventListener('connection_problem', function(host) {
-        self.$indicatorText.innerHTML = 'Problem connecting to ' + host;
+        self.$indicatorText.innerHTML = 'No connection to remote server: ' + host + '. Check settings.';
 
         addClass(self.$indicator, 'connection-problem');
 
