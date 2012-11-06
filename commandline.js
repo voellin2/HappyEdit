@@ -75,7 +75,9 @@ function CommandLine(happyEdit) {
                     args = split[1];
                     command = happyEdit.commands.getCommandByName(command);
                     if (command) {
-                        command.autoComplete(args);
+                        if (command.autoComplete) {
+                            command.autoComplete(args);
+                        }
                     }
                 }
             } else if (this.value[0] !== '/' && this.value[0] !== '?') {
