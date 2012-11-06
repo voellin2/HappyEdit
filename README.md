@@ -16,10 +16,16 @@ $ git submodule update
 $ cd ace
 $ npm install
 $ node Makefile.dryice.js
+$ cd ..
+$ python make.py
 ```
 
 **Installing HappyEdit as a Chrome Packaged App:**
 
 1. Make sure you run the Canary version of Google Chrome ( https://tools.google.com/dlpage/chromesxs ).
-2. Go to Tools -> Extensions, enable the developer mode, then press "Load unpacked extension" and open the folder in which you cloned the HappyEdit git repo.
+2. Go to Tools -> Extensions, enable the developer mode, then press "Load unpacked extension" select the HAPPYEDIT_CHECKOUT/build/chrome folder.
 3. Open a new tab and click the HappyEdit icon.
+
+**Running HappyEdit within the browser:**
+
+1. In your browser, open HAPPYEDIT_CHECKOUT/build/browser/index.html.
