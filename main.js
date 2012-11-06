@@ -6,7 +6,6 @@ function HappyEdit() {
     self.$editor = document.getElementById('editor');
     self.currentFile;
     self.eventSystem = new EventSystem();
-    self.happyServer = new HappyServer(self.eventSystem);
     self.commands = new CommandList(self);
     self.commandLine = new CommandLine(self);
     self.snippetPopup = new SnippetPopup(self);
@@ -17,7 +16,6 @@ function HappyEdit() {
     self.topBar = new TopBar(self);
     self.bottomBar = new BottomBar(self);
     self.fileSystem = new RemoteFileSystem(self.eventSystem);
-    self.pinger = new Pinger(self.eventSystem);
     self.globalKeyboardHandler = null;
 
     window.onresize = function(event) {
@@ -172,6 +170,7 @@ function HappyEdit() {
     };
 
     self.openDummyBuffer();
+    self.fileSystem.load();
 }
 
 window.onload = function() {

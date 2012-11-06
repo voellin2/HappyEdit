@@ -4,7 +4,37 @@
 function RemoteFileSystem(eventSystem) {
     var self = this;
     self.autoSuggestList = null;
+    self.path = null;
     self.host = null;
+    self.interval = null;
+    self.connectionProblem = false;
+
+    // Ping remote to make sure we're connected.
+    eventSystem.addEventListener('connected', function(host) {
+        var pingUrl = host + '/ping';
+
+        self.interval = window.setInterval(function() {
+            var xhr = new XMLHttpRequest();
+            var url = host + '/ping';
+            xhr.open("GET", url);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4) {
+                    if (!xhr.responseText) {
+                        self.connectionProblem = true;
+                        eventSystem.callEventListeners('connection_problem', host);
+                    } else if (self.connectionProblem) {
+                        self.connectionProblem = false;
+                        eventSystem.callEventListeners('connected', host);
+                    }
+                }
+            };
+            xhr.send();
+        }, 5000);
+    });
+
+    eventSystem.addEventListener('disconnected', function(host) {
+        window.clearInterval(self.interval);
+    });
     
     eventSystem.addEventListener('connected', function(host) {
         var xhr = new XMLHttpRequest();
@@ -32,7 +62,7 @@ function RemoteFileSystem(eventSystem) {
     });
 
     self.isConnected = function() {
-        return Boolean(this.host);
+        return !self.connectionProblem;
     };
     
     /**
@@ -91,5 +121,36 @@ function RemoteFileSystem(eventSystem) {
         };
 
         xhr.send(params);
+    };
+
+    /**
+     * Called when server settings is configured.
+     */
+    self.load = function() {
+        Storage.get('settings', {}, function(data) {
+            if (data.remoteServer) {
+                var host = data.remoteServer;
+                var xhr = new XMLHttpRequest();
+                var url = host + '/info';
+            
+                xhr.open("GET", url);
+            
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState == 4) {
+                        if (xhr.responseText) {
+                            var json = JSON.parse(xhr.responseText);
+                            self.path = json.path;
+                            self.host = host;
+                            eventSystem.callEventListeners('connected', host);
+                        } else {
+                            eventSystem.callEventListeners('connection_problem', host);
+                        }
+                    }
+                };
+                xhr.send();
+            } else {
+                console.log('No remote server configured');
+            }
+        });
     };
 };

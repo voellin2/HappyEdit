@@ -36,11 +36,9 @@ function Settings(happyEdit) {
         settings.ignoredExtensions = ignoredExtensions;
         settings.remoteServer = self.$popup.querySelector('input.remote').value;
 
-        if (settings.remoteServer) {
-            happyEdit.happyServer.load(settings.remoteServer);
-        }
-
-        Storage.set('settings', settings);
+        Storage.set('settings', settings, function() {
+            happyEdit.happyServer.load();
+        });
 
         self.hide();
     };
