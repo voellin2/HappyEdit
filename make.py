@@ -49,6 +49,7 @@ def build_target(name):
                 'make.py',
                 'README.md',
                 'ROADMAP.txt',
+                'index.html',
                 'CHANGELOG.txt',
                 'build',
             ]
