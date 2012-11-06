@@ -6,7 +6,7 @@ function CommandList(happyEdit) {
             title: "Edit File",
             hideCommandLine: true,
             callback: function(args) {
-                var filename = args.join(' ');
+                var filename = args;
                 if (filename) {
                     happyEdit.openRemoteFile(filename);
                 } else {
@@ -21,7 +21,7 @@ function CommandList(happyEdit) {
             autoComplete: function(s) {
                 happyEdit.snippets.fillCommandLineWithAutoCompletions(s);
             },
-            callback: function(args) {
+            callback: function() {
                 happyEdit.snippets.fillCommandLineWithAutoCompletions(s);
             }
         },
@@ -32,7 +32,7 @@ function CommandList(happyEdit) {
             autoComplete: function(s) {
                 happyEdit.stackOverflow.fillCommandLineWithAutoCompletions(s);
             },
-            callback: function(args) {
+            callback: function() {
                 happyEdit.stackOverflow.fillCommandLineWithAutoCompletions(s);
             }
         },
@@ -40,7 +40,7 @@ function CommandList(happyEdit) {
             name: "ls",
             title: "Show Open Buffers",
             hideCommandLine: false,
-            callback: function(args) {
+            callback: function() {
                 happyEdit.commandLine.showOpenBuffers();
             }
         },
@@ -106,7 +106,7 @@ function CommandList(happyEdit) {
             name: "openMenu",
             title: "Open Menu",
             hideCommandLine: true,
-            callback: function(args) {
+            callback: function() {
                 happyEdit.menu.show();
             }
         },
@@ -114,7 +114,7 @@ function CommandList(happyEdit) {
             name: "q",
             title: "Quit HappyEdit",
             hideCommandLine: true,
-            callback: function(args) {
+            callback: function() {
                 happyEdit.closeFile(happyEdit.currentFile);
             }
         }

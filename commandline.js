@@ -47,7 +47,7 @@ function CommandLine(happyEdit) {
                 if (self.hasSuggestions()) {
                     self.openSelectedSuggestion();
                 } else {
-                    self.executeCommand(this.value);
+                    self.execute(this.value);
                 }
                 break;
 
@@ -240,18 +240,17 @@ function CommandLine(happyEdit) {
     /**
      * Handles a :<command>, /<search> or CommandT request.
      */
-    self.executeCommand = function(value) {
+    self.execute = function(value) {
         var self = this;
         if (value[0] === ":") {
             var split = value.split(":")[1].split(' ');
             var cmd = split[0];
             var args = split.length > 1 ? split[1] : '';
-            var args = args.split(' ');
             if (isNumeric(cmd)) {
                 happyEdit.editor.gotoLine(cmd);
                 self.hide();
             } else {
-                self.runCommand(cmd, args);
+                self.executeCommand(cmd, args);
             }
         } else if (value[0] === "/") {
             var needle = value.split('/')[1];
@@ -269,7 +268,7 @@ function CommandLine(happyEdit) {
     /**
      * Handles a :<command>.
      */
-    self.runCommand = function(cmd, args) {
+    self.executeCommand = function(cmd, args) {
         var self = this;
         var command = happyEdit.commands.getCommandByName(cmd);
         if (command) {
