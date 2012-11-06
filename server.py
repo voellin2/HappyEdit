@@ -17,7 +17,7 @@ class File:
     def __call__(self, environ, start_response):
         start_response("200 OK", [
             ('Access-Control-Allow-Origin', '*'),
-            ('Content-Type', mimetypes.guess_type(self.path)[0]),
+            ('Content-Type', mimetypes.guess_type(self.path)[0] or 'text/plain'),
             ('Content-Length', str(os.path.getsize(self.path))),
         ])
         return [open(self.path, 'rb').read()]
