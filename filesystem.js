@@ -62,9 +62,15 @@ function RemoteFileSystem(eventSystem) {
     /**
      * Write a buffer to the remote server.
      */
-    self.write = function(buffer) {
+    self.write = function(buffer, filename) {
+        filename = filename || buffer.filename;
+
+        if (!filename) {
+            throw "No filename given";
+        }
+
         var xhr = new XMLHttpRequest();
-        var url = self.host + '/files/' + encodeURIComponent(buffer.filename);
+        var url = self.host + '/files/' + encodeURIComponent(filename);
         var params = 'body=' + encodeURIComponent(buffer.session.getValue());
 
         xhr.open("POST", url);

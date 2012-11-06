@@ -65,8 +65,8 @@ function CommandList(happyEdit) {
                 win: "Ctrl-S",
                 mac: "Command-S",
             },
-            callback: function() {
-                happyEdit.fileSystem.write(happyEdit.currentFile);
+            callback: function(args) {
+                happyEdit.fileSystem.write(happyEdit.currentFile, args);
             }
         },
         {
