@@ -76,7 +76,7 @@ function RemoteFileSystem(eventSystem) {
             if (xhr.readyState == 4) {
                 document.querySelector('#notification').style.visibility = 'hidden';
                 console.log(xhr.responseText);
-                editor.getSession().getUndoManager().reset();
+                buffer.session.getUndoManager().reset();
             }
         };
 

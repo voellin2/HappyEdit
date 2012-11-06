@@ -17,6 +17,7 @@ function Buffer(filename, body) {
         return mode.mode;
     }
 
+    self.filename = filename;
     self.displayPath = filename;
     self.basename = split.pop();
     self.dirname = split.join(PATH_SEPARATOR);

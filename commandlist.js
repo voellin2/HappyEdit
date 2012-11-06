@@ -66,7 +66,7 @@ function CommandList(happyEdit) {
                 mac: "Command-S",
             },
             callback: function() {
-                happyEdit.fileSystem.save(happyEdit.currentFile);
+                happyEdit.fileSystem.write(happyEdit.currentFile);
             }
         },
         {
