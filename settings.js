@@ -29,7 +29,7 @@ function Settings(happyEdit) {
                 if (ext[0] !== '.') {
                     ext = '.' + ext;
                 }
-                ignoredExtensions.push(ext)
+                ignoredExtensions.push(ext);
             }
         });
 
