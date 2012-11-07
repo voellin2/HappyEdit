@@ -150,7 +150,14 @@ function CommandLine(happyEdit) {
         self.hide();
         var commandName = this.getAttribute('rel');
         var command = happyEdit.commands.getCommandByName(commandName);
-        command.callback();
+        command.callback(self.getArgs());
+    };
+
+    self.getArgs = function() {
+        var split = self.$input.value.split(':')[1].split(' ');
+        var command = split[0];
+        var args = split[1];
+        return args;
     };
 
     self.fillSuggestionsList = function(suggestions) {
