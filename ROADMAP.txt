@@ -1,7 +1,0 @@
-v0.4
-x Save editor state between sessions
-- Git status/diff/commit integration
-- Sidebar key bindings
-
-v0.5
-- VIM mode
