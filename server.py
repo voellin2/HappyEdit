@@ -113,8 +113,9 @@ class SaveHandler():
                 return [msg]
             length = int(environ['CONTENT_LENGTH'])
             params = dict(parse_qsl(environ['wsgi.input'].read(length)))
-            open(filename, 'w').write(params['body'])
-            msg = 'File saved'
+            open(filename, 'w').write(params.get('body', ''))
+            msg = 'File "%s" saved' % filename
+            print "got here"
             start_response("200 OK", [
                 ('Access-Control-Allow-Origin', '*'),
                 ('Content-Type', 'application/json'),
