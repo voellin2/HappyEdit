@@ -139,11 +139,7 @@ function CommandLine(happyEdit) {
     self.fileSuggestionClickCallback = function() {
         self.hide();
         var filename = this.getAttribute('rel');
-        if (happyEdit.files.hasOwnProperty(filename)) {
-            happyEdit.switchToFile(happyEdit.files[filename]);
-        } else {
-            happyEdit.openRemoteFile(filename)
-        }
+        happyEdit.openRemoteFile(filename);
     };
 
     self.commandSuggestionClickCallback = function() {
