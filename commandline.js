@@ -28,10 +28,12 @@ function CommandLine(happyEdit) {
 
                 case 40:
                 self.navigateSuggestionDown();
+                event.preventDefault();
                 break;
 
                 case 38:
                 self.navigateSuggestionUp();
+                event.preventDefault();
                 break;
 
                 case 17:
