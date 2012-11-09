@@ -5,6 +5,15 @@ function BottomBar(happyEdit) {
     self.$indicator = self.$view.querySelector('.indicator');
     self.$indicatorText = self.$indicator.querySelector('.text');
     self.$langauge = self.$view.querySelector('.language');
+    self.$status = self.$view.querySelector('.status');
+
+	happyEdit.editor.on("changeStatus", function() {
+        if (happyEdit.editor.$vimModeHandler) {
+			self.$status.innerHTML = happyEdit.editor.$vimModeHandler.getStatusText();
+        }/* else if (editor.commands.recording) {
+			self.$status = "REC";
+        }*/
+	});    
 
     happyEdit.eventSystem.addEventListener('connected', function(host) {
         self.$indicatorText.innerHTML = 'Connected to ' + host;
