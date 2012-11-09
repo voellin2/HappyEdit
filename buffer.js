@@ -45,6 +45,13 @@ function Buffer(id, filename, body) {
             self.dirname = null;
         }
         self.session.setMode(self.getMode(filename));
+
+        if (self.session.getMode().name === 'text') {
+            self.session.setUseWrapMode(true);
+        } else {
+            self.session.setUseWrapMode(false);
+        }
+
         self.callOnChangeListeners();
     };
 
@@ -56,8 +63,4 @@ function Buffer(id, filename, body) {
     self.session.getDocument().on('change', function(event) {
         self.modified = self.session.getUndoManager().$undoStack.length !== 0;
     });
-
-    if (self.session.getMode().name === 'text') {
-        self.session.setUseWrapMode(true);
-    }
 };
