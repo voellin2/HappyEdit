@@ -134,10 +134,20 @@ function HappyEdit() {
         }
     }
 
+    /**
+     * Creates a new buffer with given filename and body. If there's
+     * an unnamed and available file, that will be used instead.
+     */
     self.createNewBuffer = function(filename, body) {
-        var file = new Buffer(self.bufferCounter++, filename, body);
-        self.files[file.id] = file;
-        return file;
+        if (!self.currentFile.filename && !self.currentFile.session.getValue()) {
+            self.currentFile.rename(filename);
+            self.currentFile.session.setValue(body);
+            return self.currentFile;
+        } else {
+            var file = new Buffer(self.bufferCounter++, filename, body);
+            self.files[file.id] = file;
+            return file;
+        }
     }
 
     self.getOrLoadRemoteFile = function(filename, callback) {
