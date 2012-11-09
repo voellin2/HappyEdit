@@ -68,6 +68,7 @@ function AutoSuggestList(data) {
         var i;
         var key = '';
         var hash = self.trie;
+        var ret = [];
         q = q.toLowerCase();
     
         for (i = 0; i < q.length; i += 1) {
@@ -75,12 +76,15 @@ function AutoSuggestList(data) {
             if (hash.hasOwnProperty(key)) {
                 hash = hash[key];
                 if (i === q.length - 1) {
-                    return self.getKeys(hash);
+                    ret = self.getKeys(hash);
+                    break;
                 }
             } else {
-                return [];
+                break;
             }
         }
+
+        return ret;
     };
 
     self.index();
