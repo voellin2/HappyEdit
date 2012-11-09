@@ -27,7 +27,9 @@ function CommandList(happyEdit) {
             callback: function(args) {
                 var filename = args;
                 if (filename) {
-                    happyEdit.openRemoteFile(filename);
+                    var buffer = happyEdit.createNewBuffer(filename, '');
+                    happyEdit.switchToFile(buffer);
+                    happyEdit.commandLine.hide();
                 } else {
                     throw "No filename";
                 }

@@ -134,6 +134,12 @@ function HappyEdit() {
         }
     }
 
+    self.createNewBuffer = function(filename, body) {
+        var file = new Buffer(self.bufferCounter++, filename, body);
+        self.files[file.id] = file;
+        return file;
+    }
+
     self.getOrLoadRemoteFile = function(filename, callback) {
         var buffer = self.getBufferByFilename(filename);
         if (buffer) {
@@ -147,8 +153,7 @@ function HappyEdit() {
         xhr.onreadystatechange = function() {
             var file;
             if (xhr.readyState == 4) {
-                file = new Buffer(self.bufferCounter++, filename, xhr.responseText);
-                self.files[file.id] = file;
+                file = self.createNewBuffer(filename, xhr.responseText);
                 callback(file);
             }
         };
