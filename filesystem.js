@@ -77,7 +77,7 @@ function RemoteFileSystem(eventSystem) {
                 var split = autoCompletion.split(PATH_SEPARATOR);
                 suggestions.push({
                     title: split.pop(),
-                    extra: capFileName(autoCompletion, 60 - self.host.length) + ' @ ' + self.host,
+                    extra: capFileName(autoCompletion, 60),
                     rel: autoCompletion
                 });
             }
