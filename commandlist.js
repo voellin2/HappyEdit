@@ -5,12 +5,31 @@ function CommandList(happyEdit) {
             name: "e",
             title: "Edit File",
             hideCommandLine: true,
+            autoComplete: function(s) {
+                var self = this;
+                var suggestions = happyEdit.fileSystem.getSuggestions(s).map(function(x) {
+                    x.onclick = happyEdit.commandLine.fileSuggestionClickCallback;
+                    return x;
+                });
+
+                if (s && (suggestions.length === 0 || suggestions[0].rel !== s)) {
+                    suggestions.splice(0, 0, {
+                        title: 'Create new file "' + s + '"',
+                        extra: capFileName(happyEdit.fileSystem.path, 60),
+                        onclick: function() {
+                            self.callback(s);
+                        }
+                    });
+                }
+
+                happyEdit.commandLine.fillSuggestionsList(suggestions);
+            },
             callback: function(args) {
                 var filename = args;
                 if (filename) {
                     happyEdit.openRemoteFile(filename);
                 } else {
-                    throw "Bad filename";
+                    throw "No filename";
                 }
             }
         },

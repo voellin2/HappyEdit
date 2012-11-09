@@ -84,9 +84,13 @@ function AutoSuggestableFileList(data) {
     
         for (i = 0; i < q.length; i += 1) {
             key += q[i];
-            hash = hash[key];
-            if (i === q.length - 1) {
-                return self.getKeys(hash);
+            if (hash.hasOwnProperty(key)) {
+                hash = hash[key];
+                if (i === q.length - 1) {
+                    return self.getKeys(hash);
+                }
+            } else {
+                return [];
             }
         }
     };

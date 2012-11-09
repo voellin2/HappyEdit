@@ -47,7 +47,7 @@ function CommandLine(happyEdit) {
                 if (self.hasSuggestions()) {
                     self.openSelectedSuggestion();
                 } else {
-                    self.execute(this.value);
+                    self.execute();
                 }
                 break;
 
@@ -157,7 +157,6 @@ function CommandLine(happyEdit) {
     };
 
     self.fillSuggestionsList = function(suggestions) {
-        var self = this;
         var fragment = document.createDocumentFragment();
 
         self.clearSuggestions();
@@ -195,14 +194,12 @@ function CommandLine(happyEdit) {
     };
 
     self.getCommandTSuggestions = function(s) {
-        if (happyEdit.fileSystem.isConnected()) {
-            var suggestions = happyEdit.fileSystem.getSuggestions(s).map(function(x) {
-                var y = x;
-                y.onclick = self.fileSuggestionClickCallback;
-                return y;
-            });
-            self.fillSuggestionsList(suggestions);
-        }
+        var suggestions = happyEdit.fileSystem.getSuggestions(s).map(function(x) {
+            var y = x;
+            y.onclick = self.fileSuggestionClickCallback;
+            return y;
+        });
+        self.fillSuggestionsList(suggestions);
     };
 
     self.getCommandSuggestions = function(s) {
@@ -215,7 +212,6 @@ function CommandLine(happyEdit) {
     };
 
     self.grep = function(q) {
-        var self = this;
         var xhr = new XMLHttpRequest();
 
         if (!q) {
@@ -245,8 +241,8 @@ function CommandLine(happyEdit) {
     /**
      * Handles a :<command>, /<search> or CommandT request.
      */
-    self.execute = function(value) {
-        var self = this;
+    self.execute = function() {
+        var value = self.$input.value;
         if (value[0] === ":") {
             var split = value.split(":")[1].split(' ');
             var cmd = split[0];
@@ -274,7 +270,6 @@ function CommandLine(happyEdit) {
      * Handles a :<command>.
      */
     self.executeCommand = function(cmd, args) {
-        var self = this;
         var command = happyEdit.commands.getCommandByName(cmd);
         if (command) {
             command.callback(args);
@@ -307,7 +302,6 @@ function CommandLine(happyEdit) {
      * be preserved.
      */
     self.show = function(startingChar) {
-        var self = this;
 
         self.$blocker.onclick = function() {
             self.hide();
@@ -333,7 +327,6 @@ function CommandLine(happyEdit) {
     };
 
     self.hide = function() {
-        var self = this;
         self.$popup.style.display = 'none';
         self.$blocker.style.display = 'none';
         happyEdit.setGlobalKeyboardHandler(null);
