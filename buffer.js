@@ -44,11 +44,11 @@ function Buffer(id, filename, body) {
             self.basename = null;
             self.dirname = null;
         }
+        self.session.setMode(self.getMode(filename));
         self.callOnChangeListeners();
     };
 
     self.session = new EditSession(body || '');
-    self.session.setMode(self.getMode(filename));
     self.session.setUndoManager(new UndoManager());
     self.modified = false;
     self.rename(filename);
