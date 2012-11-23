@@ -1,3 +1,9 @@
+var Utils = {
+    trim: function(s) {
+        return s.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+    }
+}
+
 function addClass(elem, className) {
     if (!elem) {
         return;
