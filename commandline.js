@@ -41,7 +41,9 @@ function CommandLine(happyEdit) {
                 break;
 
                 case 9: // Tab
-                self.enterTextFromFirstSuggestion();
+                if (self.hasSuggestions()) {
+                    self.enterTextFromFirstSuggestion();
+                }
                 event.preventDefault();
                 break;
 
