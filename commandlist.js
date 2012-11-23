@@ -16,6 +16,7 @@ function CommandList(happyEdit) {
                     suggestions.splice(0, 0, {
                         title: 'Create new file "' + s + '"',
                         extra: capFileName(happyEdit.fileSystem.path, 60),
+                        rel: s,
                         onclick: function() {
                             self.callback(s);
                         }

@@ -99,11 +99,20 @@ function CommandLine(happyEdit) {
     self.enterTextFromFirstSuggestion = function() {
         if (this.suggestionElements) {
             var $elem = this.suggestionElements[this.selectedSuggestionIndex];
-            var title = $elem.querySelector('.title').innerHTML;
+            var value = $elem.getAttribute('rel') || $elem.querySelector('.title').innerHTML;
             if (this.$input.value && this.$input.value[0] === ':') {
-                this.$input.value = ':' + title;
+
+                // Are we completing a command argument or an entire command?
+                if (this.$input.value.indexOf(' ') !== -1) {
+                    var split = this.$input.value.split(' ');
+                    this.$input.value = split[0] + ' ' + value;
+
+                } else {
+                    this.$input.value = ':' + value;
+                }
+
             } else {
-                this.$input.value = title;
+                this.$input.value = value;
             }
         }
     };
