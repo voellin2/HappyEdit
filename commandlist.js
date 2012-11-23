@@ -93,7 +93,7 @@ function CommandList(happyEdit) {
         },
         {
             name: "tabnew",
-            title: "Open a new tab",
+            title: "Open New Tab",
             shortcut: {
                 win: "Ctrl-N",
                 mac: "Command-N",
