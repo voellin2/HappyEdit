@@ -3,6 +3,7 @@
  */
 function RemoteFileSystem(eventSystem) {
     var self = this;
+    self.files;
     self.autoSuggestList = null;
     self.path = null;
     self.host = null;
@@ -50,6 +51,7 @@ function RemoteFileSystem(eventSystem) {
                 if (xhr.responseText) {
                     var json = JSON.parse(xhr.responseText);
                     self.autoSuggestList.load(json);
+                    self.files = json;
                 }
             }
         };
@@ -71,6 +73,10 @@ function RemoteFileSystem(eventSystem) {
         var autoCompletions = this.autoSuggestList.getSuggestions(q);
         var autoCompletion;
 
+        if (!autoCompletions) {
+            autoCompletions = self.files;
+        }
+
         if (autoCompletions) {
             for (i = 0; i < autoCompletions.length; i += 1) {
                 autoCompletion = autoCompletions[i];
@@ -82,6 +88,7 @@ function RemoteFileSystem(eventSystem) {
                 });
             }
         }
+
         return suggestions;
     };
 
