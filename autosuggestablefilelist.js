@@ -32,7 +32,11 @@ function AutoSuggestableFileList(data) {
                 hash = hash[key];
     
                 if (i === filename.length - 1 && isLastPart) {
-                    hash['fullFileName'] = fullFileName;
+                    if (hash.hasOwnProperty('fullFileName')) {
+                        hash['fullFileName'].push(fullFileName);
+                    } else {
+                        hash['fullFileName'] = [fullFileName];
+                    }
                 }
             }
         }
@@ -101,12 +105,13 @@ if (typeof window === 'undefined') {
         var x = new AutoSuggestableFileList();
         x.load([
             'server.py',
+            'ace/server.py',
         ]);
 
-        assert.equal(x.trie['s']['se']['ser']['serv']['serve']['server']['server.']['server.p']['server.py']['fullFileName'], 'server.py');
+        assert.equal(x.trie['s']['se']['ser']['serv']['serve']['server']['server.']['server.p']['server.py']['fullFileName'][0], 'server.py');
 
         var suggestions = x.getSuggestions('serv');
-        assert.equal(suggestions.length, 1);
+        assert.equal(suggestions.length, 2);
         assert.equal(suggestions[0], 'server.py');
 
         console.log('Tests OK');
