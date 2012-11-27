@@ -130,9 +130,6 @@ body {
     top: 10px;
     font-size: 20px;
 }
-#editor {
-    -webkit-widget-region: region(control rectangle);
-}
 #top {
     padding: 10px 10px 0 10px;
     height: 26px;
@@ -146,6 +143,7 @@ body {
     background:linear-gradient(top, #EEE 0%, #CCC 100%);
     border-bottom: 1px solid #999;
     -webkit-user-select: none;
+    -webkit-app-region: drag;
 }
 #top .tabs {
     display: inline-block;
