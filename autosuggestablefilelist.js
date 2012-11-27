@@ -80,7 +80,7 @@ function AutoSuggestableFileList(data) {
         var key = '';
         var hash = self.trie;
         q = q.toLowerCase();
-    
+
         for (i = 0; i < q.length; i += 1) {
             key += q[i];
             if (hash.hasOwnProperty(key)) {
@@ -102,6 +102,8 @@ if (typeof window === 'undefined') {
         x.load([
             'server.py',
         ]);
+
+        assert.equal(x.trie['s']['se']['ser']['serv']['serve']['server']['server.']['server.p']['server.py']['fullFileName'], 'server.py');
 
         var suggestions = x.getSuggestions('serv');
         assert.equal(suggestions.length, 1);
