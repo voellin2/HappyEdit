@@ -94,3 +94,19 @@ function AutoSuggestableFileList(data) {
         }
     };
 }
+
+if (typeof window === 'undefined') {
+    (function() {
+        var assert = require('assert');
+        var x = new AutoSuggestableFileList();
+        x.load([
+            'server.py',
+        ]);
+
+        var suggestions = x.getSuggestions('serv');
+        assert.equal(suggestions.length, 1);
+        assert.equal(suggestions[0], 'server.py');
+
+        console.log('Tests OK');
+    }());
+}
