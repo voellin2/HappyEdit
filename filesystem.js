@@ -40,23 +40,34 @@ function RemoteFileSystem(eventSystem) {
         self.host = host;
         self.autoSuggestList = new AutoSuggestableFileList();
     
-        /*if (ignoredExtensions) {
-            url = self.host + '/files?ignored_extensions=' + ignoredExtensions.join(',');
-        }*/
-    
-        xhr.open("GET", url);
-    
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState == 4) {
-                if (xhr.responseText) {
-                    var json = JSON.parse(xhr.responseText);
-                    self.autoSuggestList.load(json);
-                    self.files = json;
-                }
+        Storage.get('settings', {}, function(settings) {
+            var options = []
+
+            if (settings.ignoredExtensions) {
+                options.push('ignored_extensions=' + settings.ignoredExtensions.join(','));
             }
-        };
-    
-        xhr.send();
+            if (settings.ignoredDirectories) {
+                options.push('ignored_directories=' + settings.ignoredDirectories.join(','));
+            }
+
+            if (options.length) {
+                url += '?' + options.join('&');
+            }
+
+            xhr.open("GET", url);
+
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4) {
+                    if (xhr.responseText) {
+                        var json = JSON.parse(xhr.responseText);
+                        self.autoSuggestList.load(json);
+                        self.files = json;
+                    }
+                }
+            };
+
+            xhr.send();
+        });
     });
 
     self.isConnected = function() {

@@ -33,6 +33,15 @@ function Settings(happyEdit) {
             }
         });
 
+        var value = self.$popup.querySelector('input.ignored_directories').value;
+        var ignoredDirectories = [];
+        value.split(',').forEach(function(ext, i) {
+            if (ext.length) {
+                ignoredDirectories.push(ext);
+            }
+        });
+
+        settings.ignoredDirectories = ignoredDirectories;
         settings.ignoredExtensions = ignoredExtensions;
         settings.remoteServer = self.$popup.querySelector('input.remote').value;
 
@@ -61,6 +70,13 @@ function Settings(happyEdit) {
             } else {
                 self.$popup.querySelector('input.ignored_extensions').value = '';
             }
+
+            if (data.ignoredDirectories) {
+                self.$popup.querySelector('input.ignored_directories').value = data.ignoredDirectories.join(',');
+            } else {
+                self.$popup.querySelector('input.ignored_directories').value = '';
+            }
+
             self.$popup.querySelector('input.remote').value = data.remoteServer || ''; 
         });
 

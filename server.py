@@ -62,9 +62,12 @@ class Directory(dict):
     def __repr__(self):
         return self.path
 
-def get_project_files(project_path, ignored_extensions):
+def get_project_files(project_path, ignored_extensions, ignored_directories):
     project_files = []
-    for dirpath, dirnames, filenames in os.walk(project_path, topdown=True):
+    for dirpath, dirnames, filenames in os.walk(project_path):
+        for dirname in ignored_directories:
+            if dirname in dirnames:
+                dirnames.remove(dirname)
         for dirname in dirnames:
             if dirname.startswith('.'):
                 dirnames.remove(dirname)
@@ -84,7 +87,8 @@ class FileListing():
         if environ['PATH_INFO'] in ['/files', '/files/']:
             params = dict(parse_qsl(environ['QUERY_STRING']))
             ignored_extensions = params.get('ignored_extensions', '').split(',')
-            response = json.dumps(get_project_files(self.path, ignored_extensions))
+            ignored_directories = params.get('ignored_directories', '').split(',')
+            response = json.dumps(get_project_files(self.path, ignored_extensions, ignored_directories))
             start_response("200 OK", [
                 ('Access-Control-Allow-Origin', '*'),
                 ('Content-Type', 'application/json'),
