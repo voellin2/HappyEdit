@@ -181,6 +181,9 @@ body {
     margin-right: 3px;
     cursor: default;
 }
+body.hide-window-controls #top .controls div {
+    display: none;
+}
 #top .controls div {
     margin-right: 3px;
     vertical-align: top;

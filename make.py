@@ -21,11 +21,13 @@ targets = {
     'chrome': {
         'template_args': {
             'storageScript': 'platforms/chrome/storage.js',
+            'bodyClassNames': '',
         }
     },
     'browser': {
         'template_args': {
             'storageScript': 'platforms/browser/storage.js',
+            'bodyClassNames': 'hide-window-controls',
         }
     },
 }
