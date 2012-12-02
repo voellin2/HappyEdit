@@ -12,5 +12,6 @@ var Storage = {
 
     set: function(key, val, callback) {
         localStorage[key] = JSON.stringify(val);
+        callback();
     }
 }
