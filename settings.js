@@ -8,19 +8,37 @@ function Settings(happyEdit) {
     self.$blocker = document.querySelector('.blocker.settings');
     self.$saveButton = self.$popup.querySelector('input[type=submit]');
 
+    self.defaults = {
+        ignoredExtensions: [],
+        remoteServer: null,
+    };
+
     self.$popup.querySelector('.cancel').addEventListener('click', function(event) {
         self.hide();
     });
+
+    self.set = function(key, value, callback) {
+        Storage.get('settings', self.defaults, function(settings) {
+            settings[key] = value;
+            Storage.set('settings', settings, function() {
+                callback();
+            });
+        });
+    };
+
+    self.get = function(key, callback) {
+        Storage.get('settings', self.defaults, function(settings) {
+            var value = settings[key];
+            callback(value);
+        });
+    };
 
     self.$saveButton.addEventListener('click', function(event) {
         self.save();
     });
 
     self.save = function() {
-        var settings = {
-            ignoredExtensions: [],
-            remoteServer: null,
-        };
+        var settings = self.defaults;
 
         var value = self.$popup.querySelector('input.ignored_extensions').value;
         var ignoredExtensions = [];
