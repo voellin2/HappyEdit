@@ -7,6 +7,12 @@ function BottomBar(happyEdit) {
     self.$langauge = self.$view.querySelector('.language');
     self.$status = self.$view.querySelector('.status');
 
+    self.$indicator.onclick = function() {
+        if (hasClass(this, 'disconnected') || hasClass(this, 'connection-problem')) {
+            happyEdit.nofsPopup.show();
+        }
+    };
+
 	happyEdit.editor.on("changeStatus", function() {
         if (happyEdit.editor.$vimModeHandler) {
 			self.$status.innerHTML = happyEdit.editor.$vimModeHandler.getStatusText();
@@ -25,7 +31,7 @@ function BottomBar(happyEdit) {
     });
 
     happyEdit.eventSystem.addEventListener('connection_problem', function(host) {
-        self.$indicatorText.innerHTML = 'No connection to remote server: ' + host + '. Check settings.';
+        self.$indicatorText.innerHTML = 'Disconnected';
 
         addClass(self.$indicator, 'connection-problem');
 
