@@ -175,6 +175,7 @@ body {
     line-height: 25px;
     vertical-align: middle;
     display: inline-block;
+    cursor: default;
 }
 #top .controls {
     display: inline-block;
