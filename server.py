@@ -9,6 +9,8 @@ from urlparse import parse_qsl
 from urllib import unquote
 from wsgiref.simple_server import make_server
 
+PROTOCOL_VERSION = "0.1"
+
 class File:
 
     def __init__(self, path):
@@ -194,6 +196,7 @@ class ProjectInfoHandler():
         if environ['PATH_INFO'].startswith('/info'):
             ret = {
                 'path': self.path,
+                'PROTOCOL_VERSION': PROTOCOL_VERSION,
             }
             ret = json.dumps(ret)
 

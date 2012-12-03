@@ -9,6 +9,7 @@ function RemoteFileSystem(eventSystem) {
     self.host = null;
     self.interval = null;
     self.connectionProblem = false;
+    self.PROTOCOL_VERSION = "0.1"
 
     // Ping remote to make sure we're connected.
     eventSystem.addEventListener('connected', function(host) {
@@ -153,6 +154,11 @@ function RemoteFileSystem(eventSystem) {
                     if (xhr.readyState == 4) {
                         if (xhr.responseText) {
                             var json = JSON.parse(xhr.responseText);
+
+                            if (json.PROTOCOL_VERSION != self.PROTOCOL_VERSION) {
+                                throw "Protocol version mismatch";
+                            }
+
                             self.path = json.path;
                             self.host = host;
                             eventSystem.callEventListeners('connected', host);
