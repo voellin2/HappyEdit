@@ -64,7 +64,12 @@ def build_target(name):
     shutil.copytree(root_dir, target_dir, ignore=ignore)
 
     filename = os.path.join(target_dir, 'index.html')
-    output = Template(template).substitute(target['template_args'])
+
+    template_args = {
+        'target': name,
+    }
+    template_args.update(target['template_args'])
+    output = Template(template).substitute(template_args)
     outfile = open(filename, 'w')
     outfile.write(output)
     outfile.close()
