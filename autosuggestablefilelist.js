@@ -12,7 +12,12 @@ function AutoSuggestableFileList(data) {
         self.data = data;
         self.index();
     };
-    
+
+    self.clear = function() {
+        self.data = null;
+        self.trie = {};
+    };
+
     /**
      * Indexes the passed in filename.
      */
@@ -83,6 +88,7 @@ function AutoSuggestableFileList(data) {
         var i;
         var key = '';
         var hash = self.trie;
+        var ret = [];
         q = q.toLowerCase();
 
         for (i = 0; i < q.length; i += 1) {
@@ -90,12 +96,15 @@ function AutoSuggestableFileList(data) {
             if (hash.hasOwnProperty(key)) {
                 hash = hash[key];
                 if (i === q.length - 1) {
-                    return self.getKeys(hash);
+                    ret = self.getKeys(hash);
+                    break;
                 }
             } else {
-                return [];
+                break;
             }
         }
+
+        return ret;
     };
 }
 

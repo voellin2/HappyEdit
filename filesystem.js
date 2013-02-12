@@ -3,13 +3,13 @@
  */
 function RemoteFileSystem(eventSystem) {
     var self = this;
-    self.files;
-    self.autoSuggestList = null;
+    self.files = [];
+    self.autoSuggestList = new AutoSuggestableFileList();
     self.path = null;
     self.host = null;
     self.interval = null;
     self.connectionProblem = false;
-    self.PROTOCOL_VERSION = "0.1"
+    self.PROTOCOL_VERSION = "0.1";
 
     // Ping remote to make sure we're connected.
     eventSystem.addEventListener('connected', function(host) {
@@ -39,7 +39,8 @@ function RemoteFileSystem(eventSystem) {
         var url = host + '/files';
 
         self.host = host;
-        self.autoSuggestList = new AutoSuggestableFileList();
+        self.files = [];
+        self.autoSuggestList.clear();
     
         Storage.get('settings', {}, function(settings) {
             var options = []
@@ -85,20 +86,18 @@ function RemoteFileSystem(eventSystem) {
         var autoCompletions = this.autoSuggestList.getSuggestions(q);
         var autoCompletion;
 
-        if (!autoCompletions) {
+        if (!autoCompletions.length) {
             autoCompletions = self.files;
         }
 
-        if (autoCompletions) {
-            for (i = 0; i < autoCompletions.length; i += 1) {
-                autoCompletion = autoCompletions[i];
-                var split = autoCompletion.split(PATH_SEPARATOR);
-                suggestions.push({
-                    title: split.pop(),
-                    extra: capFileName(autoCompletion, 60),
-                    rel: autoCompletion
-                });
-            }
+        for (i = 0; i < autoCompletions.length; i += 1) {
+            autoCompletion = autoCompletions[i];
+            var split = autoCompletion.split(PATH_SEPARATOR);
+            suggestions.push({
+                title: split.pop(),
+                extra: capFileName(autoCompletion, 60),
+                rel: autoCompletion
+            });
         }
 
         return suggestions;
