@@ -331,12 +331,9 @@ function CommandLine(happyEdit) {
         self.$popup.style.display = 'block';
         self.$blocker.style.display = 'block';
 
-        // Focusing on text input right away does not work for some reason.
-        setTimeout(function() {
-            editor.blur();
-            self.$input.focus();
-            happyEdit.setGlobalKeyboardHandler(self.globalKeyboardHandler);
-        }, 100);
+        happyEdit.setGlobalKeyboardHandler(self.globalKeyboardHandler);
+        editor.blur();
+        self.$input.focus();
     };
 
     self.hide = function() {

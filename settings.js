@@ -98,11 +98,8 @@ function Settings(happyEdit) {
             self.$popup.querySelector('input.remote').value = data.remoteServer || ''; 
         });
 
-        // Focusing on text input right away does not work for some reason.
-        setTimeout(function() {
-            happyEdit.editor.blur();
-            happyEdit.setGlobalKeyboardHandler(self.globalKeyboardHandler);
-        }, 100);
+        happyEdit.editor.blur();
+        happyEdit.setGlobalKeyboardHandler(self.globalKeyboardHandler);
     };
 
     self.globalKeyboardHandler = function(event) {
