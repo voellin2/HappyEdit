@@ -11,86 +11,86 @@ function CommandLine(happyEdit) {
     self.$blocker = document.querySelector('.blocker.command-line');
     self.runKeyUpHandler = false;
 
-    (function() {
-        self.$input.onkeydown = function(event) {
-            keyCode = event.keyCode;
+    self.keyDown = function(event) {
+        keyCode = event.keyCode;
 
-            if (event.ctrlKey && (keyCode === 78 || keyCode === 74)) {
-                keyCode = 40;
-            } else if (event.ctrlKey && (keyCode === 80 || keyCode === 75)) {
-                keyCode = 38;
+        if (event.ctrlKey && (keyCode === 78 || keyCode === 74)) {
+            keyCode = 40;
+        } else if (event.ctrlKey && (keyCode === 80 || keyCode === 75)) {
+            keyCode = 38;
+        }
+
+        switch (keyCode) {
+            case 27:
+            self.hide();
+            break;
+
+            case 40:
+            self.navigateSuggestionDown();
+            event.preventDefault();
+            break;
+
+            case 38:
+            self.navigateSuggestionUp();
+            event.preventDefault();
+            break;
+
+            case 17:
+            // do nothing, it was just the ctrl key lifted up
+            break;
+
+            case 9: // Tab
+            if (self.hasSuggestions()) {
+                self.enterTextFromFirstSuggestion();
             }
+            event.preventDefault();
+            break;
 
-            switch (keyCode) {
-                case 27:
-                self.hide();
-                break;
-
-                case 40:
-                self.navigateSuggestionDown();
-                event.preventDefault();
-                break;
-
-                case 38:
-                self.navigateSuggestionUp();
-                event.preventDefault();
-                break;
-
-                case 17:
-                // do nothing, it was just the ctrl key lifted up
-                break;
-
-                case 9: // Tab
-                if (self.hasSuggestions()) {
-                    self.enterTextFromFirstSuggestion();
-                }
-                event.preventDefault();
-                break;
-
-                case 13:
-                if (self.hasSuggestions()) {
-                    self.openSelectedSuggestion();
-                } else {
-                    self.execute();
-                }
-                break;
-
-                default:
-                self.runKeyUpHandler = true;
-            }
-        };
-
-        self.$input.onkeyup = function(event) {
-            if (!self.runKeyUpHandler) {
-                return;
-            }
-            self.runKeyUpHandler = false;
-
-            var split,
-                command,
-                args;
-
-            if (this.value[0] === ':' && this.value.length > 1) {
-                if (this.value.indexOf(' ') === -1) {
-                    self.getCommandSuggestions(this.value.split(':')[1]);
-                } else {
-                    split = this.value.split(':')[1].split(' ');
-                    command = split[0];
-                    args = split[1];
-                    command = happyEdit.commands.getCommandByName(command);
-                    if (command) {
-                        if (command.autoComplete) {
-                            command.autoComplete(args);
-                        }
-                    }
-                }
-            } else if (this.value[0] !== '/' && this.value[0] !== '?') {
-                self.getCommandTSuggestions(this.value);
+            case 13:
+            if (self.hasSuggestions()) {
+                self.openSelectedSuggestion();
             } else {
-                self.clearSuggestions();
+                self.execute();
             }
-        };
-    }());
+            break;
+
+            default:
+            self.runKeyUpHandler = true;
+        }
+    };
+
+    self.keyUp = function(event) {
+        if (!self.runKeyUpHandler) {
+            return;
+        }
+        self.runKeyUpHandler = false;
+
+        var split,
+            inputString = this.value,
+            command,
+            args;
+
+        if (inputString[0] === ':' && inputString.length > 1) {
+            if (inputString.indexOf(' ') === -1) {
+                self.showCommandSuggestions(inputString.split(':')[1]);
+            } else {
+                split = inputString.split(':')[1].split(' ');
+                command = split[0];
+                args = split[1];
+                command = happyEdit.commands.getCommandByName(command);
+                if (command && command.autoComplete) {
+                    command.autoComplete(args);
+                }
+            }
+        } else if (inputString[0] !== '/' && inputString[0] !== '?') {
+            self.showCommandTSuggestions(inputString);
+        } else {
+            self.clearSuggestions();
+        }
+    };
+
+    self.$input.onkeydown = self.keyDown;
+    self.$input.onkeyup = self.keyUp;
 
     self.hasSuggestions = function() {
         return Boolean(this.suggestionElements && this.suggestionElements.length);
@@ -206,7 +206,7 @@ function CommandLine(happyEdit) {
         self.fillSuggestionsList(suggestions);
     };
 
-    self.getCommandTSuggestions = function(s) {
+    self.showCommandTSuggestions = function(s) {
         var suggestions = happyEdit.fileSystem.getSuggestions(s).map(function(x) {
             var y = x;
             y.onclick = self.fileSuggestionClickCallback;
@@ -215,7 +215,7 @@ function CommandLine(happyEdit) {
         self.fillSuggestionsList(suggestions);
     };
 
-    self.getCommandSuggestions = function(s) {
+    self.showCommandSuggestions = function(s) {
         var suggestions = happyEdit.commands.getSuggestions(s).map(function(x) {
             var y = x;
             y.onclick = self.commandSuggestionClickCallback;
