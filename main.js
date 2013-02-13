@@ -52,7 +52,11 @@ function HappyEdit() {
                     mac: command.shortcut.mac,
                     sender: "editor"
                 },
-                exec: command.callback
+                exec: function() {
+                    // We wrap this function call because Ace sends
+                    // in the Editor object as the argument otherwise.
+                    command.callback();
+                }
             });
         }
     });
