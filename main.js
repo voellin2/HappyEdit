@@ -191,6 +191,7 @@ function HappyEdit() {
 
     self.openDummyBuffer();
     self.fileSystem.load();
+    self.editor.focus();
 }
 
 window.onload = function() {
