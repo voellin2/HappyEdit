@@ -332,7 +332,7 @@ function CommandLine(happyEdit) {
         self.$blocker.style.display = 'block';
 
         happyEdit.setGlobalKeyboardHandler(self.globalKeyboardHandler);
-        editor.blur();
+        happyEdit.editor.blur();
         self.$input.focus();
     };
 
@@ -340,6 +340,6 @@ function CommandLine(happyEdit) {
         self.$popup.style.display = 'none';
         self.$blocker.style.display = 'none';
         happyEdit.setGlobalKeyboardHandler(null);
-        editor.focus();
+        happyEdit.editor.focus();
     };
 }
