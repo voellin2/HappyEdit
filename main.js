@@ -31,8 +31,6 @@ function HappyEdit() {
     window.onkeydown = function(event) {
         if (self.globalKeyboardHandler) {
             self.globalKeyboardHandler(event);
-        } else {
-            self.editor.focus();
         }
     };
 
