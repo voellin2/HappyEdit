@@ -194,7 +194,7 @@ function CommandLine(happyEdit) {
         var suggestions = [];
         for (key in happyEdit.files) {
             if (happyEdit.files.hasOwnProperty(key)) {
-                var file = happyEdit.happyEdit.files[key];
+                file = happyEdit.happyEdit.files[key];
                 suggestions.push({
                     title: file.basename,
                     extra: file.displayPath,
@@ -240,11 +240,10 @@ function CommandLine(happyEdit) {
                 self.$input.removeAttribute('disabled');
                 try {
                     var json = JSON.parse(xhr.responseText);
+                    self.fillSuggestionsList(json);
                 } catch (e) {
                     throw 'Could not parse grep response';
-                    return;
                 }
-                self.fillSuggestionsList(json);
             }
         };
 
@@ -256,6 +255,7 @@ function CommandLine(happyEdit) {
      */
     self.execute = function() {
         var value = self.$input.value;
+        var needle;
         if (value[0] === ":") {
             var split = value.split(":")[1].split(' ');
             var cmd = split[0];
@@ -267,11 +267,11 @@ function CommandLine(happyEdit) {
                 self.executeCommand(cmd, args);
             }
         } else if (value[0] === "/") {
-            var needle = value.split('/')[1];
+            needle = value.split('/')[1];
             happyEdit.editor.find(needle);
             self.hide();
         } else if (value[0] === "?") {
-            var needle = value.split('?')[1];
+            needle = value.split('?')[1];
             happyEdit.editor.findPrevious(needle);
             self.hide();
         } else {

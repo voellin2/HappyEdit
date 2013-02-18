@@ -24,7 +24,7 @@ function AutoSuggestList(data) {
             hash = hash[key];
 
             if (i === sLowerCase.length - 1) {
-                hash['fullString'] = s;
+                hash.fullString = s;
             }
         }
     };
@@ -99,7 +99,7 @@ if (typeof window === 'undefined') {
         assert.equal(suggestions.length, 2);
         assert.equal(suggestions[0], 'tabnew');
 
-        var suggestions = x.getSuggestions('tabp');
+        suggestions = x.getSuggestions('tabp');
         assert.equal(suggestions.length, 1);
         assert.equal(suggestions[0], 'tabprevious');
 

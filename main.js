@@ -25,7 +25,7 @@ function HappyEdit() {
 
         self.$editor.style.width = w + 'px';
         self.$editor.style.height = h + 'px';
-    }
+    };
     window.onresize();
 
     window.onkeydown = function(event) {
@@ -108,11 +108,11 @@ function HappyEdit() {
         }
 
         self.eventSystem.callEventListeners('file_changed', file);
-    }
+    };
 
     self.getNumberOfOpenFiles = function() {
         return self.topBar.tabs.length;
-    }
+    };
 
     self.closeFile = function(file) {
         if (self.getNumberOfOpenFiles() > 1) {
@@ -122,7 +122,7 @@ function HappyEdit() {
         } else {
             window.close();
         }
-    }
+    };
 
     self.getBufferByFilename = function(filename) {
         var key;
@@ -135,7 +135,7 @@ function HappyEdit() {
                 }
             }
         }
-    }
+    };
 
     /**
      * Creates a new buffer with given filename and body. If there's
@@ -151,7 +151,7 @@ function HappyEdit() {
             self.files[file.id] = file;
             return file;
         }
-    }
+    };
 
     self.getOrLoadRemoteFile = function(filename, callback) {
         var buffer = self.getBufferByFilename(filename);
@@ -171,7 +171,7 @@ function HappyEdit() {
             }
         };
         xhr.send();
-    }
+    };
 
     self.openRemoteFile = function(filename) {
         var file;
@@ -179,7 +179,7 @@ function HappyEdit() {
         self.getOrLoadRemoteFile(filename, function(file) {
             self.switchToFile(file);
         });
-    }
+    };
 
     self.openDummyBuffer = function() {
         var buffer = new Buffer(self.bufferCounter++, null, '');

@@ -43,10 +43,8 @@ function NoFileSystemPopup(happyEdit) {
 
     self.globalKeyboardHandler = function(event) {
         var keyCode = event.keyCode;
-        switch (keyCode) {
-            case 27:
+        if (keyCode === 27) {
             self.hide();
-            break;
         }
     };
     
@@ -56,4 +54,4 @@ function NoFileSystemPopup(happyEdit) {
         happyEdit.setGlobalKeyboardHandler(null);
         happyEdit.editor.focus();
     };
-};
+}

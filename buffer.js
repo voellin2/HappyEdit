@@ -29,11 +29,11 @@ function Buffer(id, filename, body) {
             }
         }
         return mode.mode;
-    }
+    };
 
     self.getTabLabel = function() {
         return self.basename || 'Untitled';
-    }
+    };
 
     self.rename = function(filename) {
         if (filename) {
@@ -67,4 +67,4 @@ function Buffer(id, filename, body) {
     self.session.getDocument().on('change', function(event) {
         self.modified = self.session.getUndoManager().$undoStack.length !== 0;
     });
-};
+}

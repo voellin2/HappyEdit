@@ -92,4 +92,4 @@ function SnippetPopup(happyEdit) {
         happyEdit.setGlobalKeyboardHandler(null);
         happyEdit.editor.focus();
     };
-};
+}

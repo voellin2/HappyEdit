@@ -38,9 +38,9 @@ function AutoSuggestableFileList(data) {
     
                 if (i === filename.length - 1 && isLastPart) {
                     if (hash.hasOwnProperty('fullFileName')) {
-                        hash['fullFileName'].push(fullFileName);
+                        hash.fullFileName.push(fullFileName);
                     } else {
-                        hash['fullFileName'] = [fullFileName];
+                        hash.fullFileName = [fullFileName];
                     }
                 }
             }

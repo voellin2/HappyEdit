@@ -60,4 +60,4 @@ function Menu(happyEdit) {
 
         removeClass(self.$topButton, 'active');
     };
-};
+}

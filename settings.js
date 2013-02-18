@@ -39,8 +39,9 @@ function Settings(happyEdit) {
 
     self.save = function() {
         var settings = self.defaults;
+        var value;
 
-        var value = self.$popup.querySelector('input.ignored_extensions').value;
+        value = self.$popup.querySelector('input.ignored_extensions').value;
         var ignoredExtensions = [];
         value.split(',').forEach(function(ext, i) {
             if (ext.length) {
@@ -51,7 +52,7 @@ function Settings(happyEdit) {
             }
         });
 
-        var value = self.$popup.querySelector('input.ignored_directories').value;
+        value = self.$popup.querySelector('input.ignored_directories').value;
         var ignoredDirectories = [];
         value.split(',').forEach(function(ext, i) {
             if (ext.length) {
@@ -104,10 +105,8 @@ function Settings(happyEdit) {
 
     self.globalKeyboardHandler = function(event) {
         var keyCode = event.keyCode;
-        switch (keyCode) {
-            case 27:
+        if (keyCode === 27) {
             self.hide();
-            break;
         }
     };
     
@@ -117,4 +116,4 @@ function Settings(happyEdit) {
         happyEdit.setGlobalKeyboardHandler(null);
         happyEdit.editor.focus();
     };
-};
+}

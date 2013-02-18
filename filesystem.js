@@ -43,7 +43,7 @@ function RemoteFileSystem(eventSystem) {
         self.autoSuggestList.clear();
     
         Storage.get('settings', {}, function(settings) {
-            var options = []
+            var options = [];
 
             if (settings.ignoredExtensions) {
                 options.push('ignored_extensions=' + settings.ignoredExtensions.join(','));
@@ -172,4 +172,4 @@ function RemoteFileSystem(eventSystem) {
             }
         });
     };
-};
+}

@@ -7,7 +7,7 @@ function Tab(file, topBar, happyEdit) {
     this.$view.appendChild(this.$title);
 
     file.onChange(function(file) {
-        self.$title.innerHTML = file.basename || 'Untitled';
+        self.$title.innerHTML = file.getTabLabel();
     });
 
     this.select = function() {
@@ -39,4 +39,4 @@ function Tab(file, topBar, happyEdit) {
     };
 
     this.$view.onclick = this.select;
-};
+}

@@ -2,7 +2,7 @@ var Utils = {
     trim: function(s) {
         return s.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
     }
-}
+};
 
 function addClass(elem, className) {
     if (!elem) {
@@ -129,7 +129,7 @@ var ajax = {
     },
     post: function(url, params, callback) {
         var xhr = new XMLHttpRequest();
-        var params = params || '';
+        params = params || '';
         xhr.open("POST", url);
 
         xhr.onreadystatechange = function() {
@@ -140,4 +140,4 @@ var ajax = {
 
         xhr.send(params);
     }
-}
+};
