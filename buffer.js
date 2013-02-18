@@ -31,6 +31,10 @@ function Buffer(id, filename, body) {
         return mode.mode;
     }
 
+    self.getTabLabel = function() {
+        return self.basename || 'Untitled';
+    }
+
     self.rename = function(filename) {
         if (filename) {
             var split = filename.split(PATH_SEPARATOR);
