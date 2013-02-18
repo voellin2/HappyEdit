@@ -5,6 +5,10 @@ var PATH_SEPARATOR = '/';
 function Buffer(id, filename, body) {
     var self = this;
     self.id = id;
+    self.filename = null;
+    self.displayPath = null;
+    self.basename = null;
+    self.dirname = null;
     self.onChangeListeners = [];
 
     self.onChange = function(callback) {
@@ -18,11 +22,11 @@ function Buffer(id, filename, body) {
         }
     };
 
-    self.getMode = function(filename) {
+    self.getMode = function() {
         var mode = window.modes[0];
-        if (filename) {
+        if (self.filename) {
             for (var i = 0; i < window.modes.length; i += 1) {
-                if (modes[i].supportsFile(filename)) {
+                if (modes[i].supportsFile(self.filename)) {
                     mode = modes[i];
                     break;
                 }
@@ -48,7 +52,7 @@ function Buffer(id, filename, body) {
             self.basename = null;
             self.dirname = null;
         }
-        self.session.setMode(self.getMode(filename));
+        self.session.setMode(self.getMode());
 
         if (self.session.getMode().name === 'text') {
             self.session.setUseWrapMode(true);
