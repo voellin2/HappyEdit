@@ -15,6 +15,14 @@ function Buffer(id, filename, body) {
         self.onChangeListeners.push(callback);
     };
 
+    self.focus = function() {
+        // Nothing for now...
+    };
+
+    self.blur = function() {
+        // Nothing for now...
+    };
+
     self.callOnChangeListeners = function() {
         var i;
         for (i = 0; i < self.onChangeListeners.length; i += 1) {

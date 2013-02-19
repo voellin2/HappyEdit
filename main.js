@@ -18,7 +18,7 @@ function HappyEdit() {
     self.topBar = new TopBar(self);
     self.bottomBar = new BottomBar(self);
     self.fileSystem = new RemoteFileSystem(self.eventSystem);
-    self.globalKeyboardHandler = null;
+    self.globalKeyboardHandlers = [];
 
     window.onresize = function(event) {
         var w = window.innerWidth;
@@ -33,13 +33,18 @@ function HappyEdit() {
     window.onresize();
 
     window.onkeydown = function(event) {
-        if (self.globalKeyboardHandler) {
-            self.globalKeyboardHandler(event);
+        var len = self.globalKeyboardHandlers.length;
+        if (len) {
+            self.globalKeyboardHandlers[len-1](event);
         }
     };
 
-    self.setGlobalKeyboardHandler = function(handler) {
-        self.globalKeyboardHandler = handler;
+    self.pushGlobalKeyboardHandler = function(handler) {
+        self.globalKeyboardHandlers.push(handler);
+    };
+
+    self.popGlobalKeyboardHandler = function() {
+        self.globalKeyboardHandlers.pop();
     };
 
     self.editor.setKeyboardHandler(require("ace/keyboard/vim").handler);
@@ -104,18 +109,16 @@ function HappyEdit() {
     };
 
     self.switchToFile = function(file, updateTabs) {
+        if (self.currentFile) {
+            self.currentFile.blur();
+        }
         self.currentFile = file;
+        self.currentFile.focus();
 
-        if (file.constructor === Explorer) {
-            file.show();
-            self.$explorers.style.display = 'block';
-            self.$editor.style.display = 'none';
-            self.setGlobalKeyboardHandler(file.getGlobalKeyboardHandler());
-        } else {
-            self.editor.setSession(file.session);
-            self.$explorers.style.display = 'none';
-            self.$editor.style.display = 'block';
-            self.setGlobalKeyboardHandler(null);
+        // If Buffer had a reference to self, it could do this in its blur().
+        if (self.currentFile.constructor === Buffer) {
+            self.editor.setSession(self.currentFile.session);
+            self.editor.focus();
         }
 
         if (updateTabs || updateTabs === undefined) {

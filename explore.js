@@ -22,7 +22,13 @@ function Explorer(happyEdit) {
     self.onChange = function(callback) {
     };
     
-    self.show = function() {
+    self.blur = function() {
+        happyEdit.$explorers.style.display = 'none';
+        happyEdit.$editor.style.display = 'block';
+        happyEdit.popGlobalKeyboardHandler();
+    };
+
+    self.focus = function() {
         var $elems = happyEdit.$explorers.querySelectorAll('.explorer');
         var i;
         
@@ -31,6 +37,10 @@ function Explorer(happyEdit) {
         }
 
         self.$view.style.display = 'block';
+        happyEdit.$explorers.style.display = 'block';
+        happyEdit.$editor.style.display = 'none';
+        happyEdit.editor.blur();
+        happyEdit.pushGlobalKeyboardHandler(self.getGlobalKeyboardHandler());
     };
     
     self.keyDown = function(event) {
