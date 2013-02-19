@@ -51,5 +51,23 @@ var HTML = {
         }
 
         return $li;
+    },
+
+    createExplorer: function(args) {
+        var $explorer= document.createElement('div');
+        var $ul= document.createElement('ul');
+        $explorer.setAttribute('class', 'explorer');
+
+        var i = 0;
+        for (i = 0; i < args.files.length; i += 1) {
+            var file = args.files[i];
+            var $li = document.createElement('li');
+            $li.setAttribute('class', 'file' + String(i));
+            $li.innerHTML = file;
+            $ul.appendChild($li);
+        }
+
+        $explorer.appendChild($ul);
+        return $explorer;
     }
 };

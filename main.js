@@ -4,6 +4,7 @@ function HappyEdit() {
     self.files = {};
     self.editor = ace.edit("editor");
     self.$editor = document.getElementById('editor');
+    self.$explorers = document.getElementById('explorers');
     self.currentFile;
     self.eventSystem = new EventSystem();
     self.commands = new CommandList(self);
@@ -25,6 +26,9 @@ function HappyEdit() {
 
         self.$editor.style.width = w + 'px';
         self.$editor.style.height = h + 'px';
+
+        self.$explorers.style.width = w + 'px';
+        self.$explorers.style.height = h + 'px';
     };
     window.onresize();
 
@@ -101,7 +105,18 @@ function HappyEdit() {
 
     self.switchToFile = function(file, updateTabs) {
         self.currentFile = file;
-        self.editor.setSession(file.session);
+
+        if (file.constructor === Explorer) {
+            file.show();
+            self.$explorers.style.display = 'block';
+            self.$editor.style.display = 'none';
+            self.setGlobalKeyboardHandler(file.getGlobalKeyboardHandler());
+        } else {
+            self.editor.setSession(file.session);
+            self.$explorers.style.display = 'none';
+            self.$editor.style.display = 'block';
+            self.setGlobalKeyboardHandler(null);
+        }
 
         if (updateTabs || updateTabs === undefined) {
             self.topBar.updateView(file);
@@ -142,7 +157,7 @@ function HappyEdit() {
      * an unnamed and available file, that will be used instead.
      */
     self.createNewBuffer = function(filename, body) {
-        if (!self.currentFile.filename && !self.currentFile.session.getValue()) {
+        if (self.currentFile.constructor !== Explorer && !self.currentFile.filename && !self.currentFile.session.getValue()) {
             self.currentFile.rename(filename);
             self.currentFile.session.setValue(body);
             return self.currentFile;
@@ -181,6 +196,11 @@ function HappyEdit() {
         });
     };
 
+    self.openFileExplorer = function() {
+        var file = new Explorer(self);
+        self.switchToFile(file);
+    };
+
     self.openDummyBuffer = function() {
         var buffer = new Buffer(self.bufferCounter++, null, '');
         self.files[buffer.id] = buffer;
@@ -200,4 +220,3 @@ window.onload = function() {
         code: "import somestuff\n\nprint hello world\nprint 'ok'\nend"
     });*/
 };
-

@@ -313,3 +313,19 @@ body.hide-window-controls #top .controls div {
     float: right;
     margin-right: 10px;
 }
+
+/* EXPLORER
+ ******************************************************************************/
+ 
+.explorer {
+    font-family: ;'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;
+    font-size: 12px;
+    font-variant: normal;
+}
+.explorer li {
+    padding: 5px;
+}
+.explorer li.active {
+    background: rgb(93, 52, 249);
+    color: white;
+}

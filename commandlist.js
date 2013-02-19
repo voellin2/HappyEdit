@@ -37,6 +37,14 @@ function CommandList(happyEdit) {
             }
         },
         {
+            name: "explore",
+            title: "Explore the file system",
+            hideCommandLine: true,
+            callback: function() {
+                happyEdit.openFileExplorer();
+            }
+        },
+        {
             name: "snippet",
             title: "Search for code snippets",
             hideCommandLine: false,
