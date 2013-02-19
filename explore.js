@@ -39,7 +39,7 @@ function Explorer(happyEdit) {
         self.$view.style.display = 'block';
         happyEdit.$explorers.style.display = 'block';
         happyEdit.$editor.style.display = 'none';
-        happyEdit.editor.blur();
+        //happyEdit.editor.blur();
         happyEdit.pushGlobalKeyboardHandler(self.getGlobalKeyboardHandler());
     };
     
