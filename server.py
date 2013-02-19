@@ -65,19 +65,29 @@ class Directory(dict):
         return self.path
 
 def get_project_files(project_path, ignored_extensions, ignored_directories):
-    project_files = []
+    tree = {}
+
     for dirpath, dirnames, filenames in os.walk(project_path):
         for dirname in ignored_directories:
             if dirname in dirnames:
                 dirnames.remove(dirname)
+
         for dirname in dirnames:
             if dirname.startswith('.'):
                 dirnames.remove(dirname)
+
+        files = []
         for filename in filenames:
             ext = os.path.splitext(filename)[1]
             if not ext in ignored_extensions:
-                project_files.append(os.path.relpath(os.path.join(dirpath, filename)))
-    return project_files
+                files.append(filename)
+
+        tree[os.path.relpath(dirpath)] = {
+            'directories': dirnames,
+            'files': files,
+        }
+
+    return tree
 
 class FileListing():
 

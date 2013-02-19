@@ -3,6 +3,7 @@
  */
 function RemoteFileSystem(eventSystem) {
     var self = this;
+    self.fileTree = {};
     self.files = [];
     self.autoSuggestList = new AutoSuggestableFileList();
     self.path = null;
@@ -34,6 +35,28 @@ function RemoteFileSystem(eventSystem) {
         }, 5000);
     });
     
+    self.setData = function(json) {
+        self.fileTree = json;
+        self.files = [];
+
+        var key;
+        var i;
+        var node;
+        var file;
+
+        for (key in self.fileTree) {
+            if (self.fileTree.hasOwnProperty(key)) {
+                node = self.fileTree[key];
+                for (i = 0; i < node.files.length; i += 1) {
+                    file = node.files[i];
+                    self.files.push(key + '/' + file);
+                }
+            }
+        }
+
+        self.autoSuggestList.load(self.files);
+    };
+
     eventSystem.addEventListener('connected', function(host) {
         var xhr = new XMLHttpRequest();
         var url = host + '/files';
@@ -62,8 +85,7 @@ function RemoteFileSystem(eventSystem) {
                 if (xhr.readyState == 4) {
                     if (xhr.responseText) {
                         var json = JSON.parse(xhr.responseText);
-                        self.autoSuggestList.load(json);
-                        self.files = json;
+                        self.setData(json);
                     }
                 }
             };
