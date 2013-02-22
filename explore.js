@@ -1,16 +1,44 @@
 function Explorer(happyEdit) {
     var self = this;
-    self.activeIndex = 0;
-    
+    self.columns = [];
+    self.activeColumn = null;
+    self.columnIndex = 0;
+
     self.$view = HTML.createExplorer({
-        files: happyEdit.fileSystem.files
+        fileSystem: happyEdit.fileSystem,
     });
 
+    self.addColumn = function(key) {
+        console.log('opening', key);
+        var dir = happyEdit.fileSystem.fileTree[key];
+        var col = new ExplorerColumn(dir, key);
+        self.columns.push(col);
+        self.$view.appendChild(col.$view);
+    };
+
+    self.navigateRight = function() {
+        var index = self.columnIndex + 1;
+        if (index > self.columns.length - 1) {
+            index = self.columns.length - 1;
+        }
+        self.selectIndex(index);
+    };
+
+    self.navigateLeft = function() {
+        var index = self.columnIndex - 1;
+        if (index < 0) {
+            index = 0;
+        }
+        self.selectIndex(index);
+    };
+
     self.selectIndex = function(index) {
-        var $old = self.$view.querySelector('.active');
-        var $new = self.$view.querySelector('.file' + index);
-        removeClass($old, 'active');
-        addClass($new, 'active');
+        self.columnIndex = index;
+        if (self.activeColumn) {
+            self.activeColumn.blur();
+        }
+        self.activeColumn = self.columns[self.columnIndex];
+        self.activeColumn.focus();
     };
     
     happyEdit.$explorers.appendChild(self.$view);
@@ -51,8 +79,6 @@ function Explorer(happyEdit) {
         } else if (keyCode === 80 || keyCode === 75) {
             keyCode = 38;
         }
-        
-        console.log(keyCode, self.activeIndex);
 
         switch (keyCode) {
             case 27:
@@ -60,13 +86,19 @@ function Explorer(happyEdit) {
             break;
 
             case 40:
-            self.navigateDown();
-            event.preventDefault();
+            self.activeColumn.navigateDown();
             break;
 
             case 38:
-            self.navigateUp();
-            event.preventDefault();
+            self.activeColumn.navigateUp();
+            break;
+
+            case 72:
+            self.navigateLeft();
+            break;
+
+            case 76:
+            self.navigateRight();
             break;
 
             case 17:
@@ -77,7 +109,7 @@ function Explorer(happyEdit) {
             break;
 
             case 13:
-            self.openActiveFile();
+            self.openActiveItem();
             break;
 
             default:
@@ -89,27 +121,22 @@ function Explorer(happyEdit) {
         return self.keyDown;
     };
     
-    self.navigateUp = function() {
-        self.activeIndex -= 1;
-        if (self.activeIndex < 0) {
-            self.activeIndex = 0;
+    self.openActiveItem = function() {
+        var $row = self.activeColumn.getActiveRow();
+        var key = self.activeColumn.$view.getAttribute('rel') + '/' + $row.innerHTML;
+
+        if (key.substr(0, 2) === './') {
+            key = key.substr(2); 
         }
-        self.selectIndex(self.activeIndex);
-    };
-    
-    self.navigateDown = function() {
-        self.activeIndex += 1;
-        var len = happyEdit.fileSystem.files.length;
-        if (self.activeIndex === len) {
-            self.activeIndex = len - 1;
+
+        if (hasClass($row, 'directory')) {
+            self.addColumn(key);
+            self.navigateRight();
+        } else {
+            happyEdit.openRemoteFile(key);
         }
-        self.selectIndex(self.activeIndex);
     };
     
-    self.openActiveFile = function() {
-        var $file = self.$view.querySelector('.active');
-        happyEdit.openRemoteFile($file.innerHTML);
-    };
-    
+    self.addColumn('.');
     self.selectIndex(0);
 }

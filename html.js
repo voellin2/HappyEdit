@@ -53,21 +53,39 @@ var HTML = {
         return $li;
     },
 
-    createExplorer: function(args) {
-        var $explorer= document.createElement('div');
-        var $ul= document.createElement('ul');
-        $explorer.setAttribute('class', 'explorer');
-
+    createDirectoryView: function(dir, key) {
+        var $ul = document.createElement('ul');
+        var file;
+        var $li;
+        var count = 0;
         var i = 0;
-        for (i = 0; i < args.files.length; i += 1) {
-            var file = args.files[i];
-            var $li = document.createElement('li');
-            $li.setAttribute('class', 'file' + String(i));
+
+        $ul.setAttribute('rel', key);
+
+        for (i = 0; i < dir.directories.length; i += 1) {
+            file = dir.directories[i];
+            $li = document.createElement('li');
+            $li.setAttribute('class', 'directory item' + String(count));
             $li.innerHTML = file;
             $ul.appendChild($li);
+            count += 1;
         }
 
-        $explorer.appendChild($ul);
+        for (i = 0; i < dir.files.length; i += 1) {
+            file = dir.files[i];
+            $li = document.createElement('li');
+            $li.setAttribute('class', 'file item' + String(count));
+            $li.innerHTML = file;
+            $ul.appendChild($li);
+            count += 1;
+        }
+
+        return $ul;
+    },
+
+    createExplorer: function(args) {
+        var $explorer = document.createElement('div');
+        $explorer.setAttribute('class', 'explorer');
         return $explorer;
     }
 };

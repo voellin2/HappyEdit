@@ -317,15 +317,31 @@ body.hide-window-controls #top .controls div {
 /* EXPLORER
  ******************************************************************************/
  
+#explorers {
+    overflow: scroll;
+}
 .explorer {
     font-family: ;'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;
     font-size: 12px;
     font-variant: normal;
 }
+.explorer ul {
+    border-right: 1px solid #ccc;
+    display: inline-block;
+    width: 200px;
+    height: 100%;
+    vertical-align: top;
+}
 .explorer li {
     padding: 5px;
 }
+.explorer li.directory {
+    text-decoration: underline;
+}
 .explorer li.active {
+    background: #ccc;
+}
+.explorer ul.active li.active {
     background: rgb(93, 52, 249);
     color: white;
 }
