@@ -16,6 +16,22 @@ function Explorer(happyEdit) {
         self.$view.appendChild(col.$view);
     };
 
+    self.removeColumn = function(index) {
+        console.log('removing index ', index);
+        var col = self.columns[index];
+        self.$view.removeChild(col.$view);
+        self.columns.pop(index);
+    };
+
+    self.removeAllColumnsToTheRight = function() {
+        var count = (self.columns.length - 1) - self.columnIndex;
+        console.log('count', count);
+        var i;
+        for (i = 0; i < count; i += 1) {
+            self.removeColumn(self.columns.length - 1);
+        }
+    };
+
     self.navigateRight = function() {
         var index = self.columnIndex + 1;
         if (index > self.columns.length - 1) {
@@ -130,6 +146,7 @@ function Explorer(happyEdit) {
         }
 
         if (hasClass($row, 'directory')) {
+            self.removeAllColumnsToTheRight();
             self.addColumn(key);
             self.navigateRight();
         } else {
