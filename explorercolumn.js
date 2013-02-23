@@ -1,28 +1,32 @@
 function ExplorerColumn(dir, key) {
     var self = this;
+    var $explorers = document.querySelector("#explorers");
     self.$view = HTML.createDirectoryView(dir, key);
     self.activeIndex = 0;
     
     self.navigateUp = function() {
-        self.activeIndex -= 1;
-        if (self.activeIndex < 0) {
-            self.activeIndex = 0;
+        var index = self.activeIndex - 1;
+        if (index < 0) {
+            index = 0;
         }
-        self.selectIndex(self.activeIndex);
+        self.selectIndex(index);
     };
     
     self.navigateDown = function() {
-        self.activeIndex += 1;
-        var len = happyEdit.fileSystem.files.length;
-        if (self.activeIndex === len) {
-            self.activeIndex = len - 1;
+        var index = self.activeIndex + 1;
+        var len = dir.files.length + dir.directories.length;
+        if (index >= len) {
+            index = len - 1;
         }
-        self.selectIndex(self.activeIndex);
+        self.selectIndex(index);
     };
     
     self.selectIndex = function(index) {
+        self.activeIndex = index;
+
         var $old = self.$view.querySelector('.active');
         var $new = self.$view.querySelector('.item' + index);
+
         removeClass($old, 'active');
         addClass($new, 'active');
     };
