@@ -3,6 +3,7 @@ function Explorer(happyEdit) {
     self.columns = [];
     self.activeColumn = null;
     self.columnIndex = 0;
+    self.COL_WIDTH = 201;
 
     self.$view = HTML.createExplorer({
         fileSystem: happyEdit.fileSystem,
@@ -14,6 +15,9 @@ function Explorer(happyEdit) {
         var col = new ExplorerColumn(dir, key);
         self.columns.push(col);
         self.$view.appendChild(col.$view);
+
+        // TODO fix this in CSS.
+        self.$view.style.width = self.COL_WIDTH * self.columns.length + 'px';
     };
 
     self.removeColumn = function(index) {
@@ -21,6 +25,9 @@ function Explorer(happyEdit) {
         var col = self.columns[index];
         self.$view.removeChild(col.$view);
         self.columns.pop(index);
+
+        // TODO fix this in CSS.
+        self.$view.style.width = self.COL_WIDTH * self.columns.length + 'px';
     };
 
     self.removeAllColumnsToTheRight = function() {

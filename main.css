@@ -324,6 +324,7 @@ body.hide-window-controls #top .controls div {
     font-family: ;'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;
     font-size: 12px;
     font-variant: normal;
+    overflow: scroll;
 }
 .explorer ul {
     border-right: 1px solid #ccc;
