@@ -3,11 +3,34 @@ function Explorer(happyEdit) {
     self.columns = [];
     self.activeColumn = null;
     self.columnIndex = 0;
-    self.COL_WIDTH = 201;
 
     self.$view = HTML.createExplorer({
         fileSystem: happyEdit.fileSystem,
     });
+
+    /**
+     * TODO fix these things in CSS.
+     */
+    self.updateDimensions = function() {
+        var w = self.columns.length * 201;
+        var h = 0;
+        var childElementCount = 0;
+        var i;
+        var col;
+
+        for (i = 0; i < self.columns.length; i += 1) {
+            col = self.columns[i];
+            if (col.$view.childElementCount > childElementCount) {
+                childElementCount = col.$view.childElementCount;
+            }
+        }
+
+        h = 25 * childElementCount;
+
+        console.log(w, h, childElementCount)
+        self.$view.style.width = w + 'px';
+        self.$view.style.height = h + 'px';
+    };
 
     self.addColumn = function(key) {
         console.log('opening', key);
@@ -15,9 +38,7 @@ function Explorer(happyEdit) {
         var col = new ExplorerColumn(dir, key);
         self.columns.push(col);
         self.$view.appendChild(col.$view);
-
-        // TODO fix this in CSS.
-        self.$view.style.width = self.COL_WIDTH * self.columns.length + 'px';
+        self.updateDimensions();
     };
 
     self.removeColumn = function(index) {
@@ -25,9 +46,7 @@ function Explorer(happyEdit) {
         var col = self.columns[index];
         self.$view.removeChild(col.$view);
         self.columns.pop(index);
-
-        // TODO fix this in CSS.
-        self.$view.style.width = self.COL_WIDTH * self.columns.length + 'px';
+        self.updateDimensions();
     };
 
     self.removeAllColumnsToTheRight = function() {
