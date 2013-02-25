@@ -39,6 +39,7 @@ function ExplorerColumn(dir, key) {
     
     self.focus = function() {
         addClass(self.$view, 'active');
+        self.$view.scrollIntoViewIfNeeded();
     };
     
     self.blur = function() {
