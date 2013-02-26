@@ -27,13 +27,11 @@ function Explorer(happyEdit) {
 
         h = 25 * childElementCount;
 
-        console.log(w, h, childElementCount)
         self.$view.style.width = w + 'px';
         self.$view.style.height = h + 'px';
     };
 
     self.addColumn = function(key) {
-        console.log('opening', key);
         var dir = happyEdit.fileSystem.fileTree[key];
         var col = new ExplorerColumn(dir, key);
         self.columns.push(col);
@@ -42,7 +40,6 @@ function Explorer(happyEdit) {
     };
 
     self.removeColumn = function(index) {
-        console.log('removing index ', index);
         var col = self.columns[index];
         self.$view.removeChild(col.$view);
         self.columns.pop(index);
@@ -51,7 +48,6 @@ function Explorer(happyEdit) {
 
     self.removeAllColumnsToTheRight = function() {
         var count = (self.columns.length - 1) - self.columnIndex;
-        console.log('count', count);
         var i;
         for (i = 0; i < count; i += 1) {
             self.removeColumn(self.columns.length - 1);
