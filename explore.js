@@ -68,6 +68,7 @@ function Explorer(happyEdit) {
             index = 0;
         }
         self.selectIndex(index);
+        self.removeAllColumnsToTheRight();
     };
 
     self.selectIndex = function(index) {
@@ -136,7 +137,7 @@ function Explorer(happyEdit) {
             break;
 
             case 76:
-            self.navigateRight();
+            self.openActiveItem();
             break;
 
             case 17:
