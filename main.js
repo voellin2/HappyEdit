@@ -160,7 +160,7 @@ function HappyEdit() {
      * an unnamed and available file, that will be used instead.
      */
     self.createNewBuffer = function(filename, body) {
-        if (self.currentFile.constructor !== Explorer && !self.currentFile.filename && !self.currentFile.session.getValue()) {
+        if (self.currentFile.isDummy()) {
             self.currentFile.rename(filename);
             self.currentFile.session.setValue(body);
             return self.currentFile;

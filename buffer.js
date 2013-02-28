@@ -11,6 +11,10 @@ function Buffer(id, filename, body) {
     self.dirname = null;
     self.onChangeListeners = [];
 
+    self.isDummy = function() {
+        return !self.filename && !self.session.getValue();
+    };
+
     self.onChange = function(callback) {
         self.onChangeListeners.push(callback);
     };

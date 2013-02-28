@@ -8,6 +8,10 @@ function Explorer(happyEdit) {
         fileSystem: happyEdit.fileSystem,
     });
 
+    isDummy = function() {
+        return false;
+    };
+
     /**
      * TODO fix these things in CSS.
      */
