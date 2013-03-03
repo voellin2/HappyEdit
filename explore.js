@@ -166,7 +166,7 @@ function Explorer(happyEdit) {
     
     self.openActiveItem = function() {
         var $row = self.activeColumn.getActiveRow();
-        var key = self.activeColumn.$view.getAttribute('rel') + '/' + $row.innerHTML;
+        var key = self.activeColumn.$view.getAttribute('rel') + '/' + $row.getAttribute('rel');
 
         if (key.substr(0, 2) === './') {
             key = key.substr(2); 

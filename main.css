@@ -335,9 +335,22 @@ body.hide-window-controls #top .controls div {
 }
 .explorer li {
     padding: 5px;
+    vertical-align: middle;
+    position: relative;
 }
-.explorer li.directory {
-    text-decoration: underline;
+.explorer li.directory .icon {
+    position: absolute;
+    top: 8px;
+    right: 5px;
+    width: 0;
+	height: 0;
+	border-top: 4px solid transparent;
+	border-bottom: 4px solid transparent;
+	border-left: 5px solid #888;
+    vertical-align: middle;
+}
+.explorer li.active .icon {
+	border-left: 5px solid white;
 }
 .explorer li.active {
     background: #ccc;

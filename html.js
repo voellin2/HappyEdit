@@ -57,6 +57,8 @@ var HTML = {
         var $ul = document.createElement('ul');
         var file;
         var $li;
+        var $icon;
+        var $title;
         var count = 0;
         var i = 0;
 
@@ -64,19 +66,39 @@ var HTML = {
 
         for (i = 0; i < dir.directories.length; i += 1) {
             file = dir.directories[i];
+
             $li = document.createElement('li');
             $li.setAttribute('class', 'directory item' + String(count));
-            $li.innerHTML = file;
+            $li.setAttribute('rel', file);
+
+            $title = document.createElement('span');
+            $title.setAttribute('class', 'title');
+            $title.innerHTML = file;
+
+            $icon = document.createElement('span');
+            $icon.setAttribute('class', 'icon');
+
+            $li.appendChild($title);
+            $li.appendChild($icon);
             $ul.appendChild($li);
+
             count += 1;
         }
 
         for (i = 0; i < dir.files.length; i += 1) {
             file = dir.files[i];
+
             $li = document.createElement('li');
             $li.setAttribute('class', 'file item' + String(count));
-            $li.innerHTML = file;
+            $li.setAttribute('rel', file);
+
+            $title = document.createElement('span');
+            $title.setAttribute('class', 'title');
+            $title.innerHTML = file;
+
+            $li.appendChild($title);
             $ul.appendChild($li);
+
             count += 1;
         }
 
