@@ -78,6 +78,10 @@ var HTML = {
             $icon = document.createElement('span');
             $icon.setAttribute('class', 'icon');
 
+            if (file[0] === '.') {
+                addClass($li, 'hidden');
+            }
+
             $li.appendChild($title);
             $li.appendChild($icon);
             $ul.appendChild($li);
@@ -95,6 +99,10 @@ var HTML = {
             $title = document.createElement('span');
             $title.setAttribute('class', 'title');
             $title.innerHTML = file;
+
+            if (file[0] === '.') {
+                addClass($li, 'hidden');
+            }
 
             $li.appendChild($title);
             $ul.appendChild($li);

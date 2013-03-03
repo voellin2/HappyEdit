@@ -352,6 +352,9 @@ body.hide-window-controls #top .controls div {
 .explorer li.active .icon {
 	border-left: 5px solid white;
 }
+.explorer li.hidden .title {
+	opacity: 0.7;
+}
 .explorer li.active {
     background: #ccc;
 }
