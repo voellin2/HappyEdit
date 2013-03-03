@@ -8,7 +8,7 @@ function Explorer(happyEdit) {
         fileSystem: happyEdit.fileSystem,
     });
 
-    isDummy = function() {
+    self.isDummy = function() {
         return false;
     };
 
