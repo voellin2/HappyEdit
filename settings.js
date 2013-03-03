@@ -9,7 +9,6 @@ function Settings(happyEdit) {
     self.$saveButton = self.$popup.querySelector('input[type=submit]');
 
     self.defaults = {
-        ignoredExtensions: [],
         remoteServer: null,
     };
 
@@ -41,27 +40,6 @@ function Settings(happyEdit) {
         var settings = self.defaults;
         var value;
 
-        value = self.$popup.querySelector('input.ignored_extensions').value;
-        var ignoredExtensions = [];
-        value.split(',').forEach(function(ext, i) {
-            if (ext.length) {
-                if (ext[0] !== '.') {
-                    ext = '.' + ext;
-                }
-                ignoredExtensions.push(ext);
-            }
-        });
-
-        value = self.$popup.querySelector('input.ignored_directories').value;
-        var ignoredDirectories = [];
-        value.split(',').forEach(function(ext, i) {
-            if (ext.length) {
-                ignoredDirectories.push(ext);
-            }
-        });
-
-        settings.ignoredDirectories = ignoredDirectories;
-        settings.ignoredExtensions = ignoredExtensions;
         settings.remoteServer = self.$popup.querySelector('input.remote').value;
 
         Storage.set('settings', settings, function() {
@@ -84,18 +62,6 @@ function Settings(happyEdit) {
         self.$blocker.style.display = 'block';
 
         Storage.get('settings', {}, function(data) {
-            if (data.ignoredExtensions) {
-                self.$popup.querySelector('input.ignored_extensions').value = data.ignoredExtensions.join(',');
-            } else {
-                self.$popup.querySelector('input.ignored_extensions').value = '';
-            }
-
-            if (data.ignoredDirectories) {
-                self.$popup.querySelector('input.ignored_directories').value = data.ignoredDirectories.join(',');
-            } else {
-                self.$popup.querySelector('input.ignored_directories').value = '';
-            }
-
             self.$popup.querySelector('input.remote').value = data.remoteServer || ''; 
         });
 
