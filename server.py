@@ -64,8 +64,11 @@ class Directory(dict):
     def __repr__(self):
         return self.path
 
-def get_project_files(project_path, ignored_extensions, ignored_directories):
+def get_project_files(project_path, cfg):
     tree = {}
+
+    ignored_directories = cfg['ignoredDirectories']
+    ignored_extensions = cfg['ignoredExtensions']
 
     for dirpath, dirnames, filenames in os.walk(project_path):
         for dirname in ignored_directories:
@@ -91,16 +94,15 @@ def get_project_files(project_path, ignored_extensions, ignored_directories):
 
 class FileListing():
 
-    def __init__(self, path):
+    def __init__(self, path, cfg):
+        self.cfg = cfg
         self.path = path
         self.next_handler = None
 
     def __call__(self, environ, start_response):
         if environ['PATH_INFO'] in ['/files', '/files/']:
             params = dict(parse_qsl(environ['QUERY_STRING']))
-            ignored_extensions = params.get('ignored_extensions', '').split(',')
-            ignored_directories = params.get('ignored_directories', '').split(',')
-            response = json.dumps(get_project_files(self.path, ignored_extensions, ignored_directories))
+            response = json.dumps(get_project_files(self.path, self.cfg))
             start_response("200 OK", [
                 ('Access-Control-Allow-Origin', '*'),
                 ('Content-Type', 'application/json'),
@@ -242,15 +244,39 @@ class PingHandler:
             return [msg]
         return self.next_handler(environ, start_response)
 
+def load_settings(path):
+    filepath = os.path.join(path, '.happyedit.json')
+
+    cfg = {
+        'ignoredDirectories': [],
+        'ignoredExtensions': [],
+    }
+
+    if os.path.exists(filepath):
+        try:
+            f = open(filepath)
+            project_cfg = json.loads(f.read())
+            f.close()
+            cfg.update(project_cfg)
+        except Exception as e:
+            print e
+    else:
+        # @TODO: write config
+        pass
+
+    print cfg
+    return cfg
+
 def main():
-    path = os.path.dirname(os.path.abspath(sys.argv[0]))
     cwd = os.getcwd()
+
+    cfg = load_settings(cwd)
 
     handlers = []
     handlers.append(PingHandler())
     handlers.append(GrepHandler(cwd))
     handlers.append(ProjectInfoHandler(cwd))
-    handlers.append(FileListing(cwd))
+    handlers.append(FileListing(cwd, cfg))
     handlers.append(SaveHandler(cwd))
     handlers.append(ProjectFilesServer(cwd))
     handlers.append(NotFoundHandler())
