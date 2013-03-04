@@ -155,11 +155,10 @@ function RemoteFileSystem(eventSystem) {
     };
 
     self.connect = function(args) {
-        // TODO: host and password should really be taken from args, but
-        // command line does not support multiple arguments
-        // for commands and not arguments with ':' in them.
-        var host = 'http://localhost:8888';
-        var password = 'test123';
+        args = args.split(' ');
+
+        var host = args[0];
+        var password = args[1];
 
         var xhr = new XMLHttpRequest();
         var url = host + '/connect';
@@ -171,7 +170,7 @@ function RemoteFileSystem(eventSystem) {
         xhr.onload = function() {
             var json = JSON.parse(xhr.responseText);
             happyEdit.settings.set('authToken', json.authToken, function() {
-                self.authToken = json.authToken
+                self.authToken = json.authToken;
                 self.load();
             });
         };

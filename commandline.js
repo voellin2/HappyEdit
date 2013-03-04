@@ -65,21 +65,18 @@ function CommandLine(happyEdit) {
         }
         self.runKeyUpHandler = false;
 
-        var split,
-            inputString = this.value,
+        var inputString = this.value,
             command,
-            args;
+            extract;
 
         if (inputString[0] === ':' && inputString.length > 1) {
             if (inputString.indexOf(' ') === -1) {
                 self.showCommandSuggestions(inputString.split(':')[1]);
             } else {
-                split = inputString.split(':')[1].split(' ');
-                command = split[0];
-                args = split[1];
-                command = happyEdit.commands.getCommandByName(command);
+                extract = self.extractCommandParts(inputString);
+                command = happyEdit.commands.getCommandByName(extract.name);
                 if (command && command.autoComplete) {
-                    command.autoComplete(args);
+                    command.autoComplete(extract.args);
                 }
             }
         } else if (inputString[0] !== '/' && inputString[0] !== '?') {
@@ -87,6 +84,14 @@ function CommandLine(happyEdit) {
         } else {
             self.clearSuggestions();
         }
+    };
+
+    self.extractCommandParts = function(inputString) {
+        var split = inputString.substr(1).split(' ');
+        return {
+            name: split[0],
+            args: split.splice(1, split.length).join(' ')
+        };
     };
 
     self.$input.onkeydown = self.keyDown;
@@ -159,7 +164,8 @@ function CommandLine(happyEdit) {
         self.hide();
         var commandName = this.getAttribute('rel');
         var command = happyEdit.commands.getCommandByName(commandName);
-        command.callback(self.getArgs());
+        var extract = self.extractCommandParts(self.$input.value);
+        command.callback(extract.args);
     };
 
     self.getArgs = function() {
@@ -256,15 +262,14 @@ function CommandLine(happyEdit) {
     self.execute = function() {
         var value = self.$input.value;
         var needle;
+        var extract;
         if (value[0] === ":") {
-            var split = value.split(":")[1].split(' ');
-            var cmd = split[0];
-            var args = split.length > 1 ? split[1] : '';
-            if (isNumeric(cmd)) {
-                happyEdit.editor.gotoLine(cmd);
+            extract = self.extractCommandParts(value);
+            if (isNumeric(extract.name)) {
+                happyEdit.editor.gotoLine(extract.name);
                 self.hide();
             } else {
-                self.executeCommand(cmd, args);
+                self.executeCommand(extract.name, extract.args);
             }
         } else if (value[0] === "/") {
             needle = value.split('/')[1];
