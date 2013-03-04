@@ -144,6 +144,16 @@ function RemoteFileSystem(eventSystem) {
         xhr.send(params);
     };
 
+    self.getFile = function(filename, callback) {
+        var xhr = new XMLHttpRequest();
+        var url = self.host + '/files/' + filename + '?token=' + self.authToken;
+        xhr.open("GET", url);
+        xhr.onload = function() {
+            callback(xhr.responseText);
+        };
+        xhr.send();
+    };
+
     self.connect = function(args) {
         // TODO: host and password should really be taken from args, but
         // command line does not support multiple arguments

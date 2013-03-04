@@ -178,17 +178,10 @@ function HappyEdit() {
             return;
         }
 
-        var xhr = new XMLHttpRequest();
-        var url = self.fileSystem.host + '/files/' + filename;
-        xhr.open("GET", url);
-        xhr.onreadystatechange = function() {
-            var file;
-            if (xhr.readyState == 4) {
-                file = self.createNewBuffer(filename, xhr.responseText);
-                callback(file);
-            }
-        };
-        xhr.send();
+        self.fileSystem.getFile(filename, function(body) {
+            var file = self.createNewBuffer(filename, body);
+            callback(file);
+        });
     };
 
     self.openRemoteFile = function(filename) {
