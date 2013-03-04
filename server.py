@@ -5,6 +5,7 @@ import os
 import mimetypes
 import json
 import subprocess
+from hashlib import md5
 from urlparse import parse_qsl
 from urllib import unquote
 from wsgiref.simple_server import make_server
@@ -158,6 +159,7 @@ class GrepHandler():
             except KeyError:
                 ret = 'The GET parameter q is required for /grep'
                 start_response("501 Not Implemented", [
+                    ('Access-Control-Allow-Origin', '*'),
                     ('Content-Type', 'text/plain'),
                     ('Content-Length', str(len(ret))),
                 ])
@@ -184,6 +186,7 @@ class GrepHandler():
             ret = json.dumps(ret)
 
             start_response("200 OK", [
+                ('Access-Control-Allow-Origin', '*'),
                 ('Content-Type', 'application/json'),
                 ('Content-Length', str(len(ret))),
             ])
@@ -231,6 +234,55 @@ class NotFoundHandler:
         ])
         return [msg]
 
+class ConnectHandler:
+
+    def __init__(self, cfg):
+        self.cfg = cfg
+
+    def __call__(self, environ, start_response):
+        if environ['REQUEST_METHOD'] == 'POST' and environ['PATH_INFO'] == '/connect':
+            length = int(environ['CONTENT_LENGTH'])
+            params = dict(parse_qsl(environ['wsgi.input'].read(length)))
+            password = params.get('password')
+            print password, self.cfg['password']
+            if password == self.cfg['password']:
+                msg = json.dumps({
+                    'authToken': md5(password).hexdigest()
+                })
+                start_response("200 OK", [
+                    ('Access-Control-Allow-Origin', '*'),
+                    ('Content-Type', 'text/plain'),
+                    ('Content-Length', str(len(msg))),
+                ])
+                return [msg]
+            else:
+                msg = "Incorrect password"
+                start_response("401 Unauthorized", [
+                    ('Access-Control-Allow-Origin', '*'),
+                    ('Content-Type', 'text/plain'),
+                    ('Content-Length', str(len(msg))),
+                ])
+                return [msg]
+        return self.next_handler(environ, start_response)
+
+class PermissionHandler:
+
+    def __init__(self, cfg):
+        self.cfg = cfg
+
+    def __call__(self, environ, start_response):
+        params = dict(parse_qsl(environ['QUERY_STRING']))
+        print 'token: ', params.get('token')
+        if params.get('token') != md5(self.cfg['password']).hexdigest():
+            msg = "Incorrect authToken"
+            start_response("401 Unauthorized", [
+                ('Access-Control-Allow-Origin', '*'),
+                ('Content-Type', 'text/plain'),
+                ('Content-Length', str(len(msg))),
+            ])
+            return [msg]
+        return self.next_handler(environ, start_response)
+
 class PingHandler:
 
     def __call__(self, environ, start_response):
@@ -277,6 +329,8 @@ def main():
     cfg = load_settings(cwd)
 
     handlers = []
+    handlers.append(ConnectHandler(cfg))
+    handlers.append(PermissionHandler(cfg))
     handlers.append(PingHandler())
     handlers.append(GrepHandler(cwd))
     handlers.append(ProjectInfoHandler(cwd))

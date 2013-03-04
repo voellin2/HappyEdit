@@ -45,6 +45,14 @@ function CommandList(happyEdit) {
             }
         },
         {
+            name: "connect",
+            title: "Connect to a remote server",
+            hideCommandLine: true,
+            callback: function(args) {
+                happyEdit.fileSystem.connect(args);
+            }
+        },
+        {
             name: "snippet",
             title: "Search for code snippets",
             hideCommandLine: false,

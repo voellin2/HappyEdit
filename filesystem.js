@@ -11,6 +11,7 @@ function RemoteFileSystem(eventSystem) {
     self.interval = null;
     self.connectionProblem = false;
     self.PROTOCOL_VERSION = "0.1";
+    self.authToken = null;
 
     // Ping remote to make sure we're connected.
     eventSystem.addEventListener('connected', function(host) {
@@ -18,7 +19,7 @@ function RemoteFileSystem(eventSystem) {
 
         self.interval = window.setInterval(function() {
             var xhr = new XMLHttpRequest();
-            var url = host + '/ping';
+            var url = host + '/ping?token=' + self.authToken;
             xhr.open("GET", url);
             xhr.onreadystatechange = function() {
                 if (xhr.readyState == 4) {
@@ -59,7 +60,7 @@ function RemoteFileSystem(eventSystem) {
 
     eventSystem.addEventListener('connected', function(host) {
         var xhr = new XMLHttpRequest();
-        var url = host + '/files';
+        var url = host + '/files?token=' + self.authToken;
 
         self.host = host;
         self.files = [];
@@ -120,7 +121,7 @@ function RemoteFileSystem(eventSystem) {
         }
 
         var xhr = new XMLHttpRequest();
-        var url = self.host + '/files/' + encodeURIComponent(filename);
+        var url = self.host + '/files/' + encodeURIComponent(filename) + '?token=' + self.authToken;
         var params = 'body=' + encodeURIComponent(buffer.session.getValue());
 
         xhr.open("POST", url);
@@ -143,35 +144,66 @@ function RemoteFileSystem(eventSystem) {
         xhr.send(params);
     };
 
+    self.connect = function(args) {
+        // TODO: host and password should really be taken from args, but
+        // command line does not support multiple arguments
+        // for commands and not arguments with ':' in them.
+        var host = 'http://localhost:8888';
+        var password = 'test123';
+
+        var xhr = new XMLHttpRequest();
+        var url = host + '/connect';
+        var params = 'password=' + encodeURIComponent(password);
+
+        xhr.open("POST", url);
+        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+        xhr.onload = function() {
+            var json = JSON.parse(xhr.responseText);
+            happyEdit.settings.set('authToken', json.authToken, function() {
+                self.authToken = json.authToken
+                self.load();
+            });
+        };
+
+        xhr.send(params);
+    };
+
     /**
      * Called when server settings is configured.
      */
     self.load = function() {
         Storage.get('settings', {}, function(data) {
-            if (data.remoteServer) {
+            if (data.remoteServer && data.authToken) {
                 var host = data.remoteServer;
                 var xhr = new XMLHttpRequest();
-                var url = host + '/info';
+                var url = host + '/info?token=' + data.authToken;
             
                 xhr.open("GET", url);
             
-                xhr.onreadystatechange = function() {
-                    if (xhr.readyState == 4) {
-                        if (xhr.responseText) {
-                            var json = JSON.parse(xhr.responseText);
+                xhr.onload = function() {
+                    if (xhr.status === 200) {
+                        var json = JSON.parse(xhr.responseText);
 
-                            if (json.PROTOCOL_VERSION != self.PROTOCOL_VERSION) {
-                                throw "Protocol version mismatch";
-                            }
-
-                            self.path = json.path;
-                            self.host = host;
-                            eventSystem.callEventListeners('connected', host);
-                        } else {
-                            eventSystem.callEventListeners('connection_problem', host);
+                        if (json.PROTOCOL_VERSION != self.PROTOCOL_VERSION) {
+                            throw "Protocol version mismatch";
                         }
+
+                        self.path = json.path;
+                        self.host = host;
+                        self.authToken = data.authToken;
+
+                        eventSystem.callEventListeners('connected', host);
+                    } else {
+                        console.log('Error:', xhr.responseText);
+                        eventSystem.callEventListeners('connection_problem', host);
                     }
                 };
+
+                xhr.onerror = function() {
+                    eventSystem.callEventListeners('connection_problem', host);
+                };
+
                 xhr.send();
             } else {
                 console.log('No remote server configured');
