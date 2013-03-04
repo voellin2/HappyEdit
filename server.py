@@ -248,6 +248,7 @@ def load_settings(path):
     filepath = os.path.join(path, '.happyedit.json')
 
     cfg = {
+        'password': None,
         'ignoredDirectories': [],
         'ignoredExtensions': [],
     }
@@ -263,6 +264,9 @@ def load_settings(path):
     else:
         # @TODO: write config
         pass
+
+    if not cfg['password']:
+        raise Exception("You must set a password in " + filepath)
 
     print cfg
     return cfg
