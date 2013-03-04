@@ -65,33 +65,17 @@ function RemoteFileSystem(eventSystem) {
         self.files = [];
         self.autoSuggestList.clear();
     
-        Storage.get('settings', {}, function(settings) {
-            var options = [];
-
-            if (settings.ignoredExtensions) {
-                options.push('ignored_extensions=' + settings.ignoredExtensions.join(','));
-            }
-            if (settings.ignoredDirectories) {
-                options.push('ignored_directories=' + settings.ignoredDirectories.join(','));
-            }
-
-            if (options.length) {
-                url += '?' + options.join('&');
-            }
-
-            xhr.open("GET", url);
-
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState == 4) {
-                    if (xhr.responseText) {
-                        var json = JSON.parse(xhr.responseText);
-                        self.setData(json);
-                    }
+        xhr.open("GET", url);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4) {
+                if (xhr.responseText) {
+                    var json = JSON.parse(xhr.responseText);
+                    self.setData(json);
                 }
-            };
+            }
+        };
 
-            xhr.send();
-        });
+        xhr.send();
     });
 
     self.isConnected = function() {
