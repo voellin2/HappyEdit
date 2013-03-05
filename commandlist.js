@@ -45,6 +45,14 @@ function CommandList(happyEdit) {
             }
         },
         {
+            name: "disconnect",
+            title: "Disconnect from any connected server",
+            hideCommandLine: true,
+            callback: function() {
+                happyEdit.fileSystem.disconnect();
+            }
+        },
+        {
             name: "snippet",
             title: "Search for code snippets",
             hideCommandLine: false,

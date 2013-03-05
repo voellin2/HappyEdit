@@ -299,7 +299,7 @@ body.hide-window-controls #top .controls div {
 #bottom .indicator .action {
     display: none;
 }
-#bottom .indicator.connection-problem {
+#bottom .indicator.disconnected {
     cursor: pointer;
     color: red;
 }

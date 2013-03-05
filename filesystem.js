@@ -24,7 +24,7 @@ function RemoteFileSystem(eventSystem, settings) {
                 if (xhr.readyState == 4) {
                     if (!xhr.responseText && !self.connectionProblem) {
                         self.connectionProblem = true;
-                        eventSystem.callEventListeners('connection_problem', host);
+                        eventSystem.callEventListeners('disconnected', host);
                     } else if (xhr.responseText && self.connectionProblem) {
                         self.connectionProblem = false;
                         eventSystem.callEventListeners('connected', host);
@@ -184,6 +184,14 @@ function RemoteFileSystem(eventSystem, settings) {
         xhr.send(params);
     };
 
+    self.disconnect = function() {
+        var host = settings.get('remoteServer');
+        settings.set('authToken', null);
+        settings.set('remoteServer', null);
+        settings.save();
+        eventSystem.callEventListeners('disconnected', host);
+    };
+
     /**
      * Called when server settings is configured.
      */
@@ -213,12 +221,12 @@ function RemoteFileSystem(eventSystem, settings) {
                     eventSystem.callEventListeners('connected', host);
                 } else {
                     console.log('Error:', xhr.responseText);
-                    eventSystem.callEventListeners('connection_problem', host);
+                    eventSystem.callEventListeners('disconnected', host);
                 }
             };
 
             xhr.onerror = function() {
-                eventSystem.callEventListeners('connection_problem', host);
+                eventSystem.callEventListeners('disconnected', host);
             };
 
             xhr.send();

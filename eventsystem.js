@@ -4,7 +4,7 @@ function EventSystem() {
     self.listeners = {
         'file_changed': [],
         'connected': [],
-        'connection_problem': [],
+        'disconnected': [],
     };
 
     self.addEventListener = function(type, fn) {

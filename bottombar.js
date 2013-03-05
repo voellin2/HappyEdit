@@ -8,7 +8,7 @@ function BottomBar(happyEdit) {
     self.$status = self.$view.querySelector('.status');
 
     self.$indicator.onclick = function() {
-        if (hasClass(this, 'disconnected') || hasClass(this, 'connection-problem')) {
+        if (hasClass(this, 'disconnected')) {
             // TODO: show command prompt with :command option?
         }
     };
@@ -23,19 +23,13 @@ function BottomBar(happyEdit) {
 
     happyEdit.eventSystem.addEventListener('connected', function(host) {
         self.$indicatorText.innerHTML = 'Connected to ' + host;
-
         addClass(self.$indicator, 'connected');
-
         removeClass(self.$indicator, 'disconnected');
-        removeClass(self.$indicator, 'connection-problem');
     });
 
-    happyEdit.eventSystem.addEventListener('connection_problem', function(host) {
+    happyEdit.eventSystem.addEventListener('disconnected', function(host) {
         self.$indicatorText.innerHTML = 'Disconnected';
-
-        addClass(self.$indicator, 'connection-problem');
-
-        removeClass(self.$indicator, 'disconnected');
+        addClass(self.$indicator, 'disconnected');
         removeClass(self.$indicator, 'connected');
     });
 
