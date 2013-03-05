@@ -10,7 +10,6 @@ function HappyEdit(settings) {
     self.eventSystem = new EventSystem();
     self.commands = new CommandList(self);
     self.commandLine = new CommandLine(self);
-    self.nofsPopup = new NoFileSystemPopup(self);
     self.snippetPopup = new SnippetPopup(self);
     self.snippets = new SnippetsAPI(self);
     self.stackOverflow = new StackOverflow(self);

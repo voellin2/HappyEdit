@@ -22,7 +22,6 @@
         <script src="stackoverflow.js" type="text/javascript" charset="utf-8"></script>
         <script src="snippets.js" type="text/javascript" charset="utf-8"></script>
         <script src="snippetpopup.js" type="text/javascript" charset="utf-8"></script>
-        <script src="nofs.js" type="text/javascript" charset="utf-8"></script>
         <script src="commandlist.js" type="text/javascript" charset="utf-8"></script>
         <script src="commandline.js" type="text/javascript" charset="utf-8"></script>
         <script src="settings.js" type="text/javascript" charset="utf-8"></script>
@@ -41,22 +40,9 @@
     <body class="$bodyClassNames">
         <div class="blocker command-line">
         </div>
-        <div class="blocker settings">
-        </div>
         <div class="blocker menu">
         </div>
         <div class="blocker snippet">
-        </div>
-        <div class="blocker nofs">
-        </div>
-        <div class="popup nofs" style="display:none">
-            <h2>No remote file system found</h2>
-            <p>You need to start the HappyEdit file system server (<a href="https://raw.github.com/pthulin/HappyEdit/master/server.py" target="_blank">server.py</a>)
-            in the directory you want to serve files from (e.g. your project root directory).</p>
-            <input name="server" type="text" placholder="Example: http://localhost:8888" />
-            <div class="actions">
-                <button class="action clickme connect">Connect</button>
-            </div>
         </div>
         <div class="popup command-line" style="display:none">
             <div>
@@ -68,17 +54,6 @@
         <div class="menu popup" style="display: none">
             <ul>
             </ul>
-        </div>
-        <div class="popup settings" style="display:none">
-            <h2>Settings</h2>
-
-            <label>Remote server:</label>
-            <input type="text" class="remote" placeholder="Address, e.g. http://localhost:8888" />
-
-            <div class="actions">
-                <input class="action clickme send" type="submit" value="Save" />
-                <button class="action cancel">Cancel</button>
-            </div>
         </div>
         <div class="snippet popup" style="display: none">
             <h2 class="title"></h2>

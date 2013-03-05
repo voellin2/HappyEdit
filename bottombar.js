@@ -9,7 +9,7 @@ function BottomBar(happyEdit) {
 
     self.$indicator.onclick = function() {
         if (hasClass(this, 'disconnected') || hasClass(this, 'connection-problem')) {
-            happyEdit.nofsPopup.show();
+            // TODO: show command prompt with :command option?
         }
     };
 
