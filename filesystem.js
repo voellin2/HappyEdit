@@ -158,6 +158,14 @@ function RemoteFileSystem(eventSystem, settings) {
         var host = args[0];
         var password = args[1];
 
+        if (!host || !password) {
+            throw "Host or password missing";
+        }
+
+        if (host.split(':')[0] !== 'http') {
+            host = 'http://' + host;
+        }
+
         var xhr = new XMLHttpRequest();
         var url = host + '/connect';
         var params = 'password=' + encodeURIComponent(password);
