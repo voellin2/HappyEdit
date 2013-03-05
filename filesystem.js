@@ -1,13 +1,12 @@
 /**
  * System to read and write files from a remote server.
  */
-function RemoteFileSystem(eventSystem) {
+function RemoteFileSystem(eventSystem, settings) {
     var self = this;
     self.fileTree = {};
     self.files = [];
     self.autoSuggestList = new AutoSuggestableFileList();
     self.path = null;
-    self.host = null;
     self.interval = null;
     self.connectionProblem = false;
     self.PROTOCOL_VERSION = "0.1";
@@ -19,7 +18,7 @@ function RemoteFileSystem(eventSystem) {
 
         self.interval = window.setInterval(function() {
             var xhr = new XMLHttpRequest();
-            var url = host + '/ping?token=' + self.authToken;
+            var url = host + '/ping?token=' + settings.get('authToken');
             xhr.open("GET", url);
             xhr.onreadystatechange = function() {
                 if (xhr.readyState == 4) {
@@ -60,9 +59,8 @@ function RemoteFileSystem(eventSystem) {
 
     eventSystem.addEventListener('connected', function(host) {
         var xhr = new XMLHttpRequest();
-        var url = host + '/files?token=' + self.authToken;
+        var url = host + '/files?token=' + settings.get('authToken');
 
-        self.host = host;
         self.files = [];
         self.autoSuggestList.clear();
     
@@ -121,7 +119,7 @@ function RemoteFileSystem(eventSystem) {
         }
 
         var xhr = new XMLHttpRequest();
-        var url = self.host + '/files/' + encodeURIComponent(filename) + '?token=' + self.authToken;
+        var url = settings.get('remoteServer') + '/files/' + encodeURIComponent(filename) + '?token=' + settings.get('authToken');
         var params = 'body=' + encodeURIComponent(buffer.session.getValue());
 
         xhr.open("POST", url);
@@ -146,7 +144,7 @@ function RemoteFileSystem(eventSystem) {
 
     self.getFile = function(filename, callback) {
         var xhr = new XMLHttpRequest();
-        var url = self.host + '/files/' + filename + '?token=' + self.authToken;
+        var url = settings.get('remoteServer') + '/files/' + filename + '?token=' + settings.get('authToken');
         xhr.open("GET", url);
         xhr.onload = function() {
             callback(xhr.responseText);
@@ -169,10 +167,10 @@ function RemoteFileSystem(eventSystem) {
 
         xhr.onload = function() {
             var json = JSON.parse(xhr.responseText);
-            happyEdit.settings.set('authToken', json.authToken, function() {
-                self.authToken = json.authToken;
-                self.load();
-            });
+            settings.set('authToken', json.authToken);
+            settings.set('remoteServer', host);
+            settings.save();
+            self.load();
         };
 
         xhr.send(params);
@@ -182,41 +180,42 @@ function RemoteFileSystem(eventSystem) {
      * Called when server settings is configured.
      */
     self.load = function() {
-        Storage.get('settings', {}, function(data) {
-            if (data.remoteServer && data.authToken) {
-                var host = data.remoteServer;
-                var xhr = new XMLHttpRequest();
-                var url = host + '/info?token=' + data.authToken;
-            
-                xhr.open("GET", url);
-            
-                xhr.onload = function() {
-                    if (xhr.status === 200) {
-                        var json = JSON.parse(xhr.responseText);
+        var remoteServer = settings.get('remoteServer');
+        var authToken  = settings.get('authToken');
 
-                        if (json.PROTOCOL_VERSION != self.PROTOCOL_VERSION) {
-                            throw "Protocol version mismatch";
-                        }
+        console.log(remoteServer, authToken);
 
-                        self.path = json.path;
-                        self.host = host;
-                        self.authToken = data.authToken;
+        if (remoteServer && authToken) {
+            var host = remoteServer;
+            var xhr = new XMLHttpRequest();
+            var url = host + '/info?token=' + authToken;
 
-                        eventSystem.callEventListeners('connected', host);
-                    } else {
-                        console.log('Error:', xhr.responseText);
-                        eventSystem.callEventListeners('connection_problem', host);
+            xhr.open("GET", url);
+
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    var json = JSON.parse(xhr.responseText);
+
+                    if (json.PROTOCOL_VERSION != self.PROTOCOL_VERSION) {
+                        throw "Protocol version mismatch";
                     }
-                };
 
-                xhr.onerror = function() {
+                    self.path = json.path;
+
+                    eventSystem.callEventListeners('connected', host);
+                } else {
+                    console.log('Error:', xhr.responseText);
                     eventSystem.callEventListeners('connection_problem', host);
-                };
+                }
+            };
 
-                xhr.send();
-            } else {
-                console.log('No remote server configured');
-            }
-        });
+            xhr.onerror = function() {
+                eventSystem.callEventListeners('connection_problem', host);
+            };
+
+            xhr.send();
+        } else {
+            console.log('No remote server configured');
+        }
     };
 }

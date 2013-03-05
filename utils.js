@@ -1,7 +1,20 @@
 var Utils = {
     trim: function(s) {
         return s.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
-    }
+    },
+
+    /**
+     * Extend d1 with the values of d2.
+     */
+    extend: function(d1, d2) {
+        var key;
+        for (key in d2) {
+            if (d2.hasOwnProperty(key)) {
+                d1[key] = d2[key];
+            }
+        }
+        return d1;
+    },
 };
 
 function addClass(elem, className) {

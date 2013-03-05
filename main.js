@@ -1,5 +1,6 @@
-function HappyEdit() {
+function HappyEdit(settings) {
     var self = this;
+    self.settings = settings;
     self.bufferCounter = 0;
     self.files = {};
     self.editor = ace.edit("editor");
@@ -13,11 +14,10 @@ function HappyEdit() {
     self.snippetPopup = new SnippetPopup(self);
     self.snippets = new SnippetsAPI(self);
     self.stackOverflow = new StackOverflow(self);
-    self.settings = new Settings(self);
     self.menu = new Menu(self);
     self.topBar = new TopBar(self);
     self.bottomBar = new BottomBar(self);
-    self.fileSystem = new RemoteFileSystem(self.eventSystem);
+    self.fileSystem = new RemoteFileSystem(self.eventSystem, self.settings);
     self.globalKeyboardHandlers = [];
 
     window.onresize = function(event) {
@@ -209,10 +209,8 @@ function HappyEdit() {
 }
 
 window.onload = function() {
-    window.happyEdit = new HappyEdit();
-    /*window.happyEdit.snippetPopup.show();
-    window.happyEdit.snippetPopup.setSnippet({
-        title: "Hello World",
-        code: "import somestuff\n\nprint hello world\nprint 'ok'\nend"
-    });*/
+    var settings = new Settings();
+    settings.load(function() {
+        window.happyEdit = new HappyEdit(settings);
+    });
 };
