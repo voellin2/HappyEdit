@@ -20,5 +20,6 @@ var modes = [
     new Mode("python", "Python", require("ace/mode/python").Mode, ["py"]),
     new Mode("php", "PHP",require("ace/mode/php").Mode, ["php"]),
     new Mode("text", "Text", require("ace/mode/text").Mode, ["txt"]),
-    new Mode("diff", "Diff", require("ace/mode/diff").Mode, ["diff"])
+    new Mode("diff", "Diff", require("ace/mode/diff").Mode, ["diff"]),
+    new Mode("markdown", "Markdown", require("ace/mode/markdown").Mode, ["md"])
 ];
