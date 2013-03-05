@@ -1,10 +1,11 @@
 function Settings() {
     var self = this;
-    var data = {};
 
     self.defaults = {
         remoteServer: null,
     };
+
+    self.data = Utils.extend({}, self.defaults);
 
     self.set = function(key, value) {
         self.data[key] = value;
