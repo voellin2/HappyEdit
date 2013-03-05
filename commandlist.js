@@ -37,14 +37,6 @@ function CommandList(happyEdit) {
             }
         },
         {
-            name: "explore",
-            title: "Explore the file system",
-            hideCommandLine: true,
-            callback: function() {
-                happyEdit.openFileExplorer();
-            }
-        },
-        {
             name: "connect",
             title: "Connect to a remote server",
             hideCommandLine: true,
@@ -157,6 +149,15 @@ function CommandList(happyEdit) {
             hideCommandLine: true,
             callback: function() {
                 happyEdit.menu.show();
+            }
+        },
+        {
+            name: "explore",
+            title: "Open file browser",
+            showInMenu: true,
+            hideCommandLine: true,
+            callback: function() {
+                happyEdit.openFileExplorer();
             }
         },
         {
