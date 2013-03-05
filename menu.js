@@ -21,16 +21,6 @@ function Menu(happyEdit) {
         }
     });
 
-    var $li = HTML.createMenuOption({
-        title: 'Settings',
-        className: 'settings',
-        callback: function() {
-            happyEdit.settings.show();
-            self.hide();
-        }
-    });
-    self.$popup.appendChild($li);
-
     self.$popup.appendChild($fragment);
 
     self.isVisible = function() {
