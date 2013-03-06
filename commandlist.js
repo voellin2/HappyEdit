@@ -18,7 +18,9 @@ function CommandList(happyEdit) {
                         extra: capFileName(happyEdit.fileSystem.path, 60),
                         rel: s,
                         onclick: function() {
-                            self.callback(s);
+                            self.callback(s, function() {
+                                happyEdit.commandLine.hide();
+                            });
                         }
                     });
                 }
@@ -32,6 +34,7 @@ function CommandList(happyEdit) {
                 var filename = args;
                 var buffer = happyEdit.createNewBuffer(filename, '');
                 happyEdit.switchToFile(buffer);
+                callback();
             }
         },
         {
