@@ -1,5 +1,6 @@
 function Menu(happyEdit) {
     var self = this;
+
     self.$topButton = null;
     self.$popup = null;
     self.$blocker = null;
@@ -9,13 +10,18 @@ function Menu(happyEdit) {
     self.$blocker = document.querySelector('.blocker.menu');
 
     var $fragment = document.createDocumentFragment();
+
     happyEdit.commands.each(function(command) {
         if (command.showInMenu) {
             var $li = HTML.createMenuOption({
                 title: command.title,
                 className: command.name,
                 shortcut: getShortcutForCommand(command),
-                callback: command.callback
+                callback: function() {
+                    command.callback(null, function() {
+                        self.hide();
+                    });
+                }
             });
             self.$popup.appendChild($li);
         }

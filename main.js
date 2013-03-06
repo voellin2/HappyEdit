@@ -58,10 +58,15 @@ function HappyEdit(settings) {
                     mac: command.shortcut.mac,
                     sender: "editor"
                 },
-                exec: function() {
+                exec: function(aceEditor) {
                     // We wrap this function call because Ace sends
                     // in the Editor object as the argument otherwise.
-                    command.callback();
+                    command.callback(null, function(error) {
+                        if (error) {
+                            // TODO display error some way.
+                            console.log('Error: ', error);
+                        }
+                    });
                 }
             });
         }
