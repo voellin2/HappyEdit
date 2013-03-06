@@ -7,6 +7,7 @@ function CommandLine(happyEdit) {
     self.$popup = document.querySelector('.popup.command-line');
     self.$input = document.querySelector('.popup.command-line input');
     self.$alert = self.$popup.querySelector('.alert');
+    self.$alertContent = self.$alert.querySelector('.content');
     self.$loadingAnimation = document.querySelector('.popup.command-line .loading-animation');
     self.$suggestions= document.querySelector('.popup.command-line ul');
     self.$blocker = document.querySelector('.blocker.command-line');
@@ -307,12 +308,12 @@ function CommandLine(happyEdit) {
     };
 
     self.showAlert = function(e) {
-        self.$alert.innerHTML = e; // Escape?
+        self.$alertContent.innerHTML = e; // TODO escape?
         self.$alert.style.display = 'block';
     };
 
     self.hideAlert = function(e) {
-        self.$alert.innerHTML = ''; // Escape?
+        self.$alertContent.innerHTML = '';
         self.$alert.style.display = 'none';
     };
 
