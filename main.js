@@ -18,6 +18,7 @@ function HappyEdit(settings) {
     self.bottomBar = new BottomBar(self);
     self.fileSystem = new RemoteFileSystem(self.eventSystem, self.settings);
     self.globalKeyboardHandlers = [];
+    self.config = require('ace/config');
 
     window.onresize = function(event) {
         var w = window.innerWidth;
@@ -102,13 +103,17 @@ function HappyEdit(settings) {
 
     self.editor.getKeyboardHandler().actions['/'] = {
         fn: function(editor, range, count, param) {
-            self.commandLine.show("/");
+            self.config.loadModule('ace/ext/searchbox', function(e) {
+                e.Search(self.editor);
+            });
         }
     };
 
     self.editor.getKeyboardHandler().actions['?'] = {
         fn: function(editor, range, count, param) {
-            self.commandLine.show("?");
+            self.config.loadModule('ace/ext/searchbox', function(e) {
+                e.Search(self.editor);
+            });
         }
     };
 
