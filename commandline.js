@@ -162,10 +162,8 @@ function CommandLine(happyEdit) {
 
     self.commandSuggestionClickCallback = function() {
         self.hide();
-        var commandName = this.getAttribute('rel');
-        var command = happyEdit.commands.getCommandByName(commandName);
         var extract = self.extractCommandParts(self.$input.value);
-        command.callback(extract.args);
+        self.executeCommand(extract.name, extract.args);
     };
 
     self.getArgs = function() {
