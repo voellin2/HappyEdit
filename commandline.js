@@ -287,17 +287,22 @@ function CommandLine(happyEdit) {
      */
     self.executeCommand = function(cmd, args) {
         var command = happyEdit.commands.getCommandByName(cmd);
-        if (command) {
-            try {
-                command.callback(args);
-                if (command.hideCommandLine) {
+
+        if (!command) {
+            self.showAlert("Unknown command '" + cmd + "'");
+            return;
+        }
+
+        try {
+            command.callback(args, function(error) {
+                if (error) {
+                    self.showAlert(error);
+                } else if (command.hideCommandLine) {
                     self.hide();
                 }
-            } catch (e) {
-                self.showAlert(e);
-            }
-        } else {
-            self.showAlert("Unknown command '" + cmd + "'");
+            });
+        } catch (e) {
+            self.showAlert(e);
         }
     };
 

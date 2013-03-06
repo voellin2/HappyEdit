@@ -25,31 +25,31 @@ function CommandList(happyEdit) {
 
                 happyEdit.commandLine.fillSuggestionsList(suggestions);
             },
-            callback: function(args) {
-                var filename = args;
-                if (filename) {
-                    var buffer = happyEdit.createNewBuffer(filename, '');
-                    happyEdit.switchToFile(buffer);
-                    happyEdit.commandLine.hide();
-                } else {
-                    throw "No filename";
+            callback: function(args, callback) {
+                if (!args) {
+                    throw "A filename must be provided";
                 }
+                var filename = args;
+                var buffer = happyEdit.createNewBuffer(filename, '');
+                happyEdit.switchToFile(buffer);
+                //happyEdit.commandLine.hide();
             }
         },
         {
             name: "connect",
             title: "Connect to a remote server",
             hideCommandLine: true,
-            callback: function(args) {
-                happyEdit.fileSystem.connect(args);
+            callback: function(args, callback) {
+                happyEdit.fileSystem.connect(args, callback);
             }
         },
         {
             name: "disconnect",
             title: "Disconnect from any connected server",
             hideCommandLine: true,
-            callback: function() {
+            callback: function(args, callback) {
                 happyEdit.fileSystem.disconnect();
+                callback();
             }
         },
         {
@@ -59,8 +59,9 @@ function CommandList(happyEdit) {
             autoComplete: function(s) {
                 happyEdit.snippets.fillCommandLineWithAutoCompletions(s);
             },
-            callback: function() {
+            callback: function(args, callback) {
                 happyEdit.snippets.fillCommandLineWithAutoCompletions(s);
+                callback();
             }
         },
         {
@@ -70,16 +71,18 @@ function CommandList(happyEdit) {
             autoComplete: function(s) {
                 happyEdit.stackOverflow.fillCommandLineWithAutoCompletions(s);
             },
-            callback: function() {
+            callback: function(args, callback) {
                 happyEdit.stackOverflow.fillCommandLineWithAutoCompletions(s);
+                callback();
             }
         },
         {
             name: "ls",
             title: "Show Open Buffers",
             hideCommandLine: false,
-            callback: function() {
+            callback: function(args, callback) {
                 happyEdit.commandLine.showOpenBuffers();
+                callback();
             }
         },
         {
@@ -90,8 +93,9 @@ function CommandList(happyEdit) {
                 win: "Ctrl-T",
                 mac: "Command-T",
             },
-            callback: function() {
+            callback: function(args, callback) {
                 happyEdit.commandLine.show('');
+                callback();
             }
         },
         {
@@ -103,8 +107,9 @@ function CommandList(happyEdit) {
                 win: "Ctrl-S",
                 mac: "Command-S",
             },
-            callback: function(args) {
+            callback: function(args, callback) {
                 happyEdit.fileSystem.write(happyEdit.currentFile, args);
+                callback(); // TODO: call when write is complete
             }
         },
         {
@@ -114,8 +119,9 @@ function CommandList(happyEdit) {
                 win: "Ctrl-N",
                 mac: "Command-N",
             },
-            callback: function() {
+            callback: function(args, callback) {
                 happyEdit.openDummyBuffer();
+                callback();
             }
         },
         {
@@ -125,8 +131,9 @@ function CommandList(happyEdit) {
                 win: "Ctrl-Tab",
                 mac: "Command-Shift-]",
             },
-            callback: function() {
+            callback: function(args, callback) {
                 happyEdit.topBar.nextTab();
+                callback();
             }
         },
         {
@@ -136,8 +143,9 @@ function CommandList(happyEdit) {
                 win: "Ctrl-Shift-Tab",
                 mac: "Command-Shift-[",
             },
-            callback: function() {
+            callback: function(args, callback) {
                 happyEdit.topBar.prevTab();
+                callback();
             }
         },
         {
@@ -147,16 +155,18 @@ function CommandList(happyEdit) {
                 win: "Ctrl-W",
                 mac: "Command-W",
             },
-            callback: function() {
+            callback: function(args, callback) {
                 happyEdit.closeFile(happyEdit.currentFile);
+                callback();
             }
         },
         {
             name: "openMenu",
             title: "Open Menu",
             hideCommandLine: true,
-            callback: function() {
+            callback: function(args, callback) {
                 happyEdit.menu.show();
+                callback();
             }
         },
         {
@@ -164,16 +174,18 @@ function CommandList(happyEdit) {
             title: "Open file browser",
             showInMenu: true,
             hideCommandLine: true,
-            callback: function() {
+            callback: function(args, callback) {
                 happyEdit.openFileExplorer();
+                callback();
             }
         },
         {
             name: "q",
             title: "Quit HappyEdit",
             hideCommandLine: true,
-            callback: function() {
+            callback: function(args, callback) {
                 happyEdit.closeFile(happyEdit.currentFile);
+                callback();
             }
         }
     ];

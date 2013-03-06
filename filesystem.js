@@ -152,7 +152,7 @@ function RemoteFileSystem(eventSystem, settings) {
         xhr.send();
     };
 
-    self.connect = function(args) {
+    self.connect = function(args, callback) {
         args = args.split(' ');
 
         var host = args[0];
@@ -174,11 +174,19 @@ function RemoteFileSystem(eventSystem, settings) {
         xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 
         xhr.onload = function() {
+            if (xhr.status !== 200) {
+                callback(xhr.responseText || 'Unknown error');
+            }
             var json = JSON.parse(xhr.responseText);
             settings.set('authToken', json.authToken);
             settings.set('remoteServer', host);
             settings.save();
             self.load();
+            callback();
+        };
+
+        xhr.onerror = function()  {
+            callback(xhr.responseText || 'Unknown error');
         };
 
         xhr.send(params);
