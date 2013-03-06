@@ -130,6 +130,14 @@ body {
     top: 10px;
     font-size: 20px;
 }
+.command-line .alert {
+    padding: 10px;
+    margin-top: 10px;
+}
+.command-line .alert-error {
+    background: red;
+    color: white;
+}
 #top {
     padding: 10px 10px 0 10px;
     height: 26px;

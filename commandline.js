@@ -6,6 +6,7 @@ function CommandLine(happyEdit) {
 
     self.$popup = document.querySelector('.popup.command-line');
     self.$input = document.querySelector('.popup.command-line input');
+    self.$alert = self.$popup.querySelector('.alert');
     self.$loadingAnimation = document.querySelector('.popup.command-line .loading-animation');
     self.$suggestions= document.querySelector('.popup.command-line ul');
     self.$blocker = document.querySelector('.blocker.command-line');
@@ -161,7 +162,6 @@ function CommandLine(happyEdit) {
     };
 
     self.commandSuggestionClickCallback = function() {
-        self.hide();
         var extract = self.extractCommandParts(self.$input.value);
         self.executeCommand(extract.name, extract.args);
     };
@@ -288,13 +288,27 @@ function CommandLine(happyEdit) {
     self.executeCommand = function(cmd, args) {
         var command = happyEdit.commands.getCommandByName(cmd);
         if (command) {
-            command.callback(args);
-            if (command.hideCommandLine) {
-                self.hide();
+            try {
+                command.callback(args);
+                if (command.hideCommandLine) {
+                    self.hide();
+                }
+            } catch (e) {
+                self.showAlert(e);
             }
         } else {
-            throw "Unknown command '" + cmd + "'";
+            self.showAlert("Unknown command '" + cmd + "'");
         }
+    };
+
+    self.showAlert = function(e) {
+        self.$alert.innerHTML = e; // Escape?
+        self.$alert.style.display = 'block';
+    };
+
+    self.hideAlert = function(e) {
+        self.$alert.innerHTML = ''; // Escape?
+        self.$alert.style.display = 'none';
     };
 
     self.isVisible = function() {
@@ -342,6 +356,7 @@ function CommandLine(happyEdit) {
     self.hide = function() {
         self.$popup.style.display = 'none';
         self.$blocker.style.display = 'none';
+        self.hideAlert();
         happyEdit.popGlobalKeyboardHandler();
         happyEdit.editor.focus();
     };
