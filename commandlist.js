@@ -176,6 +176,10 @@ function CommandList(happyEdit) {
             title: "Open file browser",
             showInMenu: true,
             hideCommandLine: true,
+            shortcut: {
+                win: "Ctrl-E",
+                mac: "Command-E",
+            },
             callback: function(args, callback) {
                 happyEdit.openFileExplorer();
                 callback();
