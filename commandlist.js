@@ -173,7 +173,7 @@ function CommandList(happyEdit) {
         },
         {
             name: "explore",
-            title: "Open file browser",
+            title: "Open File Browser",
             showInMenu: true,
             hideCommandLine: true,
             shortcut: {
@@ -196,8 +196,11 @@ function CommandList(happyEdit) {
         }
     ];
 
-    self.autoCompletions = new AutoSuggestList(self._commands.map(function(x) {
-        return x.name;
+    self.autoCompletions = new FilterList(self._commands.map(function(x) {
+        return {
+            value: x.name,
+            keys: [x.name]
+        };
     }));
 
     self.each = function(callback) {

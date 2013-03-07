@@ -3,9 +3,9 @@
  * designed for file names, so that for example "main.js" will match
  * "scripts/main.js".
  */
-function AutoSuggestableFileList(data) {
+function FilterList(data) {
     var self = this;
-    self.data = null;
+    self.data = data || [];
     self.trie = {};
     
     self.load = function(data) {
@@ -19,36 +19,33 @@ function AutoSuggestableFileList(data) {
     };
 
     /**
-     * Indexes the passed in filename.
+     * Indexes the passed in string/keys.
      */
-    self._makeAutoSuggestable = function(filename) {
-        var parts;
-    
-        function add(filename, fullFileName, isLastPart) {
+    self._makeAutoSuggestable = function(value, keys) {
+        function add(part, isLast) {
             var i = 0;
             var key = '';
             var hash = self.trie;
     
-            for (i = 0; i < filename.length; i += 1) {
-                key += filename[i];
+            for (i = 0; i < part.length; i += 1) {
+                key += part[i];
                 if (!hash.hasOwnProperty(key)) {
                     hash[key] = {};
                 }
                 hash = hash[key];
     
-                if (i === filename.length - 1 && isLastPart) {
-                    if (hash.hasOwnProperty('fullFileName')) {
-                        hash.fullFileName.push(fullFileName);
+                if (i === part.length - 1 && isLast) {
+                    if (hash.hasOwnProperty('fullString')) {
+                        hash.fullString.push(value);
                     } else {
-                        hash.fullFileName = [fullFileName];
+                        hash.fullString = [value];
                     }
                 }
             }
         }
     
-        parts = filename.toLowerCase().split('/');
-        parts.forEach(function(part, i) {
-            add(part, filename, i === (parts.length - 1));
+        keys.forEach(function(key, i) {
+            add(key, i === (keys.length - 1));
         });
     };
     
@@ -56,8 +53,8 @@ function AutoSuggestableFileList(data) {
      * (Re)indexes the source data array.
      */
     self.index = function() {
-        self.data.forEach(function(filename, i) {
-            self._makeAutoSuggestable(filename);
+        self.data.forEach(function(item, i) {
+            self._makeAutoSuggestable(item.value, item.keys);
         });
     };
     
@@ -112,18 +109,30 @@ function AutoSuggestableFileList(data) {
 
         return ret;
     };
+    
+    self.index();
 }
 
 if (typeof window === 'undefined') {
     (function() {
         var assert = require('assert');
-        var x = new AutoSuggestableFileList();
-        x.load([
+        var x = new FilterList();
+
+        var data = [
             'server.py',
             'ace/server.py',
-        ]);
+        ];
 
-        assert.equal(x.trie['s']['se']['ser']['serv']['serve']['server']['server.']['server.p']['server.py']['fullFileName'][0], 'server.py');
+        var map = data.map(function(filename) {
+            return {
+                value: filename,
+                keys: filename.toLowerCase().split('/')
+            };
+        });
+
+        x.load(map);
+
+        assert.equal(x.trie['s']['se']['ser']['serv']['serve']['server']['server.']['server.p']['server.py']['fullString'][0], 'server.py');
 
         var suggestions = x.getSuggestions('serv');
         assert.equal(suggestions.length, 2);

@@ -5,7 +5,7 @@ function RemoteFileSystem(eventSystem, settings) {
     var self = this;
     self.fileTree = {};
     self.files = [];
-    self.autoSuggestList = new AutoSuggestableFileList();
+    self.autoSuggestList = new FilterList();
     self.path = null;
     self.interval = null;
     self.connectionProblem = false;
@@ -54,7 +54,14 @@ function RemoteFileSystem(eventSystem, settings) {
             }
         }
 
-        self.autoSuggestList.load(self.files);
+        var map = self.files.map(function(filename) {
+            return {
+                value: filename,
+                keys: filename.toLowerCase().split('/')
+            };
+        });
+
+        self.autoSuggestList.load(map);
     };
 
     eventSystem.addEventListener('connected', function(host) {
