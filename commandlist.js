@@ -2,9 +2,10 @@ function CommandList(happyEdit) {
     var self = this;
     self._commands = [
         {
-            name: "e",
+            name: "edit",
             title: "Edit File",
             hideCommandLine: true,
+            alias: ["e", "open"],
             autoComplete: function(s) {
                 var self = this;
                 var suggestions = happyEdit.fileSystem.getSuggestions(s).map(function(x) {
@@ -39,6 +40,7 @@ function CommandList(happyEdit) {
         },
         {
             name: "connect",
+            alias: [],
             title: "Connect to a remote server",
             hideCommandLine: true,
             callback: function(args, callback) {
@@ -47,6 +49,7 @@ function CommandList(happyEdit) {
         },
         {
             name: "disconnect",
+            alias: [],
             title: "Disconnect from any connected server",
             hideCommandLine: true,
             callback: function(args, callback) {
@@ -56,6 +59,7 @@ function CommandList(happyEdit) {
         },
         {
             name: "snippet",
+            alias: [],
             title: "Search for code snippets",
             hideCommandLine: false,
             autoComplete: function(s) {
@@ -68,6 +72,7 @@ function CommandList(happyEdit) {
         },
         {
             name: "stackoverflow",
+            alias: [],
             title: "Search Stack Overflow",
             hideCommandLine: false,
             autoComplete: function(s) {
@@ -80,6 +85,7 @@ function CommandList(happyEdit) {
         },
         {
             name: "ls",
+            alias: [],
             title: "Show Open Buffers",
             hideCommandLine: false,
             callback: function(args, callback) {
@@ -89,6 +95,7 @@ function CommandList(happyEdit) {
         },
         {
             name: "openFile",
+            alias: [],
             title: "Quick Open File",
             showInMenu: true,
             shortcut: {
@@ -101,7 +108,8 @@ function CommandList(happyEdit) {
             }
         },
         {
-            name: "w",
+            name: "save",
+            alias: ["w", "write"],
             title: "Save Current File",
             showInMenu: true,
             hideCommandLine: true,
@@ -116,6 +124,7 @@ function CommandList(happyEdit) {
         },
         {
             name: "tabnew",
+            alias: [],
             title: "Open New Tab",
             shortcut: {
                 win: "Ctrl-N",
@@ -128,6 +137,7 @@ function CommandList(happyEdit) {
         },
         {
             name: "tabnext",
+            alias: [],
             title: "Select Next Tab",
             shortcut: {
                 win: "Ctrl-Tab",
@@ -140,6 +150,7 @@ function CommandList(happyEdit) {
         },
         {
             name: "tabprevious",
+            alias: [],
             title: "Select Previous Tab",
             shortcut: {
                 win: "Ctrl-Shift-Tab",
@@ -152,6 +163,7 @@ function CommandList(happyEdit) {
         },
         {
             name: "closeFile",
+            alias: [],
             title: "Close Current file",
             shortcut: {
                 win: "Ctrl-W",
@@ -164,6 +176,7 @@ function CommandList(happyEdit) {
         },
         {
             name: "openMenu",
+            alias: [],
             title: "Open Menu",
             hideCommandLine: true,
             callback: function(args, callback) {
@@ -173,6 +186,7 @@ function CommandList(happyEdit) {
         },
         {
             name: "explore",
+            alias: [],
             title: "Open File Browser",
             showInMenu: true,
             hideCommandLine: true,
@@ -186,7 +200,8 @@ function CommandList(happyEdit) {
             }
         },
         {
-            name: "q",
+            name: "quit",
+            alias: ["q", "exit"],
             title: "Quit HappyEdit",
             hideCommandLine: true,
             callback: function(args, callback) {
@@ -197,9 +212,12 @@ function CommandList(happyEdit) {
     ];
 
     self.autoCompletions = new FilterList(self._commands.map(function(x) {
+        var keys = [x.name];
+        keys = keys.concat(x.title.toLowerCase().split(' '));
+        keys = keys.concat(x.alias);
         return {
             value: x.name,
-            keys: [x.name].concat(x.title.toLowerCase().split(' '))
+            keys: keys,
         };
     }));
 
