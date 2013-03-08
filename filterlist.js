@@ -18,43 +18,38 @@ function FilterList(data) {
         self.trie = {};
     };
 
-    /**
-     * Indexes the passed in string/keys.
-     */
-    self._makeAutoSuggestable = function(value, keys) {
-        function add(part, isLast) {
-            var i = 0;
-            var key = '';
-            var hash = self.trie;
-    
-            for (i = 0; i < part.length; i += 1) {
-                key += part[i];
-                if (!hash.hasOwnProperty(key)) {
-                    hash[key] = {};
-                }
-                hash = hash[key];
-    
-                if (i === part.length - 1 && isLast) {
-                    if (hash.hasOwnProperty('fullString')) {
-                        hash.fullString.push(value);
-                    } else {
-                        hash.fullString = [value];
-                    }
+    self.add = function(key, value) {
+        var i;
+        var partialKey = '';
+        var hash = self.trie;
+
+        for (i = 0; i < key.length; i += 1) {
+            partialKey += key[i];
+
+            if (!hash.hasOwnProperty(partialKey)) {
+                hash[partialKey] = {};
+            }
+
+            hash = hash[partialKey];
+
+            if (partialKey === key) {
+                if (hash.hasOwnProperty('fullString')) {
+                    hash.fullString.push(value);
+                } else {
+                    hash.fullString = [value];
                 }
             }
         }
-    
-        keys.forEach(function(key, i) {
-            add(key, i === (keys.length - 1));
-        });
     };
-    
+
     /**
      * (Re)indexes the source data array.
      */
     self.index = function() {
         self.data.forEach(function(item, i) {
-            self._makeAutoSuggestable(item.value, item.keys);
+            item.keys.forEach(function(key, i) {
+                self.add(key, item.value);
+            });
         });
     };
     
