@@ -97,7 +97,7 @@ function HappyEdit(settings) {
 
     self.editor.getKeyboardHandler().actions[':'] = {
         fn: function(editor, range, count, param) {
-            self.commandLine.show(":");
+            self.commandLine.show('');
         }
     };
 

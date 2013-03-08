@@ -72,23 +72,25 @@ function CommandLine(happyEdit) {
             command,
             extract;
 
-        if (inputString[0] === ':' && inputString.length > 1) {
-            if (inputString.indexOf(' ') === -1) {
-                self.showCommandSuggestions(inputString.split(':')[1]);
-            } else {
-                extract = self.extractCommandParts(inputString);
-                command = happyEdit.commands.getCommandByName(extract.name);
-                if (command && command.autoComplete) {
-                    command.autoComplete(extract.args);
-                }
-            }
+        if (!inputString) {
+            return;
+        }
+
+        extract = self.extractCommandParts(inputString);
+        command = happyEdit.commands.getCommandByName(extract.name);
+
+        if (command && command.autoComplete) {
+            command.autoComplete(extract.args);
         } else {
-            self.showCommandTSuggestions(inputString);
+            var suggestions1 = self.getCommandSuggestions(inputString);
+            var suggestions2 = self.getCommandTSuggestions(inputString);
+            var suggestions = suggestions1.concat(suggestions2);
+            self.fillSuggestionsList(suggestions);
         }
     };
 
     self.extractCommandParts = function(inputString) {
-        var split = inputString.substr(1).split(' ');
+        var split = inputString.split(' ');
         return {
             name: split[0],
             args: split.splice(1, split.length).join(' ')
@@ -166,13 +168,6 @@ function CommandLine(happyEdit) {
         self.executeCommand(extract.name, extract.args);
     };
 
-    self.getArgs = function() {
-        var split = self.$input.value.split(':')[1].split(' ');
-        var command = split[0];
-        var args = split[1];
-        return args;
-    };
-
     self.fillSuggestionsList = function(suggestions) {
         var fragment = document.createDocumentFragment();
 
@@ -192,23 +187,21 @@ function CommandLine(happyEdit) {
         }
     };
 
-    self.showCommandTSuggestions = function(s) {
+    self.getCommandTSuggestions = function(s) {
         var suggestions = happyEdit.fileSystem.getSuggestions(s);
-        suggestions = suggestions.map(function(x) {
+        return suggestions.map(function(x) {
             var y = x;
             y.onclick = self.fileSuggestionClickCallback;
             return y;
         });
-        self.fillSuggestionsList(suggestions);
     };
 
-    self.showCommandSuggestions = function(s) {
-        var suggestions = happyEdit.commands.getSuggestions(s).map(function(x) {
+    self.getCommandSuggestions = function(s) {
+        return happyEdit.commands.getSuggestions(s).map(function(x) {
             var y = x;
             y.onclick = self.commandSuggestionClickCallback;
             return y;
         });
-        self.fillSuggestionsList(suggestions);
     };
 
     self.grep = function(q) {
