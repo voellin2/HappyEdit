@@ -199,7 +199,7 @@ function CommandList(happyEdit) {
     self.autoCompletions = new FilterList(self._commands.map(function(x) {
         return {
             value: x.name,
-            keys: [x.name]
+            keys: [x.name].concat(x.title.toLowerCase().split(' '))
         };
     }));
 
