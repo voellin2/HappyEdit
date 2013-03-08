@@ -204,32 +204,6 @@ function CommandLine(happyEdit) {
         });
     };
 
-    self.grep = function(q) {
-        var xhr = new XMLHttpRequest();
-
-        if (!q) {
-            return;
-        }
-
-        self.$input.setAttribute('disabled');
-
-        xhr.open("GET", '/grep?q=' + encodeURIComponent(q));
-
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState == 4) {
-                self.$input.removeAttribute('disabled');
-                try {
-                    var json = JSON.parse(xhr.responseText);
-                    self.fillSuggestionsList(json);
-                } catch (e) {
-                    throw 'Could not parse grep response';
-                }
-            }
-        };
-
-        xhr.send();
-    };
-
     /**
      * Handles a :<command> or CommandT request.
      */
