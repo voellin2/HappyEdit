@@ -9,7 +9,7 @@ function CommandLine(happyEdit) {
     self.$alert = self.$popup.querySelector('.alert');
     self.$alertContent = self.$alert.querySelector('.content');
     self.$loadingAnimation = document.querySelector('.popup.command-line .loading-animation');
-    self.$suggestions= document.querySelector('.popup.command-line ul');
+    self.$suggestions = document.querySelector('.popup.command-line ul');
     self.$blocker = document.querySelector('.blocker.command-line');
     self.runKeyUpHandler = false;
 
@@ -65,6 +65,7 @@ function CommandLine(happyEdit) {
         if (!self.runKeyUpHandler) {
             return;
         }
+
         self.runKeyUpHandler = false;
 
         var inputString = this.value,
@@ -98,60 +99,60 @@ function CommandLine(happyEdit) {
     self.$input.onkeyup = self.keyUp;
 
     self.hasSuggestions = function() {
-        return Boolean(this.suggestionElements && this.suggestionElements.length);
+        return Boolean(self.suggestionElements && self.suggestionElements.length);
     };
 
     self.enterTextFromFirstSuggestion = function() {
-        if (this.suggestionElements) {
-            var $elem = this.suggestionElements[this.selectedSuggestionIndex];
+        if (self.suggestionElements) {
+            var $elem = self.suggestionElements[self.selectedSuggestionIndex];
             var value = $elem.getAttribute('rel') || $elem.querySelector('.title').innerHTML;
-            if (this.$input.value && this.$input.value[0] === ':') {
+            if (self.$input.value && self.$input.value[0] === ':') {
 
                 // Are we completing a command argument or an entire command?
-                if (this.$input.value.indexOf(' ') !== -1) {
-                    var split = this.$input.value.split(' ');
-                    this.$input.value = split[0] + ' ' + value;
+                if (self.$input.value.indexOf(' ') !== -1) {
+                    var split = self.$input.value.split(' ');
+                    self.$input.value = split[0] + ' ' + value;
 
                 } else {
-                    this.$input.value = ':' + value;
+                    self.$input.value = ':' + value;
                 }
 
             } else {
-                this.$input.value = value;
+                self.$input.value = value;
             }
         }
     };
 
     self.selectSuggestion = function(newIndex) {
-        if (newIndex >= this.suggestionElements.length) {
+        if (newIndex >= self.suggestionElements.length) {
             newIndex = 0;
         } else if (newIndex < 0) {
-            newIndex = this.suggestionElements.length - 1;
+            newIndex = self.suggestionElements.length - 1;
         }
-        if (this.selectedSuggestionIndex !== null) {
-            removeClass(this.suggestionElements[this.selectedSuggestionIndex], 'hover');
+        if (self.selectedSuggestionIndex !== null) {
+            removeClass(self.suggestionElements[self.selectedSuggestionIndex], 'hover');
         }
-        this.selectedSuggestionIndex = newIndex;
-        addClass(this.suggestionElements[newIndex], 'hover');
+        self.selectedSuggestionIndex = newIndex;
+        addClass(self.suggestionElements[newIndex], 'hover');
     };
 
     self.navigateSuggestionDown = function() {
-        this.selectSuggestion((this.selectedSuggestionIndex || 0) + 1);
+        self.selectSuggestion((self.selectedSuggestionIndex || 0) + 1);
     };
 
     self.navigateSuggestionUp = function() {
-        this.selectSuggestion((this.selectedSuggestionIndex || 0) - 1);
+        self.selectSuggestion((self.selectedSuggestionIndex || 0) - 1);
     };
 
     self.openSelectedSuggestion = function() {
-        this.suggestionElements[this.selectedSuggestionIndex].onclick();
+        self.suggestionElements[self.selectedSuggestionIndex].onclick();
     };
 
     self.clearSuggestions = function(suggestions) {
-        this.suggestionElements = [];
-        this.selectedSuggestionIndex = null;
-        this.$suggestions.innerHTML = '';
-        this.$suggestions.style.display = 'none';
+        self.suggestionElements = [];
+        self.selectedSuggestionIndex = null;
+        self.$suggestions.innerHTML = '';
+        self.$suggestions.style.display = 'none';
     };
 
     self.fileSuggestionClickCallback = function() {
@@ -192,7 +193,8 @@ function CommandLine(happyEdit) {
     };
 
     self.showCommandTSuggestions = function(s) {
-        var suggestions = happyEdit.fileSystem.getSuggestions(s).map(function(x) {
+        var suggestions = happyEdit.fileSystem.getSuggestions(s);
+        suggestions = suggestions.map(function(x) {
             var y = x;
             y.onclick = self.fileSuggestionClickCallback;
             return y;
@@ -290,7 +292,7 @@ function CommandLine(happyEdit) {
     };
 
     self.isVisible = function() {
-        return this.$popup.style.display === 'block';
+        return self.$popup.style.display === 'block';
     };
 
     self.globalKeyboardHandler = function(event) {
