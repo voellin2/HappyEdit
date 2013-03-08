@@ -81,10 +81,8 @@ function CommandLine(happyEdit) {
                     command.autoComplete(extract.args);
                 }
             }
-        } else if (inputString[0] !== '/' && inputString[0] !== '?') {
-            self.showCommandTSuggestions(inputString);
         } else {
-            self.clearSuggestions();
+            self.showCommandTSuggestions(inputString);
         }
     };
 
@@ -256,7 +254,7 @@ function CommandLine(happyEdit) {
     };
 
     /**
-     * Handles a :<command>, /<search> or CommandT request.
+     * Handles a :<command> or CommandT request.
      */
     self.execute = function() {
         var value = self.$input.value;
@@ -270,14 +268,6 @@ function CommandLine(happyEdit) {
             } else {
                 self.executeCommand(extract.name, extract.args);
             }
-        } else if (value[0] === "/") {
-            needle = value.split('/')[1];
-            happyEdit.editor.find(needle);
-            self.hide();
-        } else if (value[0] === "?") {
-            needle = value.split('?')[1];
-            happyEdit.editor.findPrevious(needle);
-            self.hide();
         } else {
             self.openSelectedSuggestion();
         }
