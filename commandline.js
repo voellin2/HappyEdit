@@ -105,23 +105,19 @@ function CommandLine(happyEdit) {
     };
 
     self.enterTextFromFirstSuggestion = function() {
-        if (self.suggestionElements) {
-            var $elem = self.suggestionElements[self.selectedSuggestionIndex];
-            var value = $elem.getAttribute('rel') || $elem.querySelector('.title').innerHTML;
-            if (self.$input.value && self.$input.value[0] === ':') {
+        if (!self.suggestionElements) {
+            return;
+        }
 
-                // Are we completing a command argument or an entire command?
-                if (self.$input.value.indexOf(' ') !== -1) {
-                    var split = self.$input.value.split(' ');
-                    self.$input.value = split[0] + ' ' + value;
+        var $elem = self.suggestionElements[self.selectedSuggestionIndex];
+        var value = $elem.getAttribute('rel') || $elem.querySelector('.title').innerHTML;
 
-                } else {
-                    self.$input.value = ':' + value;
-                }
-
-            } else {
-                self.$input.value = value;
-            }
+        // Are we completing a command argument or an entire command?
+        if (self.$input.value.indexOf(' ') !== -1) {
+            var split = self.$input.value.split(' ');
+            self.$input.value = split[0] + ' ' + value;
+        } else {
+            self.$input.value = value;
         }
     };
 
@@ -208,15 +204,14 @@ function CommandLine(happyEdit) {
      * Handles a command or CommandT request.
      */
     self.execute = function() {
-        var value = self.$input.value;
-        var needle;
+        var inputString = self.$input.value;
         var extract;
 
-        if (isNumeric(value)) {
-            happyEdit.editor.gotoLine(value);
+        if (isNumeric(inputString)) {
+            happyEdit.editor.gotoLine(inputString);
             self.hide();
         } else {
-            extract = self.extractCommandParts(value);
+            extract = self.extractCommandParts(inputString);
             self.executeCommand(extract.name, extract.args);
         }
     };
