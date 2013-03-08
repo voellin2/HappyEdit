@@ -14,4 +14,4 @@ var Storage = {
         localStorage[key] = JSON.stringify(val);
         callback();
     }
-}
+};
