@@ -102,6 +102,11 @@ function FilterList(data) {
             return 0;
         });
 
+        // Filter dupes
+        ret = ret.filter(function(v, i, a) {
+            return a.indexOf(v) == i;
+        });
+
         return ret;
     };
     
