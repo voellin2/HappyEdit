@@ -205,22 +205,19 @@ function CommandLine(happyEdit) {
     };
 
     /**
-     * Handles a :<command> or CommandT request.
+     * Handles a command or CommandT request.
      */
     self.execute = function() {
         var value = self.$input.value;
         var needle;
         var extract;
-        if (value[0] === ":") {
-            extract = self.extractCommandParts(value);
-            if (isNumeric(extract.name)) {
-                happyEdit.editor.gotoLine(extract.name);
-                self.hide();
-            } else {
-                self.executeCommand(extract.name, extract.args);
-            }
+
+        if (isNumeric(value)) {
+            happyEdit.editor.gotoLine(value);
+            self.hide();
         } else {
-            self.openSelectedSuggestion();
+            extract = self.extractCommandParts(value);
+            self.executeCommand(extract.name, extract.args);
         }
     };
 
