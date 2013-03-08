@@ -84,16 +84,6 @@ function CommandList(happyEdit) {
             }
         },
         {
-            name: "ls",
-            alias: [],
-            title: "Show Open Buffers",
-            hideCommandLine: false,
-            callback: function(args, callback) {
-                happyEdit.commandLine.showOpenBuffers();
-                callback();
-            }
-        },
-        {
             name: "openFile",
             alias: [],
             title: "Quick Open File",

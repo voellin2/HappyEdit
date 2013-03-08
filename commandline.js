@@ -191,24 +191,6 @@ function CommandLine(happyEdit) {
         }
     };
 
-    self.showOpenBuffers = function() {
-        var key;
-        var file;
-        var suggestions = [];
-        for (key in happyEdit.files) {
-            if (happyEdit.files.hasOwnProperty(key)) {
-                file = happyEdit.happyEdit.files[key];
-                suggestions.push({
-                    title: file.basename,
-                    extra: file.displayPath,
-                    rel: file.displayPath,
-                    onclick: self.fileSuggestionClickCallback
-                });
-            }
-        }
-        self.fillSuggestionsList(suggestions);
-    };
-
     self.showCommandTSuggestions = function(s) {
         var suggestions = happyEdit.fileSystem.getSuggestions(s).map(function(x) {
             var y = x;
