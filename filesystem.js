@@ -95,16 +95,13 @@ function RemoteFileSystem(eventSystem, settings) {
     self.getSuggestions = function(q) {
         var suggestions = [];
         var i;
+        var split;
         var autoCompletions = this.autoSuggestList.getSuggestions(q);
         var autoCompletion;
 
-        if (!autoCompletions.length) {
-            autoCompletions = self.files;
-        }
-
         for (i = 0; i < autoCompletions.length; i += 1) {
             autoCompletion = autoCompletions[i];
-            var split = autoCompletion.split(PATH_SEPARATOR);
+            split = autoCompletion.split(PATH_SEPARATOR);
             suggestions.push({
                 title: split.pop(),
                 extra: capFileName(autoCompletion, 60),
