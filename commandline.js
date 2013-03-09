@@ -229,8 +229,6 @@ function CommandLine(happyEdit) {
 
         extract = self.extractCommandParts(inputString);
         self.executeCommand(extract.name, extract.args);
-
-        self.hide();
     };
 
     /**
