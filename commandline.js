@@ -76,27 +76,31 @@ function CommandLine(happyEdit) {
             return;
         }
 
+        self.fillSuggestionsList(self.getSuggestions(inputString));
+    };
+
+    self.getSuggestions = function(inputString) {
+        var ret = [];
+
         extract = self.extractCommandParts(inputString);
         command = happyEdit.commands.getCommandByName(extract.name);
 
         if (command && command.autoComplete) {
             command.autoComplete(extract.args);
         } else {
-            var suggestions = [];
-
             if (isNumeric(inputString)) {
-                suggestions.push({
+                ret.push({
                     title: 'Jump to line',
                     extra: 'Jump to line ' + inputString,
-                    onclick: self.jumpSuggestionCallback,
+                    onclick: self.jumpSuggestionCallback
                 });
             }
 
-            suggestions = suggestions.concat(self.getCommandSuggestions(inputString));
-            suggestions = suggestions.concat(self.getCommandTSuggestions(inputString));
-
-            self.fillSuggestionsList(suggestions);
+            ret = ret.concat(self.getCommandSuggestions(inputString));
+            ret = ret.concat(self.getCommandTSuggestions(inputString));
         }
+
+        return ret;
     };
 
     self.extractCommandParts = function(inputString) {
