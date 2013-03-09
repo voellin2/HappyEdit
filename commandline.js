@@ -82,9 +82,19 @@ function CommandLine(happyEdit) {
         if (command && command.autoComplete) {
             command.autoComplete(extract.args);
         } else {
-            var suggestions1 = self.getCommandSuggestions(inputString);
-            var suggestions2 = self.getCommandTSuggestions(inputString);
-            var suggestions = suggestions1.concat(suggestions2);
+            var suggestions = [];
+
+            if (isNumeric(inputString)) {
+                suggestions.push({
+                    title: 'Jump to line',
+                    extra: 'Jump to line ' + inputString,
+                    onclick: self.jumpSuggestionCallback,
+                });
+            }
+
+            suggestions = suggestions.concat(self.getCommandSuggestions(inputString));
+            suggestions = suggestions.concat(self.getCommandTSuggestions(inputString));
+
             self.fillSuggestionsList(suggestions);
         }
     };
@@ -164,6 +174,12 @@ function CommandLine(happyEdit) {
         self.executeCommand(extract.name, extract.args);
     };
 
+    self.jumpSuggestionCallback = function() {
+        var inputString = self.$input.value;
+        happyEdit.editor.gotoLine(inputString);
+        self.hide();
+    };
+
     self.fillSuggestionsList = function(suggestions) {
         var fragment = document.createDocumentFragment();
 
@@ -201,19 +217,16 @@ function CommandLine(happyEdit) {
     };
 
     /**
-     * Handles a command or CommandT request.
+     * Handles a command.
      */
     self.execute = function() {
         var inputString = self.$input.value;
         var extract;
 
-        if (isNumeric(inputString)) {
-            happyEdit.editor.gotoLine(inputString);
-            self.hide();
-        } else {
-            extract = self.extractCommandParts(inputString);
-            self.executeCommand(extract.name, extract.args);
-        }
+        extract = self.extractCommandParts(inputString);
+        self.executeCommand(extract.name, extract.args);
+
+        self.hide();
     };
 
     /**
