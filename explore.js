@@ -2,6 +2,7 @@ function Explorer(happyEdit) {
     var self = this;
 
     self.$view = document.getElementById('explorer');
+    self.filename = '__explorer__';
     self.columns = [];
     self.activeColumn = null;
     self.columnIndex = 0;

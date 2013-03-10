@@ -1,7 +1,6 @@
 function HappyEdit(settings) {
     var self = this;
     self.settings = settings;
-    self.bufferCounter = 0;
     self.files = {};
     self.editor = ace.edit("editor");
     self.$editor = document.getElementById('editor');
@@ -145,22 +144,15 @@ function HappyEdit(settings) {
         if (self.getNumberOfOpenFiles() > 1) {
             var tab = self.topBar.getTabForFile(file);
             tab.close(true);
-            delete self.files[self.currentFile.id];
+            delete self.files[self.currentFile.filename];
         } else {
             window.close();
         }
     };
 
     self.getBufferByFilename = function(filename) {
-        var key;
-        var buffer;
-        for (key in self.files) {
-            if (self.files.hasOwnProperty(key)) {
-                buffer = self.files[key];
-                if (buffer.filename === filename) {
-                    return buffer;
-                }
-            }
+        if (self.files.hasOwnProperty(filename)) {
+            return self.files[filename];
         }
     };
 
@@ -174,8 +166,8 @@ function HappyEdit(settings) {
             self.currentFile.setBody(body);
             return self.currentFile;
         } else {
-            var file = new Buffer(self.bufferCounter++, filename, body);
-            self.files[file.id] = file;
+            var file = new Buffer(filename, body);
+            self.files[file.filename] = file;
             return file;
         }
     };
@@ -208,7 +200,7 @@ function HappyEdit(settings) {
     };
 
     self.openDummyBuffer = function() {
-        var buffer = new Buffer(self.bufferCounter++, null, '');
+        var buffer = new Buffer(null, '');
         self.files[buffer.id] = buffer;
         self.switchToFile(buffer);
     };

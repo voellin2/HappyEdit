@@ -2,9 +2,8 @@ var EditSession = require('ace/edit_session').EditSession;
 var UndoManager = require('ace/undomanager').UndoManager;
 var PATH_SEPARATOR = '/';
 
-function Buffer(id, filename, body) {
+function Buffer(filename, body) {
     var self = this;
-    self.id = id;
     self.filename = null;
     self.displayPath = null;
     self.basename = null;
