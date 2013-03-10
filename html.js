@@ -111,11 +111,5 @@ var HTML = {
         }
 
         return $ul;
-    },
-
-    createExplorer: function(args) {
-        var $explorer = document.createElement('div');
-        $explorer.setAttribute('class', 'explorer');
-        return $explorer;
     }
 };

@@ -5,6 +5,7 @@ function EventSystem() {
         'file_changed': [],
         'connected': [],
         'disconnected': [],
+        'filesystem_loaded': []
     };
 
     self.addEventListener = function(type, fn) {

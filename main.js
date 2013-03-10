@@ -5,7 +5,6 @@ function HappyEdit(settings) {
     self.files = {};
     self.editor = ace.edit("editor");
     self.$editor = document.getElementById('editor');
-    self.$explorers = document.getElementById('explorers');
     self.currentFile;
     self.eventSystem = new EventSystem();
     self.commands = new CommandList(self);
@@ -19,6 +18,7 @@ function HappyEdit(settings) {
     self.fileSystem = new RemoteFileSystem(self.eventSystem, self.settings);
     self.globalKeyboardHandlers = [];
     self.config = require('ace/config');
+    self.explorer = new Explorer(self);
 
     window.onresize = function(event) {
         var w = window.innerWidth;
@@ -27,8 +27,8 @@ function HappyEdit(settings) {
         self.$editor.style.width = w + 'px';
         self.$editor.style.height = h + 'px';
 
-        self.$explorers.style.width = w + 'px';
-        self.$explorers.style.height = h + 'px';
+        self.explorer.$view.style.width = w + 'px';
+        self.explorer.$view.style.height = h + 'px';
     };
     window.onresize();
 
@@ -204,8 +204,7 @@ function HappyEdit(settings) {
     };
 
     self.openFileExplorer = function() {
-        var file = new Explorer(self);
-        self.switchToFile(file);
+        self.switchToFile(self.explorer);
     };
 
     self.openDummyBuffer = function() {

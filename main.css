@@ -333,28 +333,24 @@ body.hide-window-controls #top .controls div {
 /* EXPLORER
  ******************************************************************************/
  
-#explorers {
-    overflow: scroll;
-}
-.explorer {
+#explorer {
     font-family: ;'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;
     font-size: 12px;
     font-variant: normal;
     overflow: scroll;
 }
-.explorer ul {
+#explorer ul {
     border-right: 1px solid #ccc;
     display: inline-block;
     width: 200px;
-    height: 100%;
     vertical-align: top;
 }
-.explorer li {
+#explorer li {
     padding: 5px;
     vertical-align: middle;
     position: relative;
 }
-.explorer li.directory .icon {
+#explorer li.directory .icon {
     position: absolute;
     top: 8px;
     right: 5px;
@@ -365,16 +361,16 @@ body.hide-window-controls #top .controls div {
 	border-left: 5px solid #888;
     vertical-align: middle;
 }
-.explorer li.active .icon {
+#explorer li.active .icon {
 	border-left: 5px solid white;
 }
-.explorer li.hidden .title {
+#explorer li.hidden .title {
 	opacity: 0.7;
 }
-.explorer li.active {
+#explorer li.active {
     background: #ccc;
 }
-.explorer ul.active li.active {
+#explorer ul.active li.active {
     background: rgb(93, 52, 249);
     color: white;
 }

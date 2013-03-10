@@ -1,38 +1,14 @@
 function Explorer(happyEdit) {
     var self = this;
+
+    self.$view = document.getElementById('explorer');
     self.columns = [];
     self.activeColumn = null;
     self.columnIndex = 0;
-
-    self.$view = HTML.createExplorer({
-        fileSystem: happyEdit.fileSystem,
-    });
+    self.initialized = false;
 
     self.isDummy = function() {
         return false;
-    };
-
-    /**
-     * TODO fix these things in CSS.
-     */
-    self.updateDimensions = function() {
-        var w = self.columns.length * 201;
-        var h = 0;
-        var childElementCount = 0;
-        var i;
-        var col;
-
-        for (i = 0; i < self.columns.length; i += 1) {
-            col = self.columns[i];
-            if (col.$view.childElementCount > childElementCount) {
-                childElementCount = col.$view.childElementCount;
-            }
-        }
-
-        h = 25 * childElementCount;
-
-        self.$view.style.width = w + 'px';
-        self.$view.style.height = h + 'px';
     };
 
     self.addColumn = function(key) {
@@ -40,14 +16,12 @@ function Explorer(happyEdit) {
         var col = new ExplorerColumn(dir, key);
         self.columns.push(col);
         self.$view.appendChild(col.$view);
-        self.updateDimensions();
     };
 
     self.removeColumn = function(index) {
         var col = self.columns[index];
         self.$view.removeChild(col.$view);
         self.columns.pop(index);
-        self.updateDimensions();
     };
 
     self.removeAllColumnsToTheRight = function() {
@@ -84,8 +58,6 @@ function Explorer(happyEdit) {
         self.activeColumn.focus();
     };
     
-    happyEdit.$explorers.appendChild(self.$view);
-    
     self.getTabLabel = function() {
         return 'Explore';
     };
@@ -94,23 +66,14 @@ function Explorer(happyEdit) {
     };
     
     self.blur = function() {
-        happyEdit.$explorers.style.display = 'none';
+        self.$view.style.display = 'none';
         happyEdit.$editor.style.display = 'block';
         happyEdit.popGlobalKeyboardHandler();
     };
 
     self.focus = function() {
-        var $elems = happyEdit.$explorers.querySelectorAll('.explorer');
-        var i;
-        
-        for (i = 0; i < $elems.length; i += 1) {
-            $elems[i].style.display = 'none';
-        }
-
         self.$view.style.display = 'block';
-        happyEdit.$explorers.style.display = 'block';
         happyEdit.$editor.style.display = 'none';
-        //happyEdit.editor.blur();
         happyEdit.pushGlobalKeyboardHandler(self.getGlobalKeyboardHandler());
     };
     
@@ -181,6 +144,8 @@ function Explorer(happyEdit) {
         }
     };
     
-    self.addColumn('.');
-    self.selectIndex(0);
+    happyEdit.eventSystem.addEventListener('filesystem_loaded', function(fs) {
+        self.addColumn('.');
+        self.selectIndex(0);
+    });
 }

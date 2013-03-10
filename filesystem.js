@@ -77,6 +77,7 @@ function RemoteFileSystem(eventSystem, settings) {
                 if (xhr.responseText) {
                     var json = JSON.parse(xhr.responseText);
                     self.setData(json);
+                    eventSystem.callEventListeners('filesystem_loaded');
                 }
             }
         };
