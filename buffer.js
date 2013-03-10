@@ -75,6 +75,10 @@ function Buffer(id, filename, body) {
         self.callOnChangeListeners();
     };
 
+    self.setBody = function(body) {
+        self.session.setValue(body);
+    };
+
     self.session = new EditSession(body || '');
     self.session.setUndoManager(new UndoManager());
     self.modified = false;

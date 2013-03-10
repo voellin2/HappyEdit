@@ -171,7 +171,7 @@ function HappyEdit(settings) {
     self.createNewBuffer = function(filename, body) {
         if (self.currentFile.isDummy()) {
             self.currentFile.rename(filename);
-            self.currentFile.session.setValue(body);
+            self.currentFile.setBody(body);
             return self.currentFile;
         } else {
             var file = new Buffer(self.bufferCounter++, filename, body);
@@ -182,22 +182,24 @@ function HappyEdit(settings) {
 
     self.getOrLoadRemoteFile = function(filename, callback) {
         var buffer = self.getBufferByFilename(filename);
+
         if (buffer) {
             callback(buffer);
             return;
+        } else {
+            buffer = self.createNewBuffer(filename, '');
         }
 
+        callback(buffer);
+
         self.fileSystem.getFile(filename, function(body) {
-            var file = self.createNewBuffer(filename, body);
-            callback(file);
+            buffer.setBody(body);
         });
     };
 
     self.openRemoteFile = function(filename) {
-        var file;
-
-        self.getOrLoadRemoteFile(filename, function(file) {
-            self.switchToFile(file);
+        self.getOrLoadRemoteFile(filename, function(buffer) {
+            self.switchToFile(buffer);
         });
     };
 
