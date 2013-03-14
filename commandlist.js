@@ -87,6 +87,7 @@ function CommandList(happyEdit) {
             name: "openFile",
             alias: [],
             title: "Quick Open File",
+            global: true,
             showInMenu: true,
             shortcut: {
                 win: "Ctrl-T",
@@ -116,6 +117,7 @@ function CommandList(happyEdit) {
             name: "tabnew",
             alias: [],
             title: "Open New Tab",
+            global: true,
             shortcut: {
                 win: "Ctrl-N",
                 mac: "Command-N",
@@ -129,6 +131,7 @@ function CommandList(happyEdit) {
             name: "tabnext",
             alias: [],
             title: "Select Next Tab",
+            global: true,
             shortcut: {
                 win: "Ctrl-Tab",
                 mac: "Command-Shift-]",
@@ -142,6 +145,7 @@ function CommandList(happyEdit) {
             name: "tabprevious",
             alias: [],
             title: "Select Previous Tab",
+            global: true,
             shortcut: {
                 win: "Ctrl-Shift-Tab",
                 mac: "Command-Shift-[",
@@ -155,6 +159,7 @@ function CommandList(happyEdit) {
             name: "closeFile",
             alias: [],
             title: "Close Current file",
+            global: true,
             shortcut: {
                 win: "Ctrl-W",
                 mac: "Command-W",

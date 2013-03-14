@@ -18,6 +18,7 @@ function HappyEdit(settings) {
     self.globalKeyboardHandlers = [];
     self.config = require('ace/config');
     self.explorer = new Explorer(self);
+    self.globalCommandManager = new GlobalCommandManager(self);
 
     window.onresize = function(event) {
         var w = window.innerWidth;
@@ -50,7 +51,9 @@ function HappyEdit(settings) {
     self.editor.setAnimatedScroll(true);
 
     self.commands.each(function(command) {
-        if (command.shortcut) {
+        if (command.global) {
+            self.globalCommandManager.addCommand(command);
+        } else if (command.shortcut) {
             self.editor.commands.addCommand({
                 name: command.name,
                 bindKey: {
@@ -71,28 +74,6 @@ function HappyEdit(settings) {
             });
         }
     });
-
-    for (var i = 1; i < 10; i += 1) {
-        (function() {
-            var keyNum = i;
-            self.editor.commands.addCommand({
-                name: "selectTab" + i,
-                bindKey: {
-                    win: "Ctrl-" + keyNum,
-                    mac: "Command-" + keyNum,
-                    sender: "editor"
-                },
-                exec: function() {
-                    var tabIndex = keyNum;
-                    if (tabIndex > self.topBar.tabs.length) {
-                        tabIndex = self.topBar.tabs.length;
-                    }
-                    tabIndex -= 1;
-                    self.topBar.selectTabAtIndex(tabIndex);
-                }
-            });
-        }());
-    }
 
     self.editor.getKeyboardHandler().actions[':'] = {
         fn: function(editor, range, count, param) {
