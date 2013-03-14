@@ -269,7 +269,7 @@ function CommandLine(happyEdit) {
         return self.$popup.style.display === 'block';
     };
 
-    self.globalKeyboardHandler = function(event) {
+    self.keyboardHandler = function(event) {
         self.$input.focus();
     };
 
@@ -302,7 +302,7 @@ function CommandLine(happyEdit) {
         self.$popup.style.display = 'block';
         self.$blocker.style.display = 'block';
 
-        happyEdit.pushGlobalKeyboardHandler(self.globalKeyboardHandler);
+        happyEdit.pushTabSpecificKeyboardHandler(self.keyboardHandler);
         happyEdit.editor.blur();
         self.$input.focus();
     };
@@ -311,7 +311,7 @@ function CommandLine(happyEdit) {
         self.$popup.style.display = 'none';
         self.$blocker.style.display = 'none';
         self.hideAlert();
-        happyEdit.popGlobalKeyboardHandler();
+        happyEdit.popTabSpecificKeyboardHandler();
         happyEdit.editor.focus();
     };
 }

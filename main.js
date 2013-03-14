@@ -15,7 +15,7 @@ function HappyEdit(settings) {
     self.topBar = new TopBar(self);
     self.bottomBar = new BottomBar(self);
     self.fileSystem = new RemoteFileSystem(self.eventSystem, self.settings);
-    self.globalKeyboardHandlers = [];
+    self.tabSpecificKeyboardHandlers = [];
     self.config = require('ace/config');
     self.explorer = new Explorer(self);
     self.globalCommandManager = new GlobalCommandManager(self);
@@ -33,18 +33,18 @@ function HappyEdit(settings) {
     window.onresize();
 
     window.onkeydown = function(event) {
-        var len = self.globalKeyboardHandlers.length;
+        var len = self.tabSpecificKeyboardHandlers.length;
         if (len) {
-            self.globalKeyboardHandlers[len-1](event);
+            self.tabSpecificKeyboardHandlers[len-1](event);
         }
     };
 
-    self.pushGlobalKeyboardHandler = function(handler) {
-        self.globalKeyboardHandlers.push(handler);
+    self.pushTabSpecificKeyboardHandler = function(handler) {
+        self.tabSpecificKeyboardHandlers.push(handler);
     };
 
-    self.popGlobalKeyboardHandler = function() {
-        self.globalKeyboardHandlers.pop();
+    self.popTabSpecificKeyboardHandler = function() {
+        self.tabSpecificKeyboardHandlers.pop();
     };
 
     self.editor.setKeyboardHandler(require("ace/keyboard/vim").handler);
