@@ -99,6 +99,16 @@ function CommandList(happyEdit) {
             }
         },
         {
+            name: "grep",
+            alias: ["search", "find"],
+            title: "Search in all files",
+            hideCommandLine: true,
+            callback: function(args, callback) {
+                happyEdit.showGrepResults(args);
+                callback();
+            }
+        },
+        {
             name: "save",
             alias: ["w", "write"],
             title: "Save Current File",

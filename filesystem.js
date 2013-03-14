@@ -205,6 +205,30 @@ function RemoteFileSystem(eventSystem, settings) {
         eventSystem.callEventListeners('disconnected', host);
     };
 
+    self.grep = function(q, callback) {
+        var host = settings.get('remoteServer');
+        var authToken  = settings.get('authToken');
+        var xhr = new XMLHttpRequest();
+        var url = host + '/grep?q=' + q + '&token=' + authToken;
+
+        xhr.open("GET", url);
+
+        xhr.onload = function() {
+            if (xhr.status !== 200) {
+                console.log('Error:', xhr.responseText);
+                return;
+            }
+            var json = JSON.parse(xhr.responseText);
+            callback(json);
+        };
+
+        xhr.onerror = function() {
+            console.log('Unknown error while grepping');
+        };
+
+        xhr.send();
+    };
+
     /**
      * Called when server settings is configured.
      */

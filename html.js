@@ -111,5 +111,16 @@ var HTML = {
         }
 
         return $ul;
+    },
+
+    fillListView: function($ul, data) {
+        var count = 0;
+        data.forEach(function(row, i) {
+            var $li = document.createElement('li');
+            $li.setAttribute('class', 'item' + String(count));
+            $li.innerHTML = row.filename;
+            $ul.appendChild($li);
+            count += 1;
+        });
     }
 };

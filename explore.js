@@ -79,7 +79,7 @@ function Explorer(happyEdit) {
     };
     
     self.keyDown = function(event) {
-        keyCode = event.keyCode;
+        var keyCode = event.keyCode;
 
         if (keyCode === 78 || keyCode === 74) {
             keyCode = 40;

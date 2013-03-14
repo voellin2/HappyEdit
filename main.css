@@ -374,3 +374,23 @@ body.hide-window-controls #top .controls div {
     background: rgb(93, 52, 249);
     color: white;
 }
+
+/* LIST VIEW
+******************************************************************************/
+ 
+.list-view {
+    overflow: scroll;
+}
+.list-view h1 {
+    padding: 10px 5px;
+}
+.list-view .loading {
+    padding: 5px;
+}
+.list-view li {
+    padding: 5px;
+}
+.list-view li.active {
+    background: rgb(93, 52, 249);
+    color: white;
+}

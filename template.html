@@ -35,6 +35,7 @@
         <script src="explorercolumn.js" type="text/javascript" charset="utf-8"></script>
         <script src="explore.js" type="text/javascript" charset="utf-8"></script>
         <script src="globalCommands.js" type="text/javascript" charset="utf-8"></script>
+        <script src="grep.js" type="text/javascript" charset="utf-8"></script>
         <script src="main.js" type="text/javascript" charset="utf-8"></script>
     </head>
     <body class="$bodyClassNames">
@@ -87,6 +88,11 @@
 
         <div id="editor"></div>
         <div id="explorer" style="display:none"></div>
+        <div id="grep" style="display:none" class="list-view">
+            <h1></h1>
+            <span class="loading" style="display:none">Loading...</span>
+            <ul></ul>
+        </div>
 
         <div id="bottom">
             <div class="status left">

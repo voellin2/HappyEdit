@@ -18,6 +18,7 @@ function HappyEdit(settings) {
     self.tabSpecificKeyboardHandlers = [];
     self.config = require('ace/config');
     self.explorer = new Explorer(self);
+    self.grepView = new GrepView(self);
     self.globalCommandManager = new GlobalCommandManager(self);
 
     window.onresize = function(event) {
@@ -29,6 +30,9 @@ function HappyEdit(settings) {
 
         self.explorer.$view.style.width = w + 'px';
         self.explorer.$view.style.height = h + 'px';
+
+        self.grepView.$view.style.width = w + 'px';
+        self.grepView.$view.style.height = h + 'px';
     };
     window.onresize();
 
@@ -178,6 +182,11 @@ function HappyEdit(settings) {
 
     self.openFileExplorer = function() {
         self.switchToFile(self.explorer);
+    };
+
+    self.showGrepResults = function(q) {
+        self.grepView.load(q);
+        self.switchToFile(self.grepView);
     };
 
     self.openDummyBuffer = function() {
