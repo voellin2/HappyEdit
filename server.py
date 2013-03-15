@@ -12,6 +12,8 @@ from wsgiref.simple_server import make_server
 
 PROTOCOL_VERSION = "0.1"
 
+cached_project_files = {}
+
 class File:
 
     def __init__(self, path):
@@ -101,9 +103,12 @@ class FileListing():
         self.next_handler = None
 
     def __call__(self, environ, start_response):
+        global cached_project_files
+        
         if environ['PATH_INFO'] in ['/files', '/files/']:
             params = dict(parse_qsl(environ['QUERY_STRING']))
-            response = json.dumps(get_project_files(self.path, self.cfg))
+            cached_project_files = get_project_files(self.path, self.cfg)
+            response = json.dumps(cached_project_files)
             start_response("200 OK", [
                 ('Access-Control-Allow-Origin', '*'),
                 ('Content-Type', 'application/json'),
@@ -151,6 +156,7 @@ class GrepHandler():
 
     def __call__(self, environ, start_response):
         if environ['PATH_INFO'] == '/grep':
+            ret = []
             params = dict(parse_qsl(environ['QUERY_STRING']))
             # Get the GET parameter q
             try:
@@ -164,25 +170,8 @@ class GrepHandler():
                     ('Content-Length', str(len(ret))),
                 ])
                 return [ret] 
-
-            try:
-                files = subprocess.check_output(['grep', '-inr', q, '.'])
-            except subprocess.CalledProcessError, cpe:
-                # Make sure it looks like nothign was returned
-                if cpe.output != "" or cpe.returncode != 1:
-                    # if it doesn't look expected, raise
-                    raise cpe
-                # Else it looks like nothing was returned
-                files = ""
-
-            ret = []
-            for line in files.split('\n'):
-                parts = line.split(':')
-                if len(parts) > 1:
-                    ret.append({
-                        'filename': parts[0].split('./')[1],
-                        'lineno': parts[1],
-                    })
+                
+            ret = grep(q)
             ret = json.dumps(ret)
 
             start_response("200 OK", [
@@ -322,6 +311,25 @@ def load_settings(path):
 
     print cfg
     return cfg
+
+def grep(q):
+    ret = []
+    for folder_name in cached_project_files.keys():
+        for filename in cached_project_files[folder_name]['files']:
+            filename = os.path.join(folder_name, filename)
+            try:
+                output = subprocess.check_output(['grep', '-inr', q, filename, '-n'])
+            except subprocess.CalledProcessError, cpe:
+                output = ''
+            for line in output.split('\n'):
+                split = line.split(':')
+                if len(split) > 1:
+                    line_number = int(split[1])
+                    ret.append({
+                        'filename': filename,
+                        'lineno': line_number,
+                    })
+    return ret
 
 def main():
     cwd = os.getcwd()
