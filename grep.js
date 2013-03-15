@@ -36,7 +36,7 @@ function GrepView(happyEdit) {
     
     self.openActiveItem = function() {
         var item = self.items[self.index];
-        happyEdit.openRemoteFile(item.filename);
+        happyEdit.openRemoteFile(item.filename, item.lineno);
     };
 
     self.keyUp = function(event) {

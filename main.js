@@ -174,9 +174,17 @@ function HappyEdit(settings) {
         });
     };
 
-    self.openRemoteFile = function(filename) {
+    self.openRemoteFile = function(filename, lineNumber) {
         self.getOrLoadRemoteFile(filename, function(buffer) {
             self.switchToFile(buffer);
+            if (lineNumber) {
+
+                // Don't know why we need a timeout here...
+                setTimeout(function() {
+                    self.editor.gotoLine(lineNumber);
+                }, 200);
+
+            }
         });
     };
 
