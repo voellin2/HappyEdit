@@ -39,7 +39,7 @@ function GrepView(happyEdit) {
         happyEdit.openRemoteFile(item.filename, item.lineno);
     };
 
-    self.keyUp = function(event) {
+    self.keyDown = function(event) {
         var keyCode = event.keyCode;
 
         if (keyCode === 78 || keyCode === 74) {
@@ -102,6 +102,6 @@ function GrepView(happyEdit) {
     self.focus = function() {
         self.$view.style.display = 'block';
         happyEdit.$editor.style.display = 'none';
-        happyEdit.pushTabSpecificKeyboardHandler(self.keyUp);
+        happyEdit.pushTabSpecificKeyboardHandler(self.keyDown);
     };
 }
