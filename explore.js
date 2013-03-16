@@ -75,7 +75,7 @@ function Explorer(happyEdit) {
     self.focus = function() {
         self.$view.style.display = 'block';
         happyEdit.$editor.style.display = 'none';
-        happyEdit.pushTabSpecificKeyboardHandler(self.getTabSpecificKeyboardHandler());
+        happyEdit.pushTabSpecificKeyboardHandler(self.keyDown);
     };
     
     self.keyDown = function(event) {
@@ -122,10 +122,6 @@ function Explorer(happyEdit) {
             default:
             // Empty for now
         }
-    };
-    
-    self.getTabSpecificKeyboardHandler = function() {
-        return self.keyDown;
     };
     
     self.openActiveItem = function() {
