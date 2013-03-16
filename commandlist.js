@@ -104,6 +104,9 @@ function CommandList(happyEdit) {
             title: "Search in all files",
             hideCommandLine: true,
             callback: function(args, callback) {
+                if (!args) {
+                    throw "A search query must be provided.";
+                }
                 happyEdit.showGrepResults(args);
                 callback();
             }
