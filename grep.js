@@ -4,6 +4,7 @@ function GrepView(happyEdit) {
     self.$h1 = self.$view.querySelector('h1');
     self.$ul = self.$view.querySelector('ul');
     self.$loading = self.$view.querySelector('.loading');
+    self.$error = self.$view.querySelector('.error');
     self.filename = '__grep__';
     self.items = [];
     self.index = 0;
@@ -74,16 +75,37 @@ function GrepView(happyEdit) {
     };
     
     self.load = function(q) {
+        self.reset();
         self.$h1.innerHTML = q;
-        self.$ul.innerHTML = '';
-        
         self.$loading.style.display = 'block';
+        
         happyEdit.fileSystem.grep(q, function(data) {
             self.$loading.style.display = 'none';
             self.items = data;
+            
+            if (data.length === 0) {
+                self.showError('No search results matching "' + q + '".');
+            }
+            
             HTML.fillListView(self.$ul, data);
             self.selectIndex(0);
         });
+    };
+    
+    self.reset = function() {
+        self.$h1.innerHTML = '';
+        self.$ul.innerHTML = '';
+        self.hideError();
+    };
+    
+    self.showError = function(msg) {
+        self.$error.innerHTML = msg; // TODO escape?
+        self.$error.style.display = 'block';
+    };
+    
+    self.hideError = function() {
+        self.$error.innerHTML = '';
+        self.$error.style.display = 'none';
     };
     
     self.getTabLabel = function() {

@@ -387,6 +387,10 @@ body.hide-window-controls #top .controls div {
 .list-view .loading {
     padding: 5px;
 }
+.list-view .error {
+    padding: 5px;
+    color: red;
+}
 .list-view li {
     padding: 5px;
 }
