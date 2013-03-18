@@ -323,11 +323,13 @@ def grep(q):
                 output = ''
             for line in output.split('\n'):
                 split = line.split(':')
-                if len(split) > 1:
+                if len(split) > 2:
                     line_number = int(split[1])
+                    snippet = split[2]
                     ret.append({
                         'filename': filename,
                         'lineno': line_number,
+                        'snippet': snippet,
                     })
     return ret
 

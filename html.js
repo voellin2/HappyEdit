@@ -118,7 +118,7 @@ var HTML = {
         data.forEach(function(row, i) {
             var $li = document.createElement('li');
             $li.setAttribute('class', 'item' + String(count));
-            $li.innerHTML = row.filename;
+            $li.innerHTML = row.filename + '(' + row.lineno + ')' + ' ' + row.snippet;
             $ul.appendChild($li);
             count += 1;
         });
