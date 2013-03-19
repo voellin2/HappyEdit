@@ -37,6 +37,10 @@ function HappyEdit(settings) {
     window.onresize();
 
     window.onkeydown = function(event) {
+        if (self.commandLine.isVisible) {
+            self.commandLine.$input.focus();
+            return;
+        }
         var len = self.tabSpecificKeyboardHandlers.length;
         if (len) {
             self.tabSpecificKeyboardHandlers[len-1](event);

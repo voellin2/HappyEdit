@@ -12,6 +12,7 @@ function CommandLine(happyEdit) {
     self.$suggestions = document.querySelector('.popup.command-line ul');
     self.$blocker = document.querySelector('.blocker.command-line');
     self.runKeyUpHandler = false;
+    self.isVisible = false;
 
     self.keyDown = function(event) {
         keyCode = event.keyCode;
@@ -265,14 +266,6 @@ function CommandLine(happyEdit) {
         self.$alert.style.display = 'none';
     };
 
-    self.isVisible = function() {
-        return self.$popup.style.display === 'block';
-    };
-
-    self.keyboardHandler = function(event) {
-        self.$input.focus();
-    };
-
     self.showLoading = function() {
         self.$loadingAnimation.style.display = 'block';
     };
@@ -286,6 +279,7 @@ function CommandLine(happyEdit) {
      * be preserved.
      */
     self.show = function(startingChar) {
+        self.isVisible = true;
 
         self.$blocker.onclick = function() {
             self.hide();
@@ -302,16 +296,15 @@ function CommandLine(happyEdit) {
         self.$popup.style.display = 'block';
         self.$blocker.style.display = 'block';
 
-        happyEdit.pushTabSpecificKeyboardHandler(self.keyboardHandler);
         happyEdit.editor.blur();
         self.$input.focus();
     };
 
     self.hide = function() {
+        self.isVisible = false;
         self.$popup.style.display = 'none';
         self.$blocker.style.display = 'none';
         self.hideAlert();
-        happyEdit.popTabSpecificKeyboardHandler();
         happyEdit.editor.focus();
     };
 }
