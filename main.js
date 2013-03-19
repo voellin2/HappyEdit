@@ -62,8 +62,7 @@ function HappyEdit(settings) {
         if (command.global) {
             self.globalCommandManager.addCommand(command);
         } else if (command.shortcut) {
-            self.editor.commands.addCommand({
-                name: command.name,
+            self.editor.commands.addCommand({ name: command.name,
                 bindKey: {
                     win: command.shortcut.win,
                     mac: command.shortcut.mac,
@@ -108,6 +107,9 @@ function HappyEdit(settings) {
     self.switchToFile = function(file, updateTabs) {
         if (self.currentFile) {
             self.currentFile.blur();
+            if (self.currentFile.constructor === Buffer) {
+                self.editor.blur();
+            }
         }
         self.currentFile = file;
         self.currentFile.focus();
