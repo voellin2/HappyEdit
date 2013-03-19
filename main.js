@@ -8,9 +8,6 @@ function HappyEdit(settings) {
     self.eventSystem = new EventSystem();
     self.commands = new CommandList(self);
     self.commandLine = new CommandLine(self);
-    self.snippetPopup = new SnippetPopup(self);
-    self.snippets = new SnippetsAPI(self);
-    self.stackOverflow = new StackOverflow(self);
     self.menu = new Menu(self);
     self.topBar = new TopBar(self);
     self.bottomBar = new BottomBar(self);

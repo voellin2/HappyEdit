@@ -58,32 +58,6 @@ function CommandList(happyEdit) {
             }
         },
         {
-            name: "snippet",
-            alias: [],
-            title: "Search for code snippets",
-            hideCommandLine: false,
-            autoComplete: function(s) {
-                happyEdit.snippets.fillCommandLineWithAutoCompletions(s);
-            },
-            callback: function(args, callback) {
-                happyEdit.snippets.fillCommandLineWithAutoCompletions(s);
-                callback();
-            }
-        },
-        {
-            name: "stackoverflow",
-            alias: [],
-            title: "Search Stack Overflow",
-            hideCommandLine: false,
-            autoComplete: function(s) {
-                happyEdit.stackOverflow.fillCommandLineWithAutoCompletions(s);
-            },
-            callback: function(args, callback) {
-                happyEdit.stackOverflow.fillCommandLineWithAutoCompletions(s);
-                callback();
-            }
-        },
-        {
             name: "openFile",
             alias: [],
             title: "Quick Open File",

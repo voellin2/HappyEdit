@@ -85,6 +85,7 @@ function GrepView(happyEdit) {
             
             if (data.length === 0) {
                 self.showError('No search results matching "' + q + '".');
+                return;
             }
             
             HTML.fillListView(self.$ul, data);
