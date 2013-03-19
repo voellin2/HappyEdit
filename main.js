@@ -107,18 +107,10 @@ function HappyEdit(settings) {
     self.switchToFile = function(file, updateTabs) {
         if (self.currentFile) {
             self.currentFile.blur();
-            if (self.currentFile.constructor === Buffer) {
-                self.editor.blur();
-            }
         }
+
         self.currentFile = file;
         self.currentFile.focus();
-
-        // If Buffer had a reference to self, it could do this in its blur().
-        if (self.currentFile.constructor === Buffer) {
-            self.editor.setSession(self.currentFile.session);
-            self.editor.focus();
-        }
 
         if (updateTabs || updateTabs === undefined) {
             self.topBar.updateView(file);
@@ -157,7 +149,7 @@ function HappyEdit(settings) {
             self.currentFile.setBody(body);
             return self.currentFile;
         } else {
-            var file = new Buffer(filename, body);
+            var file = new Buffer(self, filename, body);
             self.files[file.filename] = file;
             return file;
         }
@@ -204,7 +196,7 @@ function HappyEdit(settings) {
     };
 
     self.openDummyBuffer = function() {
-        var buffer = new Buffer(null, '');
+        var buffer = new Buffer(self, null, '');
         self.files[buffer.id] = buffer;
         self.switchToFile(buffer);
     };

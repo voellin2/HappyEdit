@@ -2,12 +2,14 @@ var EditSession = require('ace/edit_session').EditSession;
 var UndoManager = require('ace/undomanager').UndoManager;
 var PATH_SEPARATOR = '/';
 
-function Buffer(filename, body) {
+function Buffer(happyEdit, filename, body) {
     var self = this;
     self.filename = null;
     self.displayPath = null;
     self.basename = null;
     self.dirname = null;
+    self.session = new EditSession(body || '');
+    self.modified = false;
     self.onChangeListeners = [];
 
     self.isDummy = function() {
@@ -19,11 +21,12 @@ function Buffer(filename, body) {
     };
 
     self.focus = function() {
-        // Nothing for now...
+        happyEdit.editor.setSession(self.session);
+        happyEdit.editor.focus();
     };
 
     self.blur = function() {
-        // Nothing for now...
+        happyEdit.editor.blur();
     };
 
     self.callOnChangeListeners = function() {
@@ -78,7 +81,6 @@ function Buffer(filename, body) {
         self.session.setValue(body);
     };
 
-    self.session = new EditSession(body || '');
     self.session.setUndoManager(new UndoManager());
     self.modified = false;
     self.rename(filename);
