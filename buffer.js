@@ -81,6 +81,10 @@ function Buffer(happyEdit, filename, body) {
         self.session.setValue(body);
     };
 
+    self.getBody = function(body) {
+        return self.session.getValue(body);
+    };
+
     self.session.setUndoManager(new UndoManager());
     self.modified = false;
     self.rename(filename);

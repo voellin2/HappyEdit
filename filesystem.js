@@ -125,7 +125,7 @@ function RemoteFileSystem(eventSystem, settings) {
 
         var xhr = new XMLHttpRequest();
         var url = settings.get('remoteServer') + '/files/' + encodeURIComponent(filename) + '?token=' + settings.get('authToken');
-        var params = 'body=' + encodeURIComponent(buffer.session.getValue());
+        var params = 'body=' + encodeURIComponent(buffer.getBody());
 
         xhr.open("POST", url);
         xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
