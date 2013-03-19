@@ -139,7 +139,6 @@ class SaveHandler():
             params = dict(parse_qsl(environ['wsgi.input'].read(length)))
             open(filename, 'w').write(params.get('body', ''))
             msg = 'File "%s" saved' % filename
-            print "got here"
             start_response("200 OK", [
                 ('Access-Control-Allow-Origin', '*'),
                 ('Content-Type', 'application/json'),
@@ -233,7 +232,6 @@ class ConnectHandler:
             length = int(environ['CONTENT_LENGTH'])
             params = dict(parse_qsl(environ['wsgi.input'].read(length)))
             password = params.get('password')
-            print password, self.cfg['password']
             if password == self.cfg['password']:
                 msg = json.dumps({
                     'authToken': md5(password).hexdigest()
@@ -261,7 +259,6 @@ class PermissionHandler:
 
     def __call__(self, environ, start_response):
         params = dict(parse_qsl(environ['QUERY_STRING']))
-        print 'token: ', params.get('token')
         if params.get('token') != md5(self.cfg['password']).hexdigest():
             msg = "Incorrect authToken"
             start_response("401 Unauthorized", [
