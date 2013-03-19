@@ -300,13 +300,13 @@ def load_settings(path):
         except Exception as e:
             print e
     else:
-        # @TODO: write config
-        pass
+        f = open(filepath, 'w')
+        f.write(json.dumps(cfg, sort_keys=True, indent=4))
+        f.close()
 
     if not cfg['password']:
         raise Exception("You must set a password in " + filepath)
 
-    print cfg
     return cfg
 
 def grep(q):
