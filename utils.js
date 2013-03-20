@@ -15,6 +15,13 @@ var Utils = {
         }
         return d1;
     },
+
+    /**
+     * Does s1 start with s2?
+     */
+    startsWith: function(s1, s2) {
+        return s1.substring(0, s2.length) === s2;
+    }
 };
 
 function addClass(elem, className) {
