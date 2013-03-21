@@ -97,8 +97,9 @@ function AutoCompleteBox(happyEdit) {
     self.updatePosition = function() {
         var cursor = editor.getCursorPosition();
         var coords = editor.renderer.textToScreenCoordinates(cursor.row, cursor.column);
+        var lineHeight = editor.renderer.layerConfig.lineHeight;
 
-        self.$view.style.top = coords.pageY + 15 + 'px';
+        self.$view.style.top = coords.pageY + lineHeight + 'px';
         self.$view.style.left = coords.pageX + 'px';
     };
     
