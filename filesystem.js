@@ -152,7 +152,12 @@ function RemoteFileSystem(eventSystem, settings) {
         var url = settings.get('remoteServer') + '/files/' + filename + '?token=' + settings.get('authToken');
         xhr.open("GET", url);
         xhr.onload = function() {
-            callback(xhr.responseText);
+            body = xhr.responseText;
+            callback(body);
+            eventSystem.callEventListeners('file_loaded', {
+                filename: filename,
+                body: body
+            });
         };
         xhr.send();
     };
