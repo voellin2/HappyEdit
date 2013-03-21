@@ -17,16 +17,8 @@ function AutoCompleteBox(happyEdit) {
     self.index = 0;
     
     self.indexer = new AutoSuggestIndexer(happyEdit);
-
+    
     self.matches = [];
-    self.data = [];
-    self.data.push('function');
-    self.data.push('undefined');
-    self.data.push('console');
-    self.data.push('log');
-    self.data.push('null');
-    self.data.push('this');
-    self.data.push('self');
     
     self.commands = {
         "Ctrl-k": function(editor) { self.navigateUp(); },
