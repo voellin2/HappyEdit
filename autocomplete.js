@@ -15,6 +15,8 @@ function AutoCompleteBox(happyEdit) {
     self.$ul = self.$view.querySelector('ul');
     
     self.index = 0;
+    
+    self.indexer = new AutoSuggestIndexer(happyEdit);
 
     self.matches = [];
     self.data = [];
@@ -133,7 +135,8 @@ function AutoCompleteBox(happyEdit) {
 
     self.getMatches = function(word) {
         var ret = [];
-        self.data.forEach(function(item, i) {
+        var data = self.indexer.getWords();
+        data.forEach(function(item, i) {
             if (Utils.startsWith(item, word)) {
                 ret.push(item);
             }
