@@ -27,6 +27,8 @@ function AutoCompleteBox(happyEdit) {
     self.data.push('self');
     
     self.commands = {
+        "Ctrl-k": function(editor) { self.navigateUp(); },
+        "Ctrl-j": function(editor) { self.navigateDown(); },
         "Ctrl-p": function(editor) { self.navigateUp(); },
         "Ctrl-n": function(editor) { self.navigateDown(); },
         "up": function(editor) { self.navigateUp(); },
