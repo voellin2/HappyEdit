@@ -1,0 +1,159 @@
+/**
+ * Based on:
+ * 
+ * https://github.com/cucumber/gherkin-editor/blob/master/public/js/gherkin-editor/autocomplete.js
+ * https://github.com/ajaxorg/ace/blob/feature/codecomplete/lib/ace/autocomplete.js#L387
+ * 
+ * Ace GitHub issue regarding intellisense: https://github.com/ajaxorg/ace/issues/110
+ */
+function AutoCompleteBox(happyEdit) {
+    var self = this;
+    var editor = happyEdit.editor;
+    var HashHandler = require("ace/keyboard/hash_handler").HashHandler;
+    
+    self.items = [];
+    self.$view = document.querySelector('#autocomplete');
+    self.$ul = self.$view.querySelector('ul');
+    
+    self.index = 0;
+
+    self.items.push('function');
+    self.items.push('undefined');
+    self.items.push('console');
+    self.items.push('log');
+    self.items.push('null');
+    self.items.push('this');
+    self.items.push('self');
+    
+    self.commands = {
+        "up": function(editor) { self.navigateUp(); },
+        "down": function(editor) { self.navigateDown(); },
+        "esc": function(editor) { self.hide(); },
+        "space": function(editor) { self.hide(); editor.insert(" "); },
+        "Return": function(editor) { self.insertMatch(); },
+        "Tab": function(editor) { self.insertMatch(); }
+    };
+    
+    self.keyboardHandler = new HashHandler();
+    self.keyboardHandler.bindKeys(self.commands);
+    
+    /**
+     * From https://gist.github.com/rnetocombr/3789861
+     */
+    function getWordAtLeft() {
+        var word;
+        var range;
+        var pos = editor.getCursorPosition();
+        
+        editor.selection.selectWordLeft();
+        range = editor.selection.getRange();
+        word = editor.session.getDocument().getTextRange(range);
+        editor.selection.clearSelection();
+        editor.moveCursorTo(pos.row, pos.column);
+
+        return word || '';
+    }
+    
+    self.insertMatch = function() {
+        var text = self.getSelectedItem();
+        self.hide();
+        editor.removeWordLeft();
+        editor.insert(text);
+    };
+    
+    self.getSelectedItem = function() {
+        return self.$ul.querySelector('.active').innerHTML;
+    };
+    
+    self.selectIndex = function(index) {
+        if (index < 0) {
+            index = 0;
+        } else if (index > self.items.length - 1) {
+            index = self.items.length - 1;
+        }
+        
+        self.index = index;
+        
+        var $old = self.$ul.querySelector('.active');
+        var $new = self.$ul.querySelector('.item' + index);
+        
+        removeClass($old, 'active');
+        addClass($new, 'active');
+        
+        $new.scrollIntoViewIfNeeded(false);
+    };
+    
+    self.navigateUp = function() {
+         self.selectIndex(self.index - 1);
+    };
+    
+    self.navigateDown = function() {
+         self.selectIndex(self.index + 1);
+    };
+
+    self.updatePosition = function() {
+        var cursor = editor.getCursorPosition();
+        var coords = editor.renderer.textToScreenCoordinates(cursor.row, cursor.column);
+
+        self.$view.style.top = coords.pageY + 15 + 'px';
+        self.$view.style.left = coords.pageX + 'px';
+    };
+    
+    self.blurListener = function() {
+        self.hide();
+    };
+    
+    self.mousedownListener = function() {
+        self.hide();
+    };
+
+    self.changeSelectionListener = function() {
+        self.hide();
+    };
+    
+    self.attachKeyboardHandler = function() {
+        editor.keyBinding.addKeyboardHandler(self.keyboardHandler);
+        editor.on("changeSelection", self.changeSelectionListener);
+        editor.on("blur", self.blurListener);
+        editor.on("mousedown", self.mousedownListener);
+    };
+    
+    self.detachKeyboardHandler = function() {
+        editor.keyBinding.removeKeyboardHandler(self.keyboardHandler);
+        editor.removeEventListener("changeSelectionListener", self.changeSelectionListener);
+        editor.removeEventListener("blur", self.blurListener);
+        editor.removeEventListener("mousedown", self.mousedownListener);
+    };
+
+    self.getMatches = function(word) {
+        var ret = [];
+        self.items.forEach(function(item, i) {
+            if (Utils.startsWith(item, word)) {
+                ret.push(item);
+            }
+        });
+        return ret;
+    };
+    
+    self.populateList = function(matches) {
+        self.$ul.innerHTML = '';
+        HTML.fillAutoCompleteList(self.$ul, matches);
+    };
+    
+    self.show = function() {
+        var word = getWordAtLeft();
+        var matches = self.getMatches(word);
+        if (matches.length) {
+            self.populateList(matches);
+            self.updatePosition();
+            self.attachKeyboardHandler();
+            self.selectIndex(0);
+            self.$view.style.display = 'block';
+        }
+    };
+    
+    self.hide = function() {
+        self.detachKeyboardHandler();
+        self.$view.style.display = 'none';
+    };
+}

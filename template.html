@@ -33,6 +33,7 @@
         <script src="explore.js" type="text/javascript" charset="utf-8"></script>
         <script src="globalCommands.js" type="text/javascript" charset="utf-8"></script>
         <script src="grep.js" type="text/javascript" charset="utf-8"></script>
+        <script src="autocomplete.js" type="text/javascript" charset="utf-8"></script>
         <script src="main.js" type="text/javascript" charset="utf-8"></script>
     </head>
     <body class="$bodyClassNames">
@@ -106,6 +107,11 @@
             <div class="target right">
                 <span class="text">Build target: $target</span>
             </div>
+        </div>
+        
+        <div id="autocomplete" style="display:none">
+            <ul>
+            </ul>
         </div>
     </body>
 </html>

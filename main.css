@@ -398,3 +398,23 @@ body.hide-window-controls #top .controls div {
     background: rgb(93, 52, 249);
     color: white;
 }
+
+/* AUTOCOMPLETE
+******************************************************************************/
+
+#autocomplete {
+    position: absolute;
+    top: 0;
+    left: 0;
+    min-width: 200px;
+    background: white;
+    border: 2px solid #ccc;
+    z-index: 98;
+}
+#autocomplete li {
+    padding: 5px;
+}
+#autocomplete li.active {
+    background: rgb(93, 52, 249);
+    color: white;
+}

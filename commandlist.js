@@ -190,6 +190,20 @@ function CommandList(happyEdit) {
                 happyEdit.closeFile(happyEdit.currentFile);
                 callback();
             }
+        },
+        {
+            name: "autocomplete",
+            alias: [],
+            title: "Autocomplete current word",
+            hideCommandLine: true,
+            shortcut: {
+                win: "Shift-Space",
+                mac: "Shift-Space",
+            },
+            callback: function(args, callback) {
+                happyEdit.autoCompleter.show();
+                callback();
+            }
         }
     ];
 
@@ -198,8 +212,7 @@ function CommandList(happyEdit) {
         keys = keys.concat(x.title.toLowerCase().split(' '));
         keys = keys.concat(x.alias);
         return {
-            value: x.name,
-            keys: keys,
+            value: x.name, keys: keys,
         };
     }));
 
