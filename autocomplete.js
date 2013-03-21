@@ -11,21 +11,24 @@ function AutoCompleteBox(happyEdit) {
     var editor = happyEdit.editor;
     var HashHandler = require("ace/keyboard/hash_handler").HashHandler;
     
-    self.items = [];
     self.$view = document.querySelector('#autocomplete');
     self.$ul = self.$view.querySelector('ul');
     
     self.index = 0;
 
-    self.items.push('function');
-    self.items.push('undefined');
-    self.items.push('console');
-    self.items.push('log');
-    self.items.push('null');
-    self.items.push('this');
-    self.items.push('self');
+    self.matches = [];
+    self.data = [];
+    self.data.push('function');
+    self.data.push('undefined');
+    self.data.push('console');
+    self.data.push('log');
+    self.data.push('null');
+    self.data.push('this');
+    self.data.push('self');
     
     self.commands = {
+        "Ctrl-p": function(editor) { self.navigateUp(); },
+        "Ctrl-n": function(editor) { self.navigateDown(); },
         "up": function(editor) { self.navigateUp(); },
         "down": function(editor) { self.navigateDown(); },
         "esc": function(editor) { self.hide(); },
@@ -68,8 +71,8 @@ function AutoCompleteBox(happyEdit) {
     self.selectIndex = function(index) {
         if (index < 0) {
             index = 0;
-        } else if (index > self.items.length - 1) {
-            index = self.items.length - 1;
+        } else if (index > self.matches.length - 1) {
+            index = self.matches.length - 1;
         }
         
         self.index = index;
@@ -127,7 +130,7 @@ function AutoCompleteBox(happyEdit) {
 
     self.getMatches = function(word) {
         var ret = [];
-        self.items.forEach(function(item, i) {
+        self.data.forEach(function(item, i) {
             if (Utils.startsWith(item, word)) {
                 ret.push(item);
             }
@@ -142,9 +145,9 @@ function AutoCompleteBox(happyEdit) {
     
     self.show = function() {
         var word = getWordAtLeft();
-        var matches = self.getMatches(word);
-        if (matches.length) {
-            self.populateList(matches);
+        self.matches = self.getMatches(word);
+        if (self.matches.length) {
+            self.populateList(self.matches);
             self.updatePosition();
             self.attachKeyboardHandler();
             self.selectIndex(0);
