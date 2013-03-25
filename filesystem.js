@@ -4,7 +4,6 @@
 function RemoteFileSystem(eventSystem, settings) {
     var self = this;
     self.fileTree = {};
-    self.path = null;
     self.PROTOCOL_VERSION = "0.1";
     self.authToken = null;
 
@@ -170,8 +169,6 @@ function RemoteFileSystem(eventSystem, settings) {
                     if (json.PROTOCOL_VERSION != self.PROTOCOL_VERSION) {
                         throw "Protocol version mismatch";
                     }
-
-                    self.path = json.path;
 
                     eventSystem.callEventListeners('connected', host);
                 } else {
