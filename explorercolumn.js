@@ -30,7 +30,9 @@ function ExplorerColumn(dir, key) {
         removeClass($old, 'active');
         addClass($new, 'active');
 
-        $new.scrollIntoViewIfNeeded(false);
+        if ($new) {
+            $new.scrollIntoViewIfNeeded(false);
+        }
     };
     
     self.getActiveRow = function() {

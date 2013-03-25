@@ -20,12 +20,21 @@ f.close()
 targets = {
     'chrome': {
         'template_args': {
+            'fileSystemScript': 'fs/remote.js',
             'storageScript': 'platforms/chrome/storage.js',
             'bodyClassNames': '',
         }
     },
     'browser': {
         'template_args': {
+            'fileSystemScript': 'fs/remote.js',
+            'storageScript': 'platforms/browser/storage.js',
+            'bodyClassNames': 'hide-window-controls',
+        }
+    },
+    'demo': {
+        'template_args': {
+            'fileSystemScript': 'fs/local.js',
             'storageScript': 'platforms/browser/storage.js',
             'bodyClassNames': 'hide-window-controls',
         }

@@ -8,7 +8,7 @@ function CommandList(happyEdit) {
             alias: ["e", "open"],
             autoComplete: function(s) {
                 var self = this;
-                var suggestions = happyEdit.fileSystem.getSuggestions(s).map(function(x) {
+                var suggestions = happyEdit.commandT.getSuggestions(s).map(function(x) {
                     x.onclick = happyEdit.commandLine.fileSuggestionClickCallback;
                     return x;
                 });
