@@ -13,6 +13,7 @@ function HappyEdit(settings) {
     self.topBar = new TopBar(self);
     self.bottomBar = new BottomBar(self);
     self.fileSystem = new RemoteFileSystem(self.eventSystem, self.settings);
+    self.commandT = new CommandT(self.eventSystem, self.fileSystem);
     self.tabSpecificKeyboardHandlers = [];
     self.config = require('ace/config');
     self.explorer = new Explorer(self);

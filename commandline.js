@@ -205,7 +205,7 @@ function CommandLine(happyEdit) {
     };
 
     self.getCommandTSuggestions = function(s) {
-        var suggestions = happyEdit.fileSystem.getSuggestions(s);
+        var suggestions = happyEdit.commandT.getSuggestions(s);
         return suggestions.map(function(x) {
             var y = x;
             y.onclick = self.fileSuggestionClickCallback;

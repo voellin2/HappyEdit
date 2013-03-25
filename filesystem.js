@@ -4,8 +4,6 @@
 function RemoteFileSystem(eventSystem, settings) {
     var self = this;
     self.fileTree = {};
-    self.files = [];
-    self.autoSuggestList = new FilterList();
     self.path = null;
     self.interval = null;
     self.connectionProblem = false;
@@ -35,48 +33,16 @@ function RemoteFileSystem(eventSystem, settings) {
         }, 5000);
     });
     
-    self.setData = function(json) {
-        self.fileTree = json;
-        self.files = [];
-
-        var key;
-        var i;
-        var node;
-        var file;
-
-        for (key in self.fileTree) {
-            if (self.fileTree.hasOwnProperty(key)) {
-                node = self.fileTree[key];
-                for (i = 0; i < node.files.length; i += 1) {
-                    file = node.files[i];
-                    self.files.push(key + '/' + file);
-                }
-            }
-        }
-
-        var map = self.files.map(function(filename) {
-            return {
-                value: filename,
-                keys: filename.toLowerCase().split('/')
-            };
-        });
-
-        self.autoSuggestList.load(map);
-    };
-
     eventSystem.addEventListener('connected', function(host) {
         var xhr = new XMLHttpRequest();
         var url = host + '/files?token=' + settings.get('authToken');
-
-        self.files = [];
-        self.autoSuggestList.clear();
     
         xhr.open("GET", url);
         xhr.onreadystatechange = function() {
             if (xhr.readyState == 4) {
                 if (xhr.responseText) {
                     var json = JSON.parse(xhr.responseText);
-                    self.setData(json);
+                    self.fileTree = json;
                     eventSystem.callEventListeners('filesystem_loaded');
                 }
             }
@@ -87,30 +53,6 @@ function RemoteFileSystem(eventSystem, settings) {
 
     self.isConnected = function() {
         return !self.connectionProblem;
-    };
-    
-    /**
-     * Gets a list of auto completions in the format expected by the
-     * CommandLine
-     */
-    self.getSuggestions = function(q) {
-        var suggestions = [];
-        var i;
-        var split;
-        var autoCompletions = this.autoSuggestList.getSuggestions(q);
-        var autoCompletion;
-
-        for (i = 0; i < autoCompletions.length; i += 1) {
-            autoCompletion = autoCompletions[i];
-            split = autoCompletion.split(PATH_SEPARATOR);
-            suggestions.push({
-                title: split.pop(),
-                extra: capFileName(autoCompletion, 60),
-                rel: autoCompletion
-            });
-        }
-
-        return suggestions;
     };
 
     /**
