@@ -1,7 +1,7 @@
 /**
  * System to read and write files from a remote server.
  */
-function RemoteFileSystem(eventSystem, settings) {
+function FileSystem(eventSystem, settings) {
     var self = this;
     self.fileTree = {};
     self.PROTOCOL_VERSION = "0.1";

@@ -12,7 +12,7 @@ function HappyEdit(settings) {
     self.autoCompleter = new AutoCompleteBox(self);
     self.topBar = new TopBar(self);
     self.bottomBar = new BottomBar(self);
-    self.fileSystem = new RemoteFileSystem(self.eventSystem, self.settings);
+    self.fileSystem = new FileSystem(self.eventSystem, self.settings);
     self.commandT = new CommandT(self.eventSystem, self.fileSystem);
     self.tabSpecificKeyboardHandlers = [];
     self.config = require('ace/config');
