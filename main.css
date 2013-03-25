@@ -334,7 +334,7 @@ body.hide-window-controls #top .controls div {
  ******************************************************************************/
  
 #explorer {
-    font-family: ;'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;
     font-size: 12px;
     font-variant: normal;
     overflow: scroll;
