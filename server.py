@@ -269,19 +269,6 @@ class PermissionHandler:
             return [msg]
         return self.next_handler(environ, start_response)
 
-class PingHandler:
-
-    def __call__(self, environ, start_response):
-        if environ['REQUEST_METHOD'] == 'GET' and environ['PATH_INFO'] == '/ping':
-            msg = "pong"
-            start_response("200 OK", [
-                ('Access-Control-Allow-Origin', '*'),
-                ('Content-Type', 'text/plain'),
-                ('Content-Length', str(len(msg))),
-            ])
-            return [msg]
-        return self.next_handler(environ, start_response)
-
 def load_settings(path):
     filepath = os.path.join(path, '.happyedit.json')
 
@@ -338,7 +325,6 @@ def main():
     handlers = []
     handlers.append(ConnectHandler(cfg))
     handlers.append(PermissionHandler(cfg))
-    handlers.append(PingHandler())
     handlers.append(GrepHandler(cwd))
     handlers.append(ProjectInfoHandler(cwd))
     handlers.append(FileListing(cwd, cfg))

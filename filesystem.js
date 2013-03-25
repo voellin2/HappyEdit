@@ -5,34 +5,9 @@ function RemoteFileSystem(eventSystem, settings) {
     var self = this;
     self.fileTree = {};
     self.path = null;
-    self.interval = null;
-    self.connectionProblem = false;
     self.PROTOCOL_VERSION = "0.1";
     self.authToken = null;
 
-    // Ping remote to make sure we're connected.
-    eventSystem.addEventListener('connected', function(host) {
-        var pingUrl = host + '/ping';
-
-        self.interval = window.setInterval(function() {
-            var xhr = new XMLHttpRequest();
-            var url = host + '/ping?token=' + settings.get('authToken');
-            xhr.open("GET", url);
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState == 4) {
-                    if (!xhr.responseText && !self.connectionProblem) {
-                        self.connectionProblem = true;
-                        eventSystem.callEventListeners('disconnected', host);
-                    } else if (xhr.responseText && self.connectionProblem) {
-                        self.connectionProblem = false;
-                        eventSystem.callEventListeners('connected', host);
-                    }
-                }
-            };
-            xhr.send();
-        }, 5000);
-    });
-    
     eventSystem.addEventListener('connected', function(host) {
         var xhr = new XMLHttpRequest();
         var url = host + '/files?token=' + settings.get('authToken');
@@ -50,10 +25,6 @@ function RemoteFileSystem(eventSystem, settings) {
 
         xhr.send();
     });
-
-    self.isConnected = function() {
-        return !self.connectionProblem;
-    };
 
     /**
      * Write a buffer to the remote server.
