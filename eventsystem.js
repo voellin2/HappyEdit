@@ -4,6 +4,7 @@ function EventSystem() {
     self.listeners = {
         'file_changed': [],
         'file_loaded': [],
+        'file_closed': [],
         'connected': [],
         'disconnected': [],
         'filesystem_loaded': []

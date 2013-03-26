@@ -11,6 +11,7 @@ function HappyEdit(settings) {
     self.menu = new Menu(self);
     self.autoCompleter = new AutoCompleteBox(self);
     self.topBar = new TopBar(self);
+    self.tabState = new TabState(self);
     self.bottomBar = new BottomBar(self);
     self.fileSystem = new FileSystem(self.eventSystem, self.settings);
     self.commandT = new CommandT(self.eventSystem, self.fileSystem);
@@ -127,6 +128,7 @@ function HappyEdit(settings) {
             var tab = self.topBar.getTabForFile(file);
             tab.close(true);
             delete self.files[self.currentFile.filename];
+            self.eventSystem.callEventListeners('file_closed', file);
         } else {
             window.close();
         }
