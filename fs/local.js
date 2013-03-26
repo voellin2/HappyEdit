@@ -31,6 +31,10 @@ function FileSystem(eventSystem, settings) {
 
     self.getFile = function(filename, callback) {
         var body = self.fs[filename];
+        eventSystem.callEventListeners('file_loaded', {
+            filename: filename,
+            body: body
+        });
         callback(body);
     };
 
