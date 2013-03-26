@@ -29,3 +29,19 @@ $ python make.py
 **Running HappyEdit within the browser:**
 
 1. In your browser, open HAPPYEDIT_CHECKOUT/build/browser/index.html.
+
+Integrating HappyEdit
+---------------------
+
+It's possible to write your own server implementation to integrate HappyEdit
+closely with your project.
+
+Basically, your server must implement a simple REST interface:
+
+POST    /connect
+GET     /info
+GET     /files
+GET     /files/:path
+POST    /files/:path
+
+See server.py for reference.
