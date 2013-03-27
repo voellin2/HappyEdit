@@ -9,12 +9,10 @@
         }
     },
     "permissions": [
-        "experimental",
         "storage",
         "app.window",
         "clipboardRead",
-        "clipboardWrite",
-        {"fileSystem": ["write"]}
+        "clipboardWrite"
     ],
     "icons": {
         "16": "logo_16x16.png",
