@@ -67,6 +67,18 @@ function TopBar(happyEdit) {
         var i = this.getIndexForTab(this.selectedTab);
         this.selectTabAtIndex(i -= 1);
     };
+    
+    self.calculateTabWidth = function() {
+        return 80; // TODO do real calculation based on window width
+    };
+    
+    self.updateTabPositions = function() {
+        var tabWidth = self.calculateTabWidth();
+        self.tabs.forEach(function(tab, i) {
+            tab.$view.style.width = tabWidth  + 'px';
+            tab.$view.style.left = (i * tabWidth) + 'px';
+        });
+    };
 
     self.updateView = function(file) {
         var self = this;
@@ -77,5 +89,6 @@ function TopBar(happyEdit) {
             self.$tabs.appendChild(tab.$view);
         }
         tab.select();
+        self.updateTabPositions();
     };
 }
