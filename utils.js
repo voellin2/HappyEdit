@@ -5,6 +5,7 @@ var Utils = {
     
     moveX: function($elem, x) {
         $elem.style.webkitTransform = 'translateX(' +  x + 'px)';
+        $elem.style.MozTransform = 'translateX(' +  x + 'px)';
         $elem.x = x;
     },
 

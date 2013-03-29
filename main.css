@@ -158,8 +158,10 @@ body {
     background:-o-linear-gradient(top, #EEE 0%, #CCC 100%);
     background:linear-gradient(top, #EEE 0%, #CCC 100%);
     border-bottom: 1px solid #999;
-    -webkit-user-select: none;
     -webkit-app-region: drag;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
 }
 #top .tabs {
     display: inline-block;
@@ -175,6 +177,8 @@ body {
     overflow: hidden;
     height: 25px;
     -webkit-transition: -webkit-transform .1s linear;
+    -moz-transition: -moz-transform .1s linear;
+    transition: transform .1s linear;
     -webkit-app-region: no-drag;
 }
 #top .tabs li .fader {
@@ -221,6 +225,8 @@ body {
 }
 #top .tabs li.no-transition {
     -webkit-transition: none;
+    -moz-transition: none;
+    transition: none;
 }
 #top .controls {
     display: inline-block;
