@@ -1,40 +1,38 @@
 function TabState(happyEdit) {
     var self = this;
-    
+    var eventSystem = happyEdit.eventSystem;
     self.KEY = 'happyedit_tabstate';
-    self.tabState = [];
-    
-    eventSystem = happyEdit.eventSystem;
-    fileSystem = happyEdit.filesystem;
     
     eventSystem.addEventListener('filesystem_loaded', function() {
         self.restore();
     });
     
     eventSystem.addEventListener('file_loaded', function(file) {
-        self.tabState.push(file.filename);
         self.save();
     });
     
     eventSystem.addEventListener('file_closed', function(file) {
-        var index = self.tabState.indexOf(file.filename);
-        if (index !== -1) {
-            self.tabState.splice(index, 1);
-        }
         self.save();
     });
     
     self.restore = function() {
-        Storage.get(self.KEY, self.tabState, function(data) {
+        Storage.get(self.KEY, [], function(data) {
             data.forEach(function(filename, i) {
                 happyEdit.openRemoteFile(filename);
             });
-            self.tabState = data;
         });
     };
     
     self.save =  function() {
-        Storage.set(self.KEY, self.tabState, function() {
+        var tabState = [];
+        
+        happyEdit.topBar.tabs.forEach(function(tab, i) {
+            if (tab.file && tab.file.constructor === Buffer) {
+                tabState.push(tab.file.filename);
+            }
+        });
+        
+        Storage.set(self.KEY, tabState, function() {
         });
     };
 }
