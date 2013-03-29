@@ -1,3 +1,7 @@
+/**
+ * Saves the current tab state to "Storage". When started, it restores the
+ * tab state.
+ */
 function TabState(happyEdit) {
     var self = this;
     var eventSystem = happyEdit.eventSystem;
