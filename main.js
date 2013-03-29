@@ -20,6 +20,7 @@ function HappyEdit(settings) {
     self.explorer = new Explorer(self);
     self.grepView = new GrepView(self);
     self.globalCommandManager = new GlobalCommandManager(self);
+    self.dragAndDropHandler = new DragAndDropHandler(self);
 
     window.onresize = function(event) {
         var w = window.innerWidth;
@@ -198,7 +199,7 @@ function HappyEdit(settings) {
 
     self.openDummyBuffer = function() {
         var buffer = new Buffer(self, null, '');
-        self.files[buffer.id] = buffer;
+        self.files[buffer.filename || '__tmp__'] = buffer;
         self.switchToFile(buffer);
     };
 

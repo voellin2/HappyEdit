@@ -4,7 +4,9 @@ function Tab(file, topBar, happyEdit) {
     this.$title = document.createElement('span');
     this.$title.innerHTML = file.getTabLabel();
     this.$view = document.createElement('li');
+    this.$view.setAttribute('class', 'tab');
     this.$view.appendChild(this.$title);
+    this.$view.setAttribute('rel', file.filename || '__tmp__');
 
     file.onChange(function(file) {
         self.$title.innerHTML = file.getTabLabel();

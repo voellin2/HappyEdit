@@ -72,11 +72,23 @@ function TopBar(happyEdit) {
         return 80; // TODO do real calculation based on window width
     };
     
+    self.swapTabs = function(tab1, tab2) {
+        var index1 = self.getIndexForTab(tab1);
+        var index2 = self.getIndexForTab(tab2);
+        
+        self.tabs[index1] = tab2;
+        self.tabs[index2] = tab1;
+        
+        self.updateTabPositions();
+    };
+    
     self.updateTabPositions = function() {
         var tabWidth = self.calculateTabWidth();
         self.tabs.forEach(function(tab, i) {
             tab.$view.style.width = tabWidth  + 'px';
-            tab.$view.style.left = (i * tabWidth) + 'px';
+            if (!hasClass(tab.$view, 'drag')) {
+                tab.$view.style.left = (i * tabWidth) + 'px';
+            }
         });
     };
 
