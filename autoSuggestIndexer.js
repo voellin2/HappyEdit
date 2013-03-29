@@ -15,6 +15,10 @@ function AutoSuggestIndexer(happyEdit) {
     self.index = function(buffer) {
         var possibleWords = buffer.body.match(/((?=\.)?\$?_?[A-Za-z_]{3,})/g);
         
+        if (!possibleWords) {
+            return;
+        }
+        
         // Filter dupes
         possibleWords = possibleWords.filter(function(v, i, a) {
             return a.indexOf(v) == i;
