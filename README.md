@@ -20,9 +20,9 @@ $ cd ..
 $ python make.py
 ```
 
-**Installing HappyEdit as a Chrome Packaged App:**
+**Installing HappyEdit as a Chrome App:**
 
-1. Make sure you run the Canary version of Google Chrome ( https://tools.google.com/dlpage/chromesxs ).
+1. Open Google Chrome
 2. Go to Tools -> Extensions, enable the developer mode, then press "Load unpacked extension" select the HAPPYEDIT_CHECKOUT/build/chrome folder.
 3. Open a new tab and click the HappyEdit icon.
 
