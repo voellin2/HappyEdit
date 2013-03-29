@@ -34,6 +34,8 @@ function HappyEdit(settings) {
 
         self.grepView.$view.style.width = w + 'px';
         self.grepView.$view.style.height = h + 'px';
+        
+        self.topBar.updateTabPositions();
     };
     window.onresize();
 

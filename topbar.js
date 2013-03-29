@@ -69,7 +69,17 @@ function TopBar(happyEdit) {
     };
     
     self.calculateTabWidth = function() {
-        return 80; // TODO do real calculation based on window width
+        var offsetFromRight = 40;
+        var maxTabWidth = 80;
+        
+        var w = window.innerWidth - self.$tabs.offsetLeft - offsetFromRight;
+        var tabWidth = w / self.tabs.length;
+        
+        if (tabWidth > maxTabWidth) {
+            tabWidth = maxTabWidth;
+        }
+        
+        return tabWidth;
     };
     
     self.swapTabs = function(tab1, tab2) {
