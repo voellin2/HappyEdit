@@ -38,6 +38,7 @@ function Tab(file, topBar, happyEdit) {
         }
         topBar.tabs.splice(i, 1);
         topBar.$tabs.removeChild(this.$view);
+        topBar.updateTabPositions();
     };
 
     this.$view.onclick = this.select;
