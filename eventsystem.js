@@ -2,6 +2,7 @@ function EventSystem() {
     var self = this;
 
     self.listeners = {
+        'tabs_swapped': [],
         'file_changed': [],
         'file_loaded': [],
         'file_closed': [],

@@ -19,6 +19,10 @@ function TabState(happyEdit) {
         self.save();
     });
     
+    eventSystem.addEventListener('tabs_swapped', function(file) {
+        self.save();
+    });
+    
     self.restore = function() {
         Storage.get(self.KEY, [], function(data) {
             data.forEach(function(filename, i) {

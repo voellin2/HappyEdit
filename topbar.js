@@ -80,6 +80,8 @@ function TopBar(happyEdit) {
         self.tabs[index2] = tab1;
         
         self.updateTabPositions();
+        
+        happyEdit.eventSystem.callEventListeners('tabs_swapped', [tab1, tab2]);
     };
     
     self.updateTabPositions = function() {
