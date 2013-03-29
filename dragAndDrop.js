@@ -24,7 +24,7 @@ function DragAndDropHandler(happyEdit) {
         
         if ($tab) {
             var x = event.clientX - self.topBarLeft;
-            var d = x - $tab.offsetLeft;
+            var d = x - $tab.x;
             self.offsetX = self.topBarLeft + d;
         }
         
@@ -43,16 +43,17 @@ function DragAndDropHandler(happyEdit) {
             self.moveTarget(event.clientX - self.offsetX);
         } else if (self.mouseDown && self.$target) {
             self.dragStart(event.clientX);
-            self.moveTarget(event.clientX);
+            self.moveTarget(event.clientX - self.offsetX);
         }
     };
     
     self.moveTarget = function(x) {
-        self.$target.style.left = x +'px';
+        self.$target.style.left = x + 'px';
         
         var i;
         var $tab;
         var TAB_WIDTH = self.$target.offsetWidth;
+        
         for (i = 0; i < self.$tabs.children.length; i += 1) {
             $tab = self.$tabs.children[i];
             
@@ -60,17 +61,10 @@ function DragAndDropHandler(happyEdit) {
                 continue;
             }
             
-            var d = self.$target.offsetLeft - $tab.offsetLeft;
+            var d = Math.abs(self.$target.offsetLeft - $tab.x);
             
-            if (d < 0 && d > -(TAB_WIDTH/2)) {
-                //addClass($tab, 'drop-after');
-                self.swap(self.$target, $tab)
-            } else if (d > 0 && d < (TAB_WIDTH/2)) {
-                //addClass($tab, 'drop-before');
-                self.swap(self.$target, $tab)
-            } else {
-                removeClass($tab, 'drop-before');
-                removeClass($tab, 'drop-after');
+            if (d < (TAB_WIDTH/2)) {
+                self.swap(self.$target, $tab);
             }
         }
     };
@@ -90,12 +84,23 @@ function DragAndDropHandler(happyEdit) {
     
     self.dragStart = function() {
         self.dragging = true;
+        self.$target.x = 0;
+        self.$target.style.webkitTransform = 'translateX(0px)';
         addClass(self.$target, 'drag');
+        addClass(self.$target, 'no-transition');
+    };
+    
+    self.removeClassAfterTimeout = function($elem, className) {
+        setTimeout(function() {
+            removeClass($elem, className);
+        }, 300);
     };
     
     self.dragEnd = function() {
         self.dragging = false;
+        self.$target.style.left = 0;
         removeClass(self.$target, 'drag');
+        self.removeClassAfterTimeout(self.$target, 'no-transition');
         self.$target = null;
         happyEdit.topBar.updateTabPositions();
     };

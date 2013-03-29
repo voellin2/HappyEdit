@@ -84,12 +84,18 @@ function TopBar(happyEdit) {
     
     self.updateTabPositions = function() {
         var tabWidth = self.calculateTabWidth();
+        var x;
+
         self.tabs.forEach(function(tab, i) {
             tab.$view.style.width = tabWidth  + 'px';
             if (!hasClass(tab.$view, 'drag')) {
-                tab.$view.style.left = (i * tabWidth) + 'px';
+                x = i * tabWidth;
+                tab.$view.style.webkitTransform = 'translateX(' +  x + 'px)';
+                tab.$view.x = x;
             }
         });
+        
+        self.$tabs.style.width = self.tabs.length * tabWidth + 'px';
     };
 
     self.updateView = function(file) {
