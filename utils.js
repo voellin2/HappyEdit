@@ -2,6 +2,11 @@ var Utils = {
     trim: function(s) {
         return s.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
     },
+    
+    moveX: function($elem, x) {
+        $elem.style.webkitTransform = 'translateX(' +  x + 'px)';
+        $elem.x = x;
+    },
 
     /**
      * Extend d1 with the values of d2.

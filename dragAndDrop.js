@@ -48,7 +48,7 @@ function DragAndDropHandler(happyEdit) {
     };
     
     self.moveTarget = function(x) {
-        self.$target.style.left = x + 'px';
+        Utils.moveX(self.$target, x);
         
         var i;
         var $tab;
@@ -61,7 +61,7 @@ function DragAndDropHandler(happyEdit) {
                 continue;
             }
             
-            var d = Math.abs(self.$target.offsetLeft - $tab.x);
+            var d = Math.abs(self.$target.x - $tab.x);
             
             if (d < (TAB_WIDTH/2)) {
                 self.swap(self.$target, $tab);
@@ -85,22 +85,15 @@ function DragAndDropHandler(happyEdit) {
     self.dragStart = function() {
         self.dragging = true;
         self.$target.x = 0;
-        self.$target.style.webkitTransform = 'translateX(0px)';
+        Utils.moveX(self.$target, 0);
         addClass(self.$target, 'drag');
         addClass(self.$target, 'no-transition');
     };
     
-    self.removeClassAfterTimeout = function($elem, className) {
-        setTimeout(function() {
-            removeClass($elem, className);
-        }, 300);
-    };
-    
     self.dragEnd = function() {
         self.dragging = false;
-        self.$target.style.left = 0;
         removeClass(self.$target, 'drag');
-        self.removeClassAfterTimeout(self.$target, 'no-transition');
+        removeClass(self.$target, 'no-transition');
         self.$target = null;
         happyEdit.topBar.updateTabPositions();
     };

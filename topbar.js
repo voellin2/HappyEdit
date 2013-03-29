@@ -92,8 +92,7 @@ function TopBar(happyEdit) {
             tab.$view.style.width = tabWidth  + 'px';
             if (!hasClass(tab.$view, 'drag')) {
                 x = i * tabWidth;
-                tab.$view.style.webkitTransform = 'translateX(' +  x + 'px)';
-                tab.$view.x = x;
+                Utils.moveX(tab.$view, x);
             }
         });
         
