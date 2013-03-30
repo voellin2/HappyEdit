@@ -222,6 +222,7 @@ body {
 }
 #top .tabs li.drag {
     z-index: 10;
+    border-right: 1px solid #999;
 }
 #top .tabs li.no-transition {
     -webkit-transition: none;
