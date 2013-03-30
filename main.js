@@ -191,10 +191,16 @@ function HappyEdit(settings) {
     };
 
     self.openFileExplorer = function() {
+        if (!self.files.hasOwnProperty(self.explorer.filename)) {
+            self.files[self.explorer.filename] = self.explorer;
+        }
         self.switchToFile(self.explorer);
     };
 
     self.showGrepResults = function(q) {
+        if (!self.files.hasOwnProperty(self.grep.filename)) {
+            self.files[self.grep.filename] = self.grep;
+        }
         self.grepView.load(q);
         self.switchToFile(self.grepView);
     };
