@@ -86,20 +86,16 @@ function CommandLine(happyEdit) {
         extract = self.extractCommandParts(inputString);
         command = happyEdit.commands.getCommandByName(extract.name);
 
-        if (command && command.autoComplete) {
-            command.autoComplete(extract.args);
-        } else {
-            if (isNumeric(inputString)) {
-                ret.push({
-                    title: 'Jump to line',
-                    extra: 'Jump to line ' + inputString,
-                    onclick: self.jumpSuggestionCallback
-                });
-            }
-
-            ret = ret.concat(self.getCommandSuggestions(inputString));
-            ret = ret.concat(self.getCommandTSuggestions(inputString));
+        if (isNumeric(inputString)) {
+            ret.push({
+                title: 'Jump to line',
+                extra: 'Jump to line ' + inputString,
+                onclick: self.jumpSuggestionCallback
+            });
         }
+
+        ret = ret.concat(self.getCommandSuggestions(inputString));
+        ret = ret.concat(self.getCommandTSuggestions(inputString));
 
         return ret;
     };

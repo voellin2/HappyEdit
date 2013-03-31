@@ -6,28 +6,6 @@ function CommandList(happyEdit) {
             title: "Edit File",
             hideCommandLine: true,
             alias: ["e", "open"],
-            autoComplete: function(s) {
-                var self = this;
-                var suggestions = happyEdit.commandT.getSuggestions(s).map(function(x) {
-                    x.onclick = happyEdit.commandLine.fileSuggestionClickCallback;
-                    return x;
-                });
-
-                if (s && (suggestions.length === 0 || suggestions[0].rel !== s)) {
-                    suggestions.splice(0, 0, {
-                        title: 'Create new file "' + s + '"',
-                        extra: capFileName(happyEdit.fileSystem.path, 60),
-                        rel: s,
-                        onclick: function() {
-                            self.callback(s, function() {
-                                happyEdit.commandLine.hide();
-                            });
-                        }
-                    });
-                }
-
-                happyEdit.commandLine.fillSuggestionsList(suggestions);
-            },
             callback: function(args, callback) {
                 if (!args) {
                     throw "A filename must be provided";
