@@ -6,6 +6,10 @@ function GlobalCommandManager(happyEdit) {
     self.handler = new HashHandler();
 
     event.addCommandKeyListener(window, function(e, hashId, keyCode) {
+        if (happyEdit.commandLine.isVisible) {
+            return;
+        }
+        
         var keyString = keyUtil.keyCodeToString(keyCode);
         var command = self.handler.findKeyCommand(hashId, keyString);
         if (command && command.exec) {
