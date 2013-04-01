@@ -241,7 +241,7 @@ function CommandLine(happyEdit) {
             command.callback(args, function(error) {
                 if (error) {
                     self.showAlert(error);
-                } else if (command.hideCommandLine) {
+                } else {
                     self.hide();
                 }
             });

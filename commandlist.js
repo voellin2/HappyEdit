@@ -4,7 +4,6 @@ function CommandList(happyEdit) {
         {
             name: "edit",
             title: "Edit File",
-            hideCommandLine: true,
             alias: ["e", "open"],
             callback: function(args, callback) {
                 if (!args) {
@@ -20,7 +19,6 @@ function CommandList(happyEdit) {
             name: "reload",
             alias: ["refresh"],
             title: "Reload current buffer",
-            hideCommandLine: true,
             shortcut: {
                 win: "Ctrl-R",
                 mac: "Command-R",
@@ -44,7 +42,6 @@ function CommandList(happyEdit) {
             name: "connect",
             alias: [],
             title: "Connect to a remote server",
-            hideCommandLine: true,
             callback: function(args, callback) {
                 happyEdit.fileSystem.connect(args, callback);
             }
@@ -53,7 +50,6 @@ function CommandList(happyEdit) {
             name: "disconnect",
             alias: [],
             title: "Disconnect from any connected server",
-            hideCommandLine: true,
             callback: function(args, callback) {
                 happyEdit.fileSystem.disconnect();
                 callback();
@@ -78,7 +74,6 @@ function CommandList(happyEdit) {
             name: "grep",
             alias: ["search", "find"],
             title: "Search in all files",
-            hideCommandLine: true,
             callback: function(args, callback) {
                 if (!args) {
                     throw "A search query must be provided.";
@@ -92,7 +87,6 @@ function CommandList(happyEdit) {
             alias: ["w", "write"],
             title: "Save Current File",
             showInMenu: true,
-            hideCommandLine: true,
             shortcut: {
                 win: "Ctrl-S",
                 mac: "Command-S",
@@ -162,7 +156,6 @@ function CommandList(happyEdit) {
             name: "openMenu",
             alias: [],
             title: "Open Menu",
-            hideCommandLine: true,
             callback: function(args, callback) {
                 happyEdit.menu.show();
                 callback();
@@ -173,7 +166,6 @@ function CommandList(happyEdit) {
             alias: [],
             title: "Open File Browser",
             showInMenu: true,
-            hideCommandLine: true,
             shortcut: {
                 win: "Ctrl-E",
                 mac: "Command-E",
@@ -187,7 +179,6 @@ function CommandList(happyEdit) {
             name: "quit",
             alias: ["q", "exit"],
             title: "Quit HappyEdit",
-            hideCommandLine: true,
             callback: function(args, callback) {
                 happyEdit.closeFile(happyEdit.currentFile);
                 callback();
@@ -197,7 +188,6 @@ function CommandList(happyEdit) {
             name: "autocomplete",
             alias: [],
             title: "Autocomplete current word",
-            hideCommandLine: true,
             shortcut: {
                 win: "Shift-Space",
                 mac: "Shift-Space",
