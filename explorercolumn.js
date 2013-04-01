@@ -1,6 +1,5 @@
 function ExplorerColumn(dir, key) {
     var self = this;
-    var $explorers = document.querySelector("#explorers");
     self.$view = HTML.createDirectoryView(dir, key);
     self.activeIndex = 0;
     

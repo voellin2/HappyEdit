@@ -6,7 +6,6 @@ function Explorer(happyEdit) {
     self.columns = [];
     self.activeColumn = null;
     self.columnIndex = 0;
-    self.initialized = false;
 
     self.isDummy = function() {
         return false;
