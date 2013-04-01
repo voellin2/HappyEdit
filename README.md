@@ -45,3 +45,12 @@ GET     /files/:path
 POST    /files/:path
 
 See server.py for reference.
+
+JavaScript Code standards:
+--------------------------
+
+ * Variables referring to DOM elements should have a leading '$', e.g. '$ul'.
+ * 'Classes' should be written LikeThis.
+ * Class members should be written likeThis.
+ * Indentation with 4 spaces.
+ * Modifying object prototypes and 'inheritance' should be avoided.
