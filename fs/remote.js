@@ -48,7 +48,6 @@ function FileSystem(eventSystem, settings) {
             if (xhr.readyState == 4) {
                 document.querySelector('#notification').style.visibility = 'hidden';
                 console.log(xhr.responseText);
-                buffer.session.getUndoManager().reset();
 
                 if (!buffer.filename) {
                     buffer.rename(filename);

@@ -9,7 +9,7 @@ function Buffer(happyEdit, filename, body) {
     self.basename = null;
     self.dirname = null;
     self.session = new EditSession(body || '');
-    self.modified = false;
+    self.session.setUndoManager(new UndoManager());
     self.onChangeListeners = [];
 
     self.isDummy = function() {
@@ -84,12 +84,6 @@ function Buffer(happyEdit, filename, body) {
     self.getBody = function(body) {
         return self.session.getValue(body);
     };
-
-    self.session.setUndoManager(new UndoManager());
-    self.modified = false;
+    
     self.rename(filename);
-
-    self.session.getDocument().on('change', function(event) {
-        self.modified = self.session.getUndoManager().$undoStack.length !== 0;
-    });
 }
