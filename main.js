@@ -198,8 +198,8 @@ function HappyEdit(settings) {
     };
 
     self.showGrepResults = function(q) {
-        if (!self.files.hasOwnProperty(self.grep.filename)) {
-            self.files[self.grep.filename] = self.grep;
+        if (!self.files.hasOwnProperty(self.grepView.filename)) {
+            self.files[self.grepView.filename] = self.grep;
         }
         self.grepView.load(q);
         self.switchToFile(self.grepView);
