@@ -17,6 +17,30 @@ function CommandList(happyEdit) {
             }
         },
         {
+            name: "reload",
+            alias: ["refresh"],
+            title: "Reload current buffer",
+            hideCommandLine: true,
+            shortcut: {
+                win: "Ctrl-R",
+                mac: "Command-R",
+            },
+            callback: function(args, callback) {
+                if (happyEdit.currentFile.constructor !== Buffer) {
+                    return;
+                }
+                
+                var currentFile = happyEdit.currentFile;
+                var filename = currentFile.filename;
+                
+                happyEdit.fileSystem.getFile(filename, function(body) {
+                    currentFile.setBody(body);
+                });
+            
+                callback();
+            }
+        },
+        {
             name: "connect",
             alias: [],
             title: "Connect to a remote server",
