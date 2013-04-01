@@ -171,8 +171,8 @@ function CommandLine(happyEdit) {
     };
 
     self.commandSuggestionClickCallback = function() {
-        var extract = self.extractCommandParts(self.$input.value);
-        self.executeCommand(extract.name, extract.args);
+        var name = this.getAttribute('rel');
+        self.executeCommand(name, null);
     };
 
     self.jumpSuggestionCallback = function() {
@@ -222,9 +222,7 @@ function CommandLine(happyEdit) {
      */
     self.execute = function() {
         var inputString = self.$input.value;
-        var extract;
-
-        extract = self.extractCommandParts(inputString);
+        var extract = self.extractCommandParts(inputString);
         self.executeCommand(extract.name, extract.args);
     };
 
