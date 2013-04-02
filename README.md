@@ -54,3 +54,4 @@ JavaScript Code standards:
  * Class members should be written likeThis.
  * Indentation with 4 spaces.
  * Modifying object prototypes and 'inheritance' should be avoided.
+ * Each 'class' should be in its separeate .js file named 'YourClass.js'.
