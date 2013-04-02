@@ -33,8 +33,27 @@ var Utils = {
         return parseFloat(num).toString() == num;
     },
 
+    getMacOrWin: function() {
+        if (Utils.getOS() === "mac") {
+            return "mac";
+        }
+        return "win";
+    },
+
+    /**
+     * Returns if OS is "windows", "mac", "unix" or "linux". Default: "windows".
+     */
+    getOS: function() {
+        var os = "win";
+        if (navigator.appVersion.indexOf("Win")!=-1) os = "windows";
+        if (navigator.appVersion.indexOf("Mac")!=-1) os = "mac";
+        if (navigator.appVersion.indexOf("X11")!=-1) os = "unix";
+        if (navigator.appVersion.indexOf("Linux")!=-1) os = "linux";
+        return os;
+    },
+
     getShortcutForCommand: function(command) {
-        var os = getMacOrWin();
+        var os = Utils.getMacOrWin();
         var shortcut = null;
     
         if (command.shortcut && command.shortcut.hasOwnProperty(os)) {
@@ -118,23 +137,4 @@ function removeClass(elem, className) {
     }
 
     elem.setAttribute('class', newClassNames.join(' '));
-}
-
-/**
- * Returns if OS is "windows", "mac", "unix" or "linux". Default: "windows".
- */
-function getOS() {
-    var os = "win";
-    if (navigator.appVersion.indexOf("Win")!=-1) os = "windows";
-    if (navigator.appVersion.indexOf("Mac")!=-1) os = "mac";
-    if (navigator.appVersion.indexOf("X11")!=-1) os = "unix";
-    if (navigator.appVersion.indexOf("Linux")!=-1) os = "linux";
-    return os;
-}
-
-function getMacOrWin() {
-    if (getOS() === "mac") {
-        return "mac";
-    }
-    return "win";
 }
