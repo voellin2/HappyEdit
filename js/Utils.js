@@ -27,6 +27,20 @@ var Utils = {
      */
     startsWith: function(s1, s2) {
         return s1.substring(0, s2.length) === s2;
+    },
+
+    getShortcutForCommand: function(command) {
+        var os = getMacOrWin();
+        var shortcut = null;
+    
+        if (command.shortcut && command.shortcut.hasOwnProperty(os)) {
+            shortcut = command.shortcut[os];
+            shortcut = shortcut.replace('-', '');
+            shortcut = shortcut.replace('Command', '⌘');
+            shortcut = shortcut.replace('Shift', '⇧');
+        }
+    
+        return shortcut;
     }
 };
 
@@ -123,18 +137,4 @@ function getMacOrWin() {
         return "mac";
     }
     return "win";
-}
-
-function getShortcutForCommand(command) {
-    var os = getMacOrWin();
-    var shortcut = null;
-
-    if (command.shortcut && command.shortcut.hasOwnProperty(os)) {
-        shortcut = command.shortcut[os];
-        shortcut = shortcut.replace('-', '');
-        shortcut = shortcut.replace('Command', '⌘');
-        shortcut = shortcut.replace('Shift', '⇧');
-    }
-
-    return shortcut;
 }

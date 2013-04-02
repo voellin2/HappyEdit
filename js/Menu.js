@@ -16,7 +16,7 @@ function Menu(happyEdit) {
             var $li = HTML.createMenuOption({
                 title: command.title,
                 className: command.name,
-                shortcut: getShortcutForCommand(command),
+                shortcut: Utils.getShortcutForCommand(command),
                 callback: function() {
                     command.callback(null, function() {
                         self.hide();
