@@ -52,6 +52,22 @@ var Utils = {
         return os;
     },
 
+    capFileName: function(filename, max) {
+        var ret = filename;
+    
+        if (filename.length > max) {
+            var split = filename.split('/');
+            if (split.length > 1) {
+                var last = split.pop();
+                ret = split.join('/').substring(0, max - split[1].length - 4) + '.../' + split[1] + last;
+            } else {
+                ret = filename.substring(0, max-3) + '...';
+            }
+        }
+    
+        return ret;
+    },
+
     getShortcutForCommand: function(command) {
         var os = Utils.getMacOrWin();
         var shortcut = null;
@@ -102,22 +118,6 @@ function hasClass(elem, className) {
     }
 
     return false;
-}
-
-function capFileName(filename, max) {
-    var ret = filename;
-
-    if (filename.length > max) {
-        var split = filename.split('/');
-        if (split.length > 1) {
-            var last = split.pop();
-            ret = split.join('/').substring(0, max - split[1].length - 4) + '.../' + split[1] + last;
-        } else {
-            ret = filename.substring(0, max-3) + '...';
-        }
-    }
-
-    return ret;
 }
 
 function removeClass(elem, className) {

@@ -52,7 +52,7 @@ function CommandT(eventSystem, fileSystem) {
             split = autoCompletion.split(PATH_SEPARATOR);
             suggestions.push({
                 title: split.pop(),
-                extra: capFileName(autoCompletion, 60),
+                extra: Utils.capFileName(autoCompletion, 60),
                 rel: autoCompletion
             });
         }
