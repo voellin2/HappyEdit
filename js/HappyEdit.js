@@ -210,6 +210,12 @@ function HappyEdit(settings) {
         self.files[buffer.filename || '__tmp__'] = buffer;
         self.switchToFile(buffer);
     };
+    
+    self.getSelection = function() {
+        var range = self.editor.selection.getRange();
+        var txt = self.editor.session.getDocument().getTextRange(range);
+        return txt;
+    };
 
     self.openDummyBuffer();
     self.fileSystem.load();
