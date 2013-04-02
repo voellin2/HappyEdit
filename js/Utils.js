@@ -29,6 +29,10 @@ var Utils = {
         return s1.substring(0, s2.length) === s2;
     },
 
+    isNumeric: function(num) {
+        return parseFloat(num).toString() == num;
+    },
+
     getShortcutForCommand: function(command) {
         var os = getMacOrWin();
         var shortcut = null;
@@ -114,10 +118,6 @@ function removeClass(elem, className) {
     }
 
     elem.setAttribute('class', newClassNames.join(' '));
-}
-
-function isNumeric(num) {
-    return parseFloat(num).toString() == num;
 }
 
 /**

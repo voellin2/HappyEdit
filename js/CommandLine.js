@@ -86,7 +86,7 @@ function CommandLine(happyEdit) {
         extract = self.extractCommandParts(inputString);
         command = happyEdit.commands.getCommandByName(extract.name);
 
-        if (isNumeric(inputString)) {
+        if (Utils.isNumeric(inputString)) {
             ret.push({
                 title: 'Jump to line',
                 extra: 'Jump to line ' + inputString,
