@@ -300,6 +300,8 @@ function CommandLine(happyEdit) {
         self.$popup.style.display = 'none';
         self.$blocker.style.display = 'none';
         self.hideAlert();
+        self.$input.value = '';
+        self.$input.blur();
         happyEdit.editor.focus();
     };
 }
