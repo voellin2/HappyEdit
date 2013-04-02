@@ -138,32 +138,3 @@ function getShortcutForCommand(command) {
 
     return shortcut;
 }
-
-var ajax = {
-    get: function(url, callback) {
-        var xhr = new XMLHttpRequest();
-        var params = params || '';
-        xhr.open("GET", url);
-
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState == 4) {
-                callback(xhr.responseText);
-            }
-        };
-
-        xhr.send();
-    },
-    post: function(url, params, callback) {
-        var xhr = new XMLHttpRequest();
-        params = params || '';
-        xhr.open("POST", url);
-
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState == 4) {
-                callback(xhr.responseText);
-            }
-        };
-
-        xhr.send(params);
-    }
-};
