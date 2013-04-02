@@ -34,7 +34,7 @@ function Menu(happyEdit) {
     };
 
     self.show = function() {
-        addClass(self.$topButton, 'active');
+        Utils.addClass(self.$topButton, 'active');
 
         self.$blocker.onclick = function() {
             self.hide();
@@ -54,6 +54,6 @@ function Menu(happyEdit) {
         self.$blocker.style.display = 'none';
         editor.focus();
 
-        removeClass(self.$topButton, 'active');
+        Utils.removeClass(self.$topButton, 'active');
     };
 }

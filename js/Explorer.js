@@ -131,7 +131,7 @@ function Explorer(happyEdit) {
             key = key.substr(2); 
         }
 
-        if (hasClass($row, 'directory')) {
+        if (Utils.hasClass($row, 'directory')) {
             self.removeAllColumnsToTheRight();
             self.addColumn(key);
             self.navigateRight();

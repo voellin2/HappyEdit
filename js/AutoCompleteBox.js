@@ -76,8 +76,8 @@ function AutoCompleteBox(happyEdit) {
         var $old = self.$ul.querySelector('.active');
         var $new = self.$ul.querySelector('.item' + index);
         
-        removeClass($old, 'active');
-        addClass($new, 'active');
+        Utils.removeClass($old, 'active');
+        Utils.addClass($new, 'active');
         
         $new.scrollIntoViewIfNeeded(false);
     };

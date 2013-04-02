@@ -17,10 +17,10 @@ function Tab(file, topBar, happyEdit) {
 
     this.select = function() {
         if (topBar.selectedTab) {
-            removeClass(topBar.selectedTab.$view, 'selected');
+            Utils.removeClass(topBar.selectedTab.$view, 'selected');
         }
 
-        addClass(self.$view, 'selected');
+        Utils.addClass(self.$view, 'selected');
         topBar.selectedTab = self;
 
         if (self.file !== happyEdit.currentFile) {

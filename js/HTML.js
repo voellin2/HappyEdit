@@ -79,7 +79,7 @@ var HTML = {
             $icon.setAttribute('class', 'icon');
 
             if (file[0] === '.') {
-                addClass($li, 'hidden');
+                Utils.addClass($li, 'hidden');
             }
 
             $li.appendChild($title);
@@ -101,7 +101,7 @@ var HTML = {
             $title.innerHTML = file;
 
             if (file[0] === '.') {
-                addClass($li, 'hidden');
+                Utils.addClass($li, 'hidden');
             }
 
             $li.appendChild($title);

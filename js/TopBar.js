@@ -100,7 +100,7 @@ function TopBar(happyEdit) {
 
         self.tabs.forEach(function(tab, i) {
             tab.$view.style.width = tabWidth  + 'px';
-            if (!hasClass(tab.$view, 'drag')) {
+            if (!Utils.hasClass(tab.$view, 'drag')) {
                 x = i * tabWidth;
                 Utils.moveX(tab.$view, x);
             }

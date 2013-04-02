@@ -139,10 +139,10 @@ function CommandLine(happyEdit) {
             newIndex = self.suggestionElements.length - 1;
         }
         if (self.selectedSuggestionIndex !== null) {
-            removeClass(self.suggestionElements[self.selectedSuggestionIndex], 'hover');
+            Utils.removeClass(self.suggestionElements[self.selectedSuggestionIndex], 'hover');
         }
         self.selectedSuggestionIndex = newIndex;
-        addClass(self.suggestionElements[newIndex], 'hover');
+        Utils.addClass(self.suggestionElements[newIndex], 'hover');
     };
 
     self.navigateSuggestionDown = function() {

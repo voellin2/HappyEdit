@@ -32,8 +32,8 @@ function SelectableList() {
         var $old = self.items[self.index].$view;
         var $new = self.items[index].$view;
         
-        removeClass($old, 'active');
-        addClass($new, 'active');
+        Utils.removeClass($old, 'active');
+        Utils.addClass($new, 'active');
         
         self.index = index;
         

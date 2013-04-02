@@ -26,8 +26,8 @@ function ExplorerColumn(dir, key) {
         var $old = self.$view.querySelector('.active');
         var $new = self.$view.querySelector('.item' + index);
 
-        removeClass($old, 'active');
-        addClass($new, 'active');
+        Utils.removeClass($old, 'active');
+        Utils.addClass($new, 'active');
 
         if ($new) {
             $new.scrollIntoViewIfNeeded(false);
@@ -39,12 +39,12 @@ function ExplorerColumn(dir, key) {
     };
     
     self.focus = function() {
-        addClass(self.$view, 'active');
+        Utils.addClass(self.$view, 'active');
         self.$view.scrollIntoViewIfNeeded();
     };
     
     self.blur = function() {
-        removeClass(self.$view, 'active');
+        Utils.removeClass(self.$view, 'active');
     };
     
     self.selectIndex(0);
