@@ -1,0 +1,50 @@
+/**
+ * List of items. The list can be navigated up/down and one of the items can
+ * be selected.
+ * 
+ * The list being passed in should be a list of associative array. Each item
+ * should  have a 'model' and '$view' key.
+ */
+function SelectableList() {
+    var self = this;
+    self.items = [];
+    self.index = 0;
+    
+    self.setData = function(items) {
+        self.items = items;
+        self.index = 0;
+        if (items.length > 0) {
+            self.selectIndex(0);
+        }
+    };
+    
+    self.getSelectedItem = function() {
+        return self.items[self.index];
+    };
+    
+    self.selectIndex = function(index) {
+        if (index < 0) {
+            index = 0;
+        } else if (index > self.items.length - 1) {
+            index = self.items.length - 1;
+        }
+        
+        var $old = self.items[self.index].$view;
+        var $new = self.items[index].$view;
+        
+        removeClass($old, 'active');
+        addClass($new, 'active');
+        
+        self.index = index;
+        
+        $new.scrollIntoViewIfNeeded(false);
+    };
+    
+    self.navigateUp = function() {
+         self.selectIndex(self.index - 1);
+    };
+    
+    self.navigateDown = function() {
+         self.selectIndex(self.index + 1);
+    };
+}

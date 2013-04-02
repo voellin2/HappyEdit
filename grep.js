@@ -1,42 +1,22 @@
 function GrepView(happyEdit) {
     var self = this;
+    self.list = new SelectableList();
+    self.filename = '__grep__';
     self.$view = document.querySelector('#grep');
     self.$h1 = self.$view.querySelector('h1');
     self.$ul = self.$view.querySelector('ul');
     self.$loading = self.$view.querySelector('.loading');
     self.$error = self.$view.querySelector('.error');
-    self.filename = '__grep__';
-    self.items = [];
-    self.index = 0;
-    
-    self.selectIndex = function(index) {
-        if (index < 0) {
-            index = 0;
-        } else if (index > self.items.length - 1) {
-            index = self.items.length - 1;
-        }
-        
-        self.index = index;
-        
-        var $old = self.$ul.querySelector('.active');
-        var $new = self.$ul.querySelector('.item' + index);
-        
-        removeClass($old, 'active');
-        addClass($new, 'active');
-        
-        $new.scrollIntoViewIfNeeded(false);
-    };
-    
-    self.navigateUp = function() {
-         self.selectIndex(self.index - 1);
-    };
-    
-    self.navigateDown = function() {
-         self.selectIndex(self.index + 1);
-    };
     
     self.openActiveItem = function() {
-        var item = self.items[self.index];
+        var item = self.list.getSelectedItem();
+        
+        if (!item) {
+            return;
+        }
+        
+        item = item.model;
+        
         happyEdit.openRemoteFile(item.filename, item.lineno);
     };
 
@@ -51,11 +31,11 @@ function GrepView(happyEdit) {
 
         switch (keyCode) {
             case 40:
-            self.navigateDown();
+            self.list.navigateDown();
             break;
 
             case 38:
-            self.navigateUp();
+            self.list.navigateUp();
             break;
 
             case 9: // Tab
@@ -81,19 +61,29 @@ function GrepView(happyEdit) {
         
         happyEdit.fileSystem.grep(q, function(data) {
             self.$loading.style.display = 'none';
-            self.items = data;
             
             if (data.length === 0) {
                 self.showError('No search results matching "' + q + '".');
                 return;
             }
             
-            HTML.fillListView(self.$ul, data);
-            self.selectIndex(0);
+            var data = data.map(function(x) {
+                return {
+                    model: x,
+                    $view: HTML.createGrepListItem(x)
+                };
+            });
+            
+            self.list.setData(data);
+            
+            data.forEach(function(item) {
+                self.$ul.appendChild(item.$view);
+            });
         });
     };
     
     self.reset = function() {
+        self.list.setData([]);
         self.$h1.innerHTML = '';
         self.$ul.innerHTML = '';
         self.hideError();

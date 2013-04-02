@@ -113,15 +113,10 @@ var HTML = {
         return $ul;
     },
 
-    fillListView: function($ul, data) {
-        var count = 0;
-        data.forEach(function(row, i) {
-            var $li = document.createElement('li');
-            $li.setAttribute('class', 'item' + String(count));
-            $li.innerHTML = row.filename + '(' + row.lineno + ')' + ' ' + row.snippet;
-            $ul.appendChild($li);
-            count += 1;
-        });
+    createGrepListItem: function(model) {
+        var $li = document.createElement('li');
+        $li.innerHTML = model.filename + '(' + model.lineno + ')' + ' ' + model.snippet;
+        return $li;
     },
 
     fillAutoCompleteList: function($ul, data) {
