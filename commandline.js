@@ -247,6 +247,7 @@ function CommandLine(happyEdit) {
             });
         } catch (e) {
             self.showAlert(e);
+            throw e; // We want to see the traceback in the console.
         }
     };
 
