@@ -382,6 +382,7 @@ body.hide-window-controls #top .controls div {
     display: inline-block;
     width: 200px;
     vertical-align: top;
+    min-height: 100%;
 }
 #explorer li {
     padding: 5px;
