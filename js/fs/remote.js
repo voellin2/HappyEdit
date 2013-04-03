@@ -97,6 +97,7 @@ function FileSystem(eventSystem, settings) {
         xhr.onload = function() {
             if (xhr.status !== 200) {
                 callback(xhr.responseText || 'Unknown error');
+                return;
             }
             var json = JSON.parse(xhr.responseText);
             settings.set('authToken', json.authToken);
