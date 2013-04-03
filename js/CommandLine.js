@@ -15,6 +15,7 @@ function CommandLine(happyEdit) {
     self.isVisible = false;
 
     self.keyDown = function(event) {
+        self.hideAlert();
         keyCode = event.keyCode;
 
         if (event.ctrlKey && (keyCode === 78 || keyCode === 74)) {
