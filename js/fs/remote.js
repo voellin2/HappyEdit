@@ -155,37 +155,37 @@ function FileSystem(eventSystem, settings) {
 
         console.log(remoteServer, authToken);
 
-        if (remoteServer && authToken) {
-            var host = remoteServer;
-            var xhr = new XMLHttpRequest();
-            var url = host + '/info?token=' + authToken;
-
-            xhr.open("GET", url);
-
-            xhr.onload = function() {
-                if (xhr.status === 200) {
-                    var json = JSON.parse(xhr.responseText);
-                    
-                    eventSystem.callEventListeners('connected', host);
-
-                    if (json.PROTOCOL_VERSION != self.PROTOCOL_VERSION) {
-                        throw "Protocol version mismatch";
-                    }
-                    
-                    self.loadFiles(host);
-                } else {
-                    console.log('Error:', xhr.responseText);
-                    eventSystem.callEventListeners('disconnected');
-                }
-            };
-
-            xhr.onerror = function() {
-                eventSystem.callEventListeners('disconnected');
-            };
-
-            xhr.send();
-        } else {
+        if (!remoteServer || !authToken) {
             console.log('No remote server configured');
+            return;
         }
+        
+        var host = remoteServer;
+        var xhr = new XMLHttpRequest();
+        var url = host + '/info?token=' + authToken;
+
+        xhr.open("GET", url);
+
+        xhr.onload = function() {
+            if (xhr.status !== 200) {
+                console.log('Error:', xhr.responseText);
+            }
+            
+            var json = JSON.parse(xhr.responseText);
+
+            if (json.PROTOCOL_VERSION != self.PROTOCOL_VERSION) {
+                throw "Protocol version mismatch";
+            }
+            
+            eventSystem.callEventListeners('connected', host);
+            
+            self.loadFiles(host);
+        };
+
+        xhr.onerror = function() {
+            throw 'Problem connecting to ' + host;
+        };
+
+        xhr.send();
     };
 }
