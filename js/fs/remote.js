@@ -7,7 +7,7 @@ function FileSystem(eventSystem, settings) {
     self.PROTOCOL_VERSION = "0.1";
     self.authToken = null;
 
-    eventSystem.addEventListener('connected', function(host) {
+    self.loadFiles = function(host) {
         var xhr = new XMLHttpRequest();
         var url = host + '/files?token=' + settings.get('authToken');
     
@@ -23,8 +23,8 @@ function FileSystem(eventSystem, settings) {
         };
 
         xhr.send();
-    });
-
+    };
+    
     /**
      * Write a buffer to the remote server.
      */
@@ -165,20 +165,22 @@ function FileSystem(eventSystem, settings) {
             xhr.onload = function() {
                 if (xhr.status === 200) {
                     var json = JSON.parse(xhr.responseText);
+                    
+                    eventSystem.callEventListeners('connected', host);
 
                     if (json.PROTOCOL_VERSION != self.PROTOCOL_VERSION) {
                         throw "Protocol version mismatch";
                     }
-
-                    eventSystem.callEventListeners('connected', host);
+                    
+                    self.loadFiles(host);
                 } else {
                     console.log('Error:', xhr.responseText);
-                    eventSystem.callEventListeners('disconnected', host);
+                    eventSystem.callEventListeners('disconnected');
                 }
             };
 
             xhr.onerror = function() {
-                eventSystem.callEventListeners('disconnected', host);
+                eventSystem.callEventListeners('disconnected');
             };
 
             xhr.send();
