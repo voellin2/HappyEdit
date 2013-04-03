@@ -51,6 +51,8 @@ function CommandLine(happyEdit) {
             break;
 
             case 13:
+            event.preventDefault();
+            event.stopPropagation();
             if (self.hasSuggestions()) {
                 self.openSelectedSuggestion();
             } else {
