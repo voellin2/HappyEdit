@@ -18,6 +18,7 @@ var modes = [
     new Mode("javascript", "JavaScript", require("ace/mode/javascript").Mode, ["js"]),
     new Mode("json", "JSON", require("ace/mode/json").Mode, ["json"]),
     new Mode("python", "Python", require("ace/mode/python").Mode, ["py"]),
+    new Mode("ruby", "Ruby", require("ace/mode/ruby").Mode, ["rb"]),
     new Mode("php", "PHP",require("ace/mode/php").Mode, ["php"]),
     new Mode("text", "Text", require("ace/mode/text").Mode, ["txt"]),
     new Mode("diff", "Diff", require("ace/mode/diff").Mode, ["diff"]),
