@@ -9,11 +9,22 @@ function AutoSuggestIndexer(happyEdit) {
         }
     });
     
+    var timeout = null;
+    happyEdit.editor.on('change', function() {
+        if (timeout) {
+            clearTimeout(timeout);
+        }
+        timeout = setTimeout(function() {
+            self.index(happyEdit.currentFile);
+        }, 2000);
+    });
+    
     /**
      * Regexp from https://gist.github.com/rnetocombr/3789861
      */
     self.index = function(buffer) {
-        var possibleWords = buffer.body.match(/((?=\.)?\$?_?[A-Za-z_]{3,})/g);
+        var body = buffer.body || buffer.getBody();
+        var possibleWords = body.match(/((?=\.)?\$?_?[A-Za-z_]{3,})/g);
         
         if (!possibleWords) {
             return;
