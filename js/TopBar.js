@@ -8,6 +8,7 @@ function TopBar(happyEdit) {
     self.$minButton = self.$view.querySelector('.controls .min');
     self.$maxButton = self.$view.querySelector('.controls .max');
     self.$tabs = self.$view.querySelector('.tabs');
+    self.PREFERRED_TAB_WIDTH = 120;
 
     self.$menuButton.onclick = function() {
         happyEdit.menu.show();
@@ -70,7 +71,7 @@ function TopBar(happyEdit) {
     
     self.calculateTabWidth = function() {
         var offsetFromRight = 40;
-        var maxTabWidth = 80;
+        var maxTabWidth = self.PREFERRED_TAB_WIDTH;
         
         var w = window.innerWidth - self.$tabs.offsetLeft - offsetFromRight;
         var tabWidth = w / self.tabs.length;
