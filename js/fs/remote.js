@@ -119,7 +119,7 @@ function FileSystem(eventSystem, settings) {
         settings.set('authToken', null);
         settings.set('remoteServer', null);
         settings.save();
-        eventSystem.callEventListeners('disconnected', host);
+        eventSystem.callEventListeners('disconnected');
     };
 
     self.grep = function(q, callback) {

@@ -43,7 +43,7 @@ function FileSystem(eventSystem, settings) {
     };
 
     self.disconnect = function() {
-        eventSystem.callEventListeners('disconnected', self.HOST);
+        eventSystem.callEventListeners('disconnected');
     };
     
     self.addToFileTree = function(filename) {

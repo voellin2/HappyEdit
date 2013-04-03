@@ -27,7 +27,7 @@ function BottomBar(happyEdit) {
         Utils.removeClass(self.$indicator, 'disconnected');
     });
 
-    happyEdit.eventSystem.addEventListener('disconnected', function(host) {
+    happyEdit.eventSystem.addEventListener('disconnected', function() {
         self.$indicatorText.innerHTML = 'Disconnected';
         Utils.addClass(self.$indicator, 'disconnected');
         Utils.removeClass(self.$indicator, 'connected');
