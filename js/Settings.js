@@ -2,7 +2,8 @@ function Settings() {
     var self = this;
 
     self.defaults = {
-        remoteServer: null,
+        host: null,
+        authToken: null
     };
 
     self.data = Utils.extend({}, self.defaults);

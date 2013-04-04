@@ -21,7 +21,7 @@ function FileSystem(eventSystem, settings) {
                 }
             }
         };
-
+        
         xhr.send();
     };
     
@@ -36,7 +36,7 @@ function FileSystem(eventSystem, settings) {
         }
 
         var xhr = new XMLHttpRequest();
-        var url = settings.get('remoteServer') + '/files/' + encodeURIComponent(filename) + '?token=' + settings.get('authToken');
+        var url = settings.get('host') + '/files/' + encodeURIComponent(filename) + '?token=' + settings.get('authToken');
         var params = 'body=' + encodeURIComponent(buffer.getBody());
 
         xhr.open("POST", url);
@@ -60,7 +60,7 @@ function FileSystem(eventSystem, settings) {
 
     self.getFile = function(filename, callback) {
         var xhr = new XMLHttpRequest();
-        var url = settings.get('remoteServer') + '/files/' + filename + '?token=' + settings.get('authToken');
+        var url = settings.get('host') + '/files/' + filename + '?token=' + settings.get('authToken');
         xhr.open("GET", url);
         xhr.onload = function() {
             body = xhr.responseText;
@@ -101,7 +101,7 @@ function FileSystem(eventSystem, settings) {
             }
             var json = JSON.parse(xhr.responseText);
             settings.set('authToken', json.authToken);
-            settings.set('remoteServer', host);
+            settings.set('host', host);
             settings.save();
             self.load();
             callback();
@@ -115,15 +115,15 @@ function FileSystem(eventSystem, settings) {
     };
 
     self.disconnect = function() {
-        var host = settings.get('remoteServer');
+        var host = settings.get('host');
         settings.set('authToken', null);
-        settings.set('remoteServer', null);
+        settings.set('host', null);
         settings.save();
         eventSystem.callEventListeners('disconnected');
     };
 
     self.grep = function(q, callback) {
-        var host = settings.get('remoteServer');
+        var host = settings.get('host');
         var authToken  = settings.get('authToken');
         var xhr = new XMLHttpRequest();
         var url = host + '/grep?q=' + q + '&token=' + authToken;
@@ -150,17 +150,16 @@ function FileSystem(eventSystem, settings) {
      * Called when server settings is configured.
      */
     self.load = function() {
-        var remoteServer = settings.get('remoteServer');
+        var host = settings.get('host');
         var authToken  = settings.get('authToken');
 
-        console.log(remoteServer, authToken);
+        console.log(host, authToken);
 
-        if (!remoteServer || !authToken) {
+        if (!host || !authToken) {
             console.log('No remote server configured');
             return;
         }
         
-        var host = remoteServer;
         var xhr = new XMLHttpRequest();
         var url = host + '/info?token=' + authToken;
 
