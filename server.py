@@ -189,28 +189,6 @@ class ProjectFilesServer(Directory):
             return Directory.__call__(self, environ, start_response)
         return self.next_handler(environ, start_response)
 
-class ProjectInfoHandler():
-
-    def __init__(self, path):
-        self.path = path
-        self.next_handler = None
-
-    def __call__(self, environ, start_response):
-        if environ['PATH_INFO'].startswith('/info'):
-            ret = {
-                'path': self.path,
-                'PROTOCOL_VERSION': PROTOCOL_VERSION,
-            }
-            ret = json.dumps(ret)
-
-            start_response("200 OK", [
-                ('Access-Control-Allow-Origin', '*'),
-                ('Content-Type', 'application/json'),
-                ('Content-Length', str(len(ret))),
-            ])
-            return [ret]
-        return self.next_handler(environ, start_response)
-
 class NotFoundHandler:
 
     def __call__(self, environ, start_response):
@@ -326,7 +304,6 @@ def main():
     handlers.append(ConnectHandler(cfg))
     handlers.append(PermissionHandler(cfg))
     handlers.append(GrepHandler(cwd))
-    handlers.append(ProjectInfoHandler(cwd))
     handlers.append(FileListing(cwd, cfg))
     handlers.append(SaveHandler(cwd))
     handlers.append(ProjectFilesServer(cwd))

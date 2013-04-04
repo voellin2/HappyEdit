@@ -3,13 +3,9 @@ function CommandT(eventSystem, fileSystem) {
     self.files = [];
     self.autoSuggestList = new FilterList();
 
-    eventSystem.addEventListener('connected', function(host) {
-        self.autoSuggestList.clear();
-        self.files = [];
-    });
-    
     eventSystem.addEventListener('filesystem_loaded', function() {
         self.files = [];
+        self.autoSuggestList.clear();
 
         var key;
         var i;

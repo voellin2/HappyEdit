@@ -7,9 +7,9 @@ function FileSystem(eventSystem, settings) {
     self.PROTOCOL_VERSION = "0.1";
     self.authToken = null;
 
-    self.loadFiles = function(host) {
+    self.loadFiles = function(host, authToken) {
         var xhr = new XMLHttpRequest();
-        var url = host + '/files?token=' + settings.get('authToken');
+        var url = host + '/files?token=' + authToken;
     
         xhr.open("GET", url);
         xhr.onreadystatechange = function() {
@@ -99,11 +99,15 @@ function FileSystem(eventSystem, settings) {
                 callback(xhr.responseText || 'Unknown error');
                 return;
             }
+            
             var json = JSON.parse(xhr.responseText);
-            settings.set('authToken', json.authToken);
-            settings.set('host', host);
-            settings.save();
-            self.load();
+            
+            eventSystem.callEventListeners('connected', {
+                host: host,
+                authToken: json.authToken
+            });
+            
+            self.loadFiles(host, json.authToken);
             callback();
         };
 
@@ -141,48 +145,6 @@ function FileSystem(eventSystem, settings) {
 
         xhr.onerror = function() {
             console.log('Unknown error while grepping');
-        };
-
-        xhr.send();
-    };
-
-    /**
-     * Called when server settings is configured.
-     */
-    self.load = function() {
-        var host = settings.get('host');
-        var authToken  = settings.get('authToken');
-
-        console.log(host, authToken);
-
-        if (!host || !authToken) {
-            console.log('No remote server configured');
-            return;
-        }
-        
-        var xhr = new XMLHttpRequest();
-        var url = host + '/info?token=' + authToken;
-
-        xhr.open("GET", url);
-
-        xhr.onload = function() {
-            if (xhr.status !== 200) {
-                console.log('Error:', xhr.responseText);
-            }
-            
-            var json = JSON.parse(xhr.responseText);
-
-            if (json.PROTOCOL_VERSION != self.PROTOCOL_VERSION) {
-                throw "Protocol version mismatch";
-            }
-            
-            eventSystem.callEventListeners('connected', host);
-            
-            self.loadFiles(host);
-        };
-
-        xhr.onerror = function() {
-            throw 'Problem connecting to ' + host;
         };
 
         xhr.send();

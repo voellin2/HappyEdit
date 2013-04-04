@@ -39,7 +39,6 @@ closely with your project.
 Basically, your server must implement a simple REST interface:
 
 POST    /connect
-GET     /info
 GET     /files
 GET     /files/:path
 POST    /files/:path
