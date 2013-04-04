@@ -33,15 +33,15 @@ $ python make.py
 Integrating HappyEdit
 ---------------------
 
-It's possible to write your own server implementation to integrate HappyEdit
-closely with your project.
+It's possible to write your own server implementation to, for example, let
+users edit files on a remote server.
 
 Basically, your server must implement a simple REST interface:
 
-POST    /connect
-GET     /files
-GET     /files/:path
-POST    /files/:path
+ * POST    /connect
+ * GET     /files
+ * GET     /files/:path
+ * POST    /files/:path
 
 See server.py for reference.
 
