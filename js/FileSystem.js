@@ -28,6 +28,9 @@ function FileSystem(eventSystem) {
     
     /**
      * Write a buffer to the remote server.
+     * 
+     * A filename can be specified in addition to the buffer so that the file
+     * can be saved to another destination file.
      */
     self.write = function(buffer, filename) {
         filename = filename || buffer.filename;
