@@ -13,7 +13,8 @@ function HappyEdit(settings) {
     self.topBar = new TopBar(self);
     self.tabState = new TabState(self);
     self.bottomBar = new BottomBar(self);
-    self.fileSystem = new FileSystem(self.eventSystem, self.settings);
+    self.fileSystem = new FileSystem(self.eventSystem);
+    self.projectManager = new ProjectManager(self);
     self.commandT = new CommandT(self.eventSystem, self.fileSystem);
     self.tabSpecificKeyboardHandlers = [];
     self.config = require('ace/config');
@@ -218,7 +219,10 @@ function HappyEdit(settings) {
     };
 
     self.openDummyBuffer();
-    self.fileSystem.load();
+    
+    if (self.projectManager.getCurrentProject()) {
+        self.fileSystem.loadFiles();
+    }
     self.editor.focus();
 }
 

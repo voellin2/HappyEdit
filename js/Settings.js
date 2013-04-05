@@ -2,8 +2,8 @@ function Settings() {
     var self = this;
 
     self.defaults = {
-        host: null,
-        authToken: null
+        currentProjectIndex: null,
+        projects: []
     };
 
     self.data = Utils.extend({}, self.defaults);

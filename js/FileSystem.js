@@ -1,15 +1,16 @@
 /**
  * System to read and write files from a remote server.
  */
-function FileSystem(eventSystem, settings) {
+function FileSystem(eventSystem) {
     var self = this;
     self.fileTree = {};
     self.PROTOCOL_VERSION = "0.1";
     self.authToken = null;
+    self.host = null;
 
-    self.loadFiles = function(host, authToken) {
+    self.loadFiles = function() {
         var xhr = new XMLHttpRequest();
-        var url = host + '/files?token=' + authToken;
+        var url = self.host + '/files?token=' + self.authToken;
     
         xhr.open("GET", url);
         xhr.onreadystatechange = function() {
@@ -36,7 +37,7 @@ function FileSystem(eventSystem, settings) {
         }
 
         var xhr = new XMLHttpRequest();
-        var url = settings.get('host') + '/files/' + encodeURIComponent(filename) + '?token=' + settings.get('authToken');
+        var url = self.host + '/files/' + encodeURIComponent(filename) + '?token=' + self.authToken;
         var params = 'body=' + encodeURIComponent(buffer.getBody());
 
         xhr.open("POST", url);
@@ -60,7 +61,7 @@ function FileSystem(eventSystem, settings) {
 
     self.getFile = function(filename, callback) {
         var xhr = new XMLHttpRequest();
-        var url = settings.get('host') + '/files/' + filename + '?token=' + settings.get('authToken');
+        var url = self.host + '/files/' + filename + '?token=' + self.authToken;
         xhr.open("GET", url);
         xhr.onload = function() {
             body = xhr.responseText;
@@ -107,7 +108,10 @@ function FileSystem(eventSystem, settings) {
                 authToken: json.authToken
             });
             
-            self.loadFiles(host, json.authToken);
+            self.host = host;
+            self.authToken = json.authToken;
+            
+            self.loadFiles();
             callback();
         };
 
@@ -118,19 +122,9 @@ function FileSystem(eventSystem, settings) {
         xhr.send(params);
     };
 
-    self.disconnect = function() {
-        var host = settings.get('host');
-        settings.set('authToken', null);
-        settings.set('host', null);
-        settings.save();
-        eventSystem.callEventListeners('disconnected');
-    };
-
     self.grep = function(q, callback) {
-        var host = settings.get('host');
-        var authToken  = settings.get('authToken');
         var xhr = new XMLHttpRequest();
-        var url = host + '/grep?q=' + q + '&token=' + authToken;
+        var url = host + '/grep?q=' + q + '&token=' + self.authToken;
 
         xhr.open("GET", url);
 
