@@ -21,8 +21,8 @@ function BottomBar(happyEdit) {
         }*/
 	});    
 
-    happyEdit.eventSystem.addEventListener('filesystem_loaded', function(host) {
-        self.$indicatorText.innerHTML = 'Connected to ' + host;
+    happyEdit.eventSystem.addEventListener('connected', function(data) {
+        self.$indicatorText.innerHTML = 'Connected to ' + data.host;
         Utils.addClass(self.$indicator, 'connected');
         Utils.removeClass(self.$indicator, 'disconnected');
     });
