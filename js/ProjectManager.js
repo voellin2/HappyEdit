@@ -22,7 +22,8 @@ function ProjectManager(happyEdit) {
         } else {
             project = {
                 host: host,
-                authToken: authToken
+                authToken: authToken,
+                tabs: []
             };
             projects.push(project);
             self.createAutoCompletions();
