@@ -146,8 +146,7 @@ function HappyEdit(settings) {
             tab.close(true);
         }
 
-        
-        delete self.files[self.currentFile.filename || '__tmp__'];
+        delete self.files[self.currentFile.id];
         
         self.eventSystem.callEventListeners('file_closed', file);
         
@@ -157,8 +156,13 @@ function HappyEdit(settings) {
     };
 
     self.getBufferByFilename = function(filename) {
-        if (self.files.hasOwnProperty(filename)) {
-            return self.files[filename];
+        var key;
+        var buffer;
+        for (key in self.files) {
+            buffer = self.files[key];
+            if (buffer.filename === filename) {
+                return buffer;
+            }
         }
     };
 
@@ -173,7 +177,7 @@ function HappyEdit(settings) {
             return self.currentFile;
         } else {
             var file = new Buffer(self, filename, body);
-            self.files[file.filename] = file;
+            self.files[file.id] = file;
             return file;
         }
     };
@@ -210,14 +214,14 @@ function HappyEdit(settings) {
     };
 
     self.openFileExplorer = function() {
-        if (!self.files.hasOwnProperty(self.explorer.filename)) {
+        if (!self.files.hasOwnProperty(self.explorer.id)) {
             self.files[self.explorer.filename] = self.explorer;
         }
         self.switchToFile(self.explorer);
     };
 
     self.showGrepResults = function(q) {
-        if (!self.files.hasOwnProperty(self.grepView.filename)) {
+        if (!self.files.hasOwnProperty(self.grepView.id)) {
             self.files[self.grepView.filename] = self.grep;
         }
         self.grepView.load(q);
@@ -226,7 +230,7 @@ function HappyEdit(settings) {
 
     self.openDummyBuffer = function() {
         var buffer = new Buffer(self, null, '');
-        self.files[buffer.filename || '__tmp__'] = buffer;
+        self.files[buffer.id] = buffer;
         self.switchToFile(buffer);
     };
     

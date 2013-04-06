@@ -3,6 +3,16 @@ var Utils = {
         return s.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
     },
     
+    /**
+     * http://stackoverflow.com/a/2117523/80880
+     */
+    uuid: function() {
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+            var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
+            return v.toString(16);
+        });
+    },
+    
     moveX: function($elem, x) {
         $elem.style.webkitTransform = 'translateX(' +  x + 'px)';
         $elem.style.MozTransform = 'translateX(' +  x + 'px)';

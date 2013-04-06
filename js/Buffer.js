@@ -4,6 +4,7 @@ var PATH_SEPARATOR = '/';
 
 function Buffer(happyEdit, filename, body) {
     var self = this;
+    self.id = Utils.uuid();
     self.filename = null;
     self.displayPath = null;
     self.basename = null;

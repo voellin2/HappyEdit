@@ -1,7 +1,7 @@
 function GrepView(happyEdit) {
     var self = this;
+    self.id = Utils.uuid();
     self.list = new SelectableList();
-    self.filename = '__grep__';
     self.$view = document.querySelector('#grep');
     self.$h1 = self.$view.querySelector('h1');
     self.$ul = self.$view.querySelector('ul');
