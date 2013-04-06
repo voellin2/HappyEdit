@@ -21,8 +21,8 @@ function BottomBar(happyEdit) {
         }*/
 	});    
 
-    happyEdit.eventSystem.addEventListener('connected', function(data) {
-        self.$indicatorText.innerHTML = 'Connected to ' + data.host;
+    happyEdit.eventSystem.addEventListener('project_loaded', function(project) {
+        self.$indicatorText.innerHTML = 'Connected to ' + project.host;
         Utils.addClass(self.$indicator, 'connected');
         Utils.removeClass(self.$indicator, 'disconnected');
     });

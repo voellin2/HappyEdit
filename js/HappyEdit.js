@@ -126,14 +126,32 @@ function HappyEdit(settings) {
     self.getNumberOfOpenFiles = function() {
         return self.topBar.tabs.length;
     };
+    
+    self.closeAllOpenFiles = function() {
+        var file;
+        var key;
+        for (key in self.files) {
+            if (self.files.hasOwnProperty(key)) {
+                file = self.files[key];
+                self.closeFile(file, true);
+            }
+        }
+    };
 
-    self.closeFile = function(file) {
-        if (self.getNumberOfOpenFiles() > 1) {
-            var tab = self.topBar.getTabForFile(file);
+    self.closeFile = function(file, keepAlive) {
+        var tab = self.topBar.getTabForFile(file);
+
+        // TODO investigate why a match could not be found.
+        if (tab) {
             tab.close(true);
-            delete self.files[self.currentFile.filename];
-            self.eventSystem.callEventListeners('file_closed', file);
-        } else {
+        }
+
+        
+        delete self.files[self.currentFile.filename || '__tmp__'];
+        
+        self.eventSystem.callEventListeners('file_closed', file);
+        
+        if (self.getNumberOfOpenFiles() === 0 && keepAlive === false) {
             window.close();
         }
     };
@@ -218,11 +236,14 @@ function HappyEdit(settings) {
         return txt;
     };
 
-    self.openDummyBuffer();
     
-    if (self.projectManager.getCurrentProject()) {
-        self.fileSystem.loadFiles();
+    self.openDummyBuffer();
+
+    var host = settings.get('currentProjectHost');
+    if (host) {
+        self.projectManager.loadProject(host);
     }
+    
     self.editor.focus();
 }
 

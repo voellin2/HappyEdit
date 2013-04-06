@@ -6,36 +6,60 @@ function ProjectManager(happyEdit) {
     var self = this;
     var eventSystem = happyEdit.eventSystem;
     var settings = happyEdit.settings;
+    var fileSystem = happyEdit.fileSystem;
     
     eventSystem.addEventListener('connected', function(data) {
-        var existingProject = self.getProjectByHost(data.host);
-        var projects = settings.get('projects');
-        
-        if (existingProject) {
-            existingProject.authToken = data.authToken;
-        } else {
-            settings.set('currentProjectIndex', projects.length);
-            projects.push({
-                host: data.host,
-                authToken: data.authToken
-            });
-            self.createAutoCompletions();
-        }
-        
-        settings.save();
+        self.addOrUpdateProject(data.host, data.authToken);
+        self.loadProject(data.host);
     });
     
-    self.disconnect = function() {
-        settings.set('currentProjectIndex', 0);
+    self.addOrUpdateProject = function(host, authToken) {
+        var project = self.getProjectByHost(host);
+        var projects = settings.get('projects');
+        
+        if (project ) {
+            project .authToken = authToken;
+        } else {
+            project = {
+                host: host,
+                authToken: authToken
+            };
+            projects.push(project);
+            self.createAutoCompletions();
+        }
+
         settings.save();
+        
+        self.loadProject(project.host);
+    };
+
+    self.disconnect = function() {
+        happyEdit.closeAllOpenFiles();
+        happyEdit.openDummyBuffer();
         eventSystem.callEventListeners('disconnected');
     };
     
     self.getCurrentProject = function() {
-        var index = settings.get('currentProjectIndex');
-        if (index) {
-            return settings.get('projects')[settings.currentProjectIndex];
+        var host = settings.get('currentProjectHost');
+        if (host !== null) {
+            return self.getProjectByHost();
         }
+    };
+    
+    self.loadProject = function(host) {
+        var project = self.getProjectByHost(host);
+        
+        if (!project) {
+            throw "No project found for " + host;
+        }
+        
+        self.disconnect();
+        
+        settings.set('currentProjectHost', project.host);
+        settings.save();
+        
+        fileSystem.loadFiles(project.host, project.authToken);
+        eventSystem.callEventListeners('project_loaded', project);
     };
     
     self.getProjectByHost = function(host) {

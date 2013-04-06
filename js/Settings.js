@@ -2,7 +2,7 @@ function Settings() {
     var self = this;
 
     self.defaults = {
-        currentProjectIndex: null,
+        currentProjectHost: null,
         projects: []
     };
 

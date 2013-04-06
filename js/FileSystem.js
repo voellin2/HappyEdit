@@ -8,9 +8,12 @@ function FileSystem(eventSystem) {
     self.authToken = null;
     self.host = null;
 
-    self.loadFiles = function() {
+    self.loadFiles = function(host, authToken) {
         var xhr = new XMLHttpRequest();
-        var url = self.host + '/files?token=' + self.authToken;
+        var url = host + '/files?token=' + authToken;
+        
+        self.host = host;
+        self.authToken = authToken;
     
         xhr.open("GET", url);
         xhr.onreadystatechange = function() {
@@ -111,10 +114,7 @@ function FileSystem(eventSystem) {
                 authToken: json.authToken
             });
             
-            self.host = host;
-            self.authToken = json.authToken;
-            
-            self.loadFiles();
+            self.loadFiles(host, json.authToken);
             callback();
         };
 

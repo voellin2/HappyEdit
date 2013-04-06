@@ -37,7 +37,9 @@ function Tab(file, topBar, happyEdit) {
             } else {
                 closestSibling = topBar.tabs[i + 1];
             }
-            closestSibling.select();
+            if (closestSibling) {
+                closestSibling.select();
+            }
         }
         topBar.tabs.splice(i, 1);
         topBar.$tabs.removeChild(this.$view);
