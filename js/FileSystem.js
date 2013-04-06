@@ -127,7 +127,7 @@ function FileSystem(eventSystem) {
 
     self.grep = function(q, callback) {
         var xhr = new XMLHttpRequest();
-        var url = host + '/grep?q=' + q + '&token=' + self.authToken;
+        var url = self.host + '/grep?q=' + q + '&token=' + self.authToken;
 
         xhr.open("GET", url);
 
