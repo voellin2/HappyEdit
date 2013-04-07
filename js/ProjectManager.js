@@ -130,7 +130,7 @@ function ProjectManager(happyEdit) {
             project = self.getProjectByHost(host);
             ret.push({
                 title: project.name || project.host,
-                extra: 'Switch to project',
+                extra: 'Switch to project (' + project.host + ')',
                 rel: project.host
             });
         });
