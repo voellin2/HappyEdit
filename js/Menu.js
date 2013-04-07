@@ -12,19 +12,22 @@ function Menu(happyEdit) {
     var $fragment = document.createDocumentFragment();
 
     happyEdit.commands.each(function(command) {
-        if (command.showInMenu) {
-            var $li = HTML.createMenuOption({
-                title: command.title,
-                className: command.name,
-                shortcut: Utils.getShortcutForCommand(command),
-                callback: function() {
-                    command.callback(null, function() {
-                        self.hide();
-                    });
-                }
-            });
-            self.$popup.appendChild($li);
+        if (!command.showInMenu) {
+            return;
         }
+        
+        var $li = HTML.createMenuOption({
+            title: command.title,
+            className: command.name,
+            shortcut: Utils.getShortcutForCommand(command),
+            callback: function() {
+                command.callback(null, function() {
+                    self.hide();
+                });
+            }
+        });
+        
+        self.$popup.appendChild($li);
     });
 
     self.$popup.appendChild($fragment);
