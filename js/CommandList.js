@@ -43,6 +43,7 @@ function CommandList(happyEdit) {
             alias: [],
             title: "Connect to a remote server",
             callback: function(args, callback) {
+                happyEdit.projectManager.disconnect();
                 happyEdit.fileSystem.connect(args, callback);
             }
         },

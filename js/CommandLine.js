@@ -86,9 +86,6 @@ function CommandLine(happyEdit) {
     self.getSuggestions = function(inputString) {
         var ret = [];
 
-        extract = self.extractCommandParts(inputString);
-        command = happyEdit.commands.getCommandByName(extract.name);
-
         if (Utils.isNumeric(inputString)) {
             ret.push({
                 title: 'Jump to line',
@@ -98,6 +95,7 @@ function CommandLine(happyEdit) {
         }
 
         ret = ret.concat(self.getCommandSuggestions(inputString));
+        ret = ret.concat(self.getProjectSuggestions(inputString));
         ret = ret.concat(self.getCommandTSuggestions(inputString));
 
         return ret;
@@ -178,6 +176,12 @@ function CommandLine(happyEdit) {
         self.executeCommand(name, null);
     };
 
+    self.projectSuggestionCallback = function() {
+        self.hide();
+        var host = this.getAttribute('rel');
+        happyEdit.projectManager.switchProject(host);
+    };
+
     self.jumpSuggestionCallback = function() {
         var inputString = self.$input.value;
         happyEdit.editor.gotoLine(inputString);
@@ -216,6 +220,15 @@ function CommandLine(happyEdit) {
         return happyEdit.commands.getSuggestions(s).map(function(x) {
             var y = x;
             y.onclick = self.commandSuggestionClickCallback;
+            return y;
+        });
+    };
+
+    self.getProjectSuggestions = function(s) {
+        var suggestions = happyEdit.projectManager.getSuggestions(s);
+        return suggestions.map(function(x) {
+            var y = x;
+            y.onclick = self.projectSuggestionCallback;
             return y;
         });
     };

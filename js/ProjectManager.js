@@ -100,14 +100,14 @@ function ProjectManager(happyEdit) {
      */
     self.getSuggestions = function(q) {
         var ret = [];
-        var autoCompletions = self.autoCompletions.getSuggestions(q);
+        var suggestions = self.autoCompletions.getSuggestions(q);
         var host;
         var project;
         
-        self.autoCompletions.forEach(function(host) {
+        suggestions.forEach(function(host) {
             project = self.getProjectByHost(host);
             ret.push({
-                title: project.host,
+                title: project.name || project.host,
                 extra: 'Switch to project',
                 rel: project.host
             });
