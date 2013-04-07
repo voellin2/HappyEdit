@@ -139,7 +139,15 @@ function Explorer(happyEdit) {
         }
     };
     
+    self.reset = function() {
+        self.$view.innerHTML = '';
+        self.columns = [];
+        self.activeColumn = null;
+        self.columnIndex = 0;
+    };
+    
     happyEdit.eventSystem.addEventListener('filesystem_loaded', function(fs) {
+        self.reset();
         self.addColumn('.');
         self.selectIndex(0);
     });
