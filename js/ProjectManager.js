@@ -4,6 +4,9 @@
  */
 function ProjectManager(happyEdit) {
     var self = this;
+    
+    self.project = null;
+    
     var eventSystem = happyEdit.eventSystem;
     var settings = happyEdit.settings;
     var fileSystem = happyEdit.fileSystem;
@@ -23,6 +26,7 @@ function ProjectManager(happyEdit) {
             project = {
                 host: host,
                 authToken: authToken,
+                name: null,
                 tabs: []
             };
             projects.push(project);
@@ -32,6 +36,25 @@ function ProjectManager(happyEdit) {
         settings.save();
         
         self.loadProject(project.host);
+    };
+    
+    self.renameCurrentProject = function(name) {
+        if (!self.project) {
+            throw "No current project";
+        }
+        
+        self.project.name = name;
+        settings.save();
+    };
+    
+    self.switchProject = function(host) {
+        self.project;
+        
+        if (self.project) {
+            self.disconnect();
+        }
+        
+        self.loadProject(host);
     };
 
     self.disconnect = function() {
@@ -44,13 +67,6 @@ function ProjectManager(happyEdit) {
         eventSystem.callEventListeners('disconnected');
     };
     
-    self.getCurrentProject = function() {
-        var host = settings.get('currentProjectHost');
-        if (host !== null) {
-            return self.getProjectByHost();
-        }
-    };
-    
     self.loadProject = function(host) {
         var project = self.getProjectByHost(host);
         
@@ -60,11 +76,17 @@ function ProjectManager(happyEdit) {
         
         happyEdit.closeAllOpenFiles();
         
+        self.project = project;
+        
         settings.set('currentProjectHost', project.host);
         settings.save();
         
         fileSystem.loadFiles(project.host, project.authToken);
         eventSystem.callEventListeners('project_loaded', project);
+    };
+    
+    self.getCurrentProject = function() {
+        return self.project;
     };
     
     self.getProjectByHost = function(host) {

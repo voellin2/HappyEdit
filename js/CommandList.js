@@ -57,6 +57,21 @@ function CommandList(happyEdit) {
             }
         },
         {
+            name: "renameProject",
+            alias: [],
+            title: "Rename the current project",
+            callback: function(args, callback) {
+                var name = args;
+                
+                if (!name) {
+                    throw "A name must be given";
+                }
+                
+                happyEdit.projectManager.renameCurrentProject(name);
+                callback();
+            }
+        },
+        {
             name: "openFile",
             alias: [],
             title: "Quick Open File",
