@@ -1,6 +1,6 @@
 function GrepView(happyEdit) {
     var self = this;
-    self.id = Utils.uuid();
+    self.id = Utils.count();
     self.list = new SelectableList();
     self.$view = document.querySelector('#grep');
     self.$h1 = self.$view.querySelector('h1');

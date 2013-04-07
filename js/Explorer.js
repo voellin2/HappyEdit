@@ -1,6 +1,6 @@
 function Explorer(happyEdit) {
     var self = this;
-    self.id = Utils.uuid();
+    self.id = Utils.count();
     self.$view = document.getElementById('explorer');
     self.columns = [];
     self.activeColumn = null;
