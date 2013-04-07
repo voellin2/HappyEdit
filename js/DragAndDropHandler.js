@@ -84,7 +84,6 @@ function DragAndDropHandler(happyEdit) {
     
     self.dragStart = function() {
         self.dragging = true;
-        self.$target.x = 0;
         Utils.moveX(self.$target, 0);
         Utils.addClass(self.$target, 'drag');
         Utils.addClass(self.$target, 'no-transition');
