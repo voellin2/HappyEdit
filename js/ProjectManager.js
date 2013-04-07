@@ -37,6 +37,10 @@ function ProjectManager(happyEdit) {
     self.disconnect = function() {
         happyEdit.closeAllOpenFiles();
         happyEdit.openDummyBuffer();
+        
+        settings.set('currentProjectHost', null);
+        settings.save();
+        
         eventSystem.callEventListeners('disconnected');
     };
     
