@@ -9,23 +9,6 @@ function TabState(happyEdit) {
     var eventSystem = happyEdit.eventSystem;
     var settings = happyEdit.settings;
     
-    eventSystem.addEventListener('project_loaded', function(project) {
-        self.project = project;
-        self.restore();
-    });
-    
-    eventSystem.addEventListener('file_loaded', function(file) {
-        self.save();
-    });
-    
-    eventSystem.addEventListener('file_closed', function(file) {
-        self.save();
-    });
-    
-    eventSystem.addEventListener('tabs_swapped', function(file) {
-        self.save();
-    });
-    
     self.restore = function() {
         self.project.tabs.forEach(function(filename) {
             happyEdit.openRemoteFile(filename);
@@ -33,15 +16,34 @@ function TabState(happyEdit) {
     };
     
     self.save =  function() {
-        var tabState = [];
+        if (!self.project) {
+            return;
+        }
         
+        var tabs = [];
+
         happyEdit.topBar.tabs.forEach(function(tab) {
             if (tab.file && tab.file.constructor === Buffer) {
-                self.project.tabs.push(tab.file.filename);
+                tabs.push(tab.file.filename);
             }
         });
+        
+        self.project.tabs = tabs;
         
         // project is a reference to an item in settings.
         settings.save();
     };
+    
+    eventSystem.addEventListener('project_loaded', function(project) {
+        self.project = project;
+        self.restore();
+    });
+    
+    eventSystem.addEventListener('disconnected', function() {
+        self.project = null;
+    });
+    
+    eventSystem.addEventListener('file_loaded', self.save);
+    eventSystem.addEventListener('file_closed', self.save);
+    eventSystem.addEventListener('tabs_swapped', self.save);
 }
