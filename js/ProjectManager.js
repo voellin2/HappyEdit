@@ -84,7 +84,7 @@ function ProjectManager(happyEdit) {
     self.createAutoCompletions = function() {
         var projects = settings.get('projects');
         var map = projects.map(function(project) {
-            var keys = [project.host];
+            var keys = [project.host, 'switch', 'change'];
             return {
                 value: project.host,
                 keys: keys
