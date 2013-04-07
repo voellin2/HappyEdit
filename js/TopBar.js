@@ -1,5 +1,6 @@
 function TopBar(happyEdit) {
     var self = this;
+    
     self.selectedTab = null;
     self.tabs = [];
     self.$view = document.querySelector('#top');
@@ -23,50 +24,58 @@ function TopBar(happyEdit) {
     };
 
     self.$maxButton.onclick = function() {
-        if (this.getAttribute('class') === 'restore') {
+        if (self.getAttribute('class') === 'restore') {
             chrome.app.window.current().restore();
-            this.setAttribute('class', '');
+            self.setAttribute('class', '');
         } else {
             chrome.app.window.current().maximize();
-            this.setAttribute('class', 'restore');
+            self.setAttribute('class', 'restore');
         }
     };
 
     self.getTabForFile = function(file) {
-        var i;
-        for (i = 0; i < this.tabs.length; i += 1) {
-            if (file === this.tabs[i].file) {
-                return this.tabs[i];
+        var ret;
+        
+        self.tabs.forEach(function(tab) {
+            if (file === tab.file) {
+                ret = tab;
+                return false;
             }
-        }
+        });
+        
+        return ret;
     };
 
-    self.getIndexForTab = function(tab) {
-        var i;
-        for (i = 0; i < this.tabs.length; i += 1) {
-            if (tab === this.tabs[i]) {
-                return i;
+    self.getIndexForTab = function(tab1) {
+        var ret;
+        
+        self.tabs.forEach(function(tab2, i) {
+            if (tab1 === tab2) {
+                ret = i;
+                return false;
             }
-        }
+        });
+        
+        return ret;
     };
 
     self.selectTabAtIndex = function(i) {
-        if (i >= this.tabs.length) {
+        if (i >= self.tabs.length) {
             i = 0;
         } else if (i < 0) {
-            i = this.tabs.length - 1;
+            i = self.tabs.length - 1;
         }
-        this.tabs[i].select();
+        self.tabs[i].select();
     };
 
     self.nextTab = function() {
-        var i = this.getIndexForTab(this.selectedTab);
-        this.selectTabAtIndex(i += 1);
+        var i = self.getIndexForTab(self.selectedTab);
+        self.selectTabAtIndex(i += 1);
     };
 
     self.prevTab = function() {
-        var i = this.getIndexForTab(this.selectedTab);
-        this.selectTabAtIndex(i -= 1);
+        var i = self.getIndexForTab(self.selectedTab);
+        self.selectTabAtIndex(i -= 1);
     };
     
     self.calculateTabWidth = function() {
@@ -111,14 +120,16 @@ function TopBar(happyEdit) {
     };
 
     self.updateView = function(file) {
-        var self = this;
         var tab = self.getTabForFile(file);
+        
         if (tab === undefined) {
             tab = new Tab(file, self, happyEdit);
             self.tabs.push(tab);
             self.$tabs.appendChild(tab.$view);
         }
+        
         tab.select();
+        
         self.updateTabPositions();
     };
 }

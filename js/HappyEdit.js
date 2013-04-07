@@ -1,10 +1,13 @@
 function HappyEdit(settings) {
     var self = this;
-    self.settings = settings;
+    
+    self.currentFile;
     self.files = {};
     self.editor = ace.edit("editor");
     self.$editor = document.getElementById('editor');
-    self.currentFile;
+    self.config = require('ace/config');
+    
+    self.settings = settings;
     self.eventSystem = new EventSystem();
     self.commands = new CommandList(self);
     self.commandLine = new CommandLine(self);
@@ -17,7 +20,6 @@ function HappyEdit(settings) {
     self.tabState = new TabState(self);
     self.commandT = new CommandT(self.eventSystem, self.fileSystem);
     self.tabSpecificKeyboardHandlers = [];
-    self.config = require('ace/config');
     self.explorer = new Explorer(self);
     self.grepView = new GrepView(self);
     self.globalCommandManager = new GlobalCommandManager(self);
@@ -144,9 +146,11 @@ function HappyEdit(settings) {
         // TODO investigate why a match could not be found.
         if (tab) {
             tab.close(true);
+        } else {
+            console.log('no tab found for ', file.filename, file);
         }
 
-        delete self.files[self.currentFile.id];
+        delete self.files[file.id];
         
         self.eventSystem.callEventListeners('file_closed', file);
         
@@ -155,13 +159,21 @@ function HappyEdit(settings) {
         }
     };
 
+    self.getBufferById = function(id) {
+        if (self.files.hasOwnProperty(id)) {
+            return self.files[id];
+        }
+    };
+
     self.getBufferByFilename = function(filename) {
         var key;
         var buffer;
         for (key in self.files) {
-            buffer = self.files[key];
-            if (buffer.filename === filename) {
-                return buffer;
+            if (self.files.hasOwnProperty(key)) {
+                buffer = self.files[key];
+                if (buffer.filename === filename) {
+                    return buffer;
+                }
             }
         }
     };
@@ -215,14 +227,14 @@ function HappyEdit(settings) {
 
     self.openFileExplorer = function() {
         if (!self.files.hasOwnProperty(self.explorer.id)) {
-            self.files[self.explorer.filename] = self.explorer;
+            self.files[self.explorer.id] = self.explorer;
         }
         self.switchToFile(self.explorer);
     };
 
     self.showGrepResults = function(q) {
         if (!self.files.hasOwnProperty(self.grepView.id)) {
-            self.files[self.grepView.filename] = self.grep;
+            self.files[self.grepView.id] = self.grep;
         }
         self.grepView.load(q);
         self.switchToFile(self.grepView);

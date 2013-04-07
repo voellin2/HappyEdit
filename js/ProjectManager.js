@@ -54,7 +54,7 @@ function ProjectManager(happyEdit) {
             throw "No project found for " + host;
         }
         
-        self.disconnect();
+        happyEdit.closeAllOpenFiles();
         
         settings.set('currentProjectHost', project.host);
         settings.save();
