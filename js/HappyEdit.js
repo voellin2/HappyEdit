@@ -234,7 +234,7 @@ function HappyEdit(settings) {
 
     self.showGrepResults = function(q) {
         if (!self.files.hasOwnProperty(self.grepView.id)) {
-            self.files[self.grepView.id] = self.grep;
+            self.files[self.grepView.id] = self.grepView;
         }
         self.grepView.load(q);
         self.switchToFile(self.grepView);
