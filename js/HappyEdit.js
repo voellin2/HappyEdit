@@ -239,7 +239,6 @@ function HappyEdit(settings) {
         var txt = self.editor.session.getDocument().getTextRange(range);
         return txt;
     };
-
     
     self.openDummyBuffer();
 
