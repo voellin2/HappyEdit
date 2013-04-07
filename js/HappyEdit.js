@@ -195,7 +195,7 @@ function HappyEdit(settings) {
         return file;
     };
 
-    self.getOrLoadRemoteFile = function(filename, callback) {
+    self.getOrLoadRemoteFile = function(filename, lineNumber, callback) {
         var buffer = self.getBufferByFilename(filename);
 
         if (buffer) {
@@ -209,19 +209,16 @@ function HappyEdit(settings) {
 
         self.fileSystem.getFile(filename, function(body) {
             buffer.setBody(body);
+            if (lineNumber) {
+                self.editor.gotoLine(lineNumber);
+            }
         });
     };
 
     self.openRemoteFile = function(filename, lineNumber) {
-        self.getOrLoadRemoteFile(filename, function(buffer) {
+        self.getOrLoadRemoteFile(filename, lineNumber, function(buffer) {
             self.switchToFile(buffer);
             if (lineNumber) {
-
-                // Don't know why we need a timeout here...
-                setTimeout(function() {
-                    self.editor.gotoLine(lineNumber);
-                }, 200);
-
             }
         });
     };
