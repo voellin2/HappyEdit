@@ -9,7 +9,7 @@ function Tab(file, topBar, happyEdit) {
     this.$view.setAttribute('class', 'tab');
     this.$view.appendChild(this.$title);
     this.$view.appendChild(this.$fader);
-    this.$view.setAttribute('rel', file.filename || '__tmp__');
+    this.$view.setAttribute('rel', file.id);
 
     file.onChange(function(file) {
         self.$title.innerHTML = file.getTabLabel();
