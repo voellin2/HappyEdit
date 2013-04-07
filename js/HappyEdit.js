@@ -183,15 +183,16 @@ function HappyEdit(settings) {
      * an unnamed and available file, that will be used instead.
      */
     self.createNewBuffer = function(filename, body) {
-        if (self.currentFile.isDummy()) {
+        if (self.currentFile && self.currentFile.isDummy()) {
             self.currentFile.rename(filename);
             self.currentFile.setBody(body);
             return self.currentFile;
-        } else {
-            var file = new Buffer(self, filename, body);
-            self.files[file.id] = file;
-            return file;
         }
+        
+        var file = new Buffer(self, filename, body);
+        self.files[file.id] = file;
+        
+        return file;
     };
 
     self.getOrLoadRemoteFile = function(filename, callback) {
@@ -241,8 +242,7 @@ function HappyEdit(settings) {
     };
 
     self.openDummyBuffer = function() {
-        var buffer = new Buffer(self, null, '');
-        self.files[buffer.id] = buffer;
+        var buffer = self.createNewBuffer(null, '');
         self.switchToFile(buffer);
     };
     

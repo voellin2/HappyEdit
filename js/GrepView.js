@@ -67,7 +67,7 @@ function GrepView(happyEdit) {
                 return;
             }
             
-            var data = data.map(function(x) {
+            data = data.map(function(x) {
                 return {
                     model: x,
                     $view: HTML.createGrepListItem(x)
