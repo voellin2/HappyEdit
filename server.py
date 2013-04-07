@@ -314,10 +314,16 @@ def main():
         i += 1
         if i < len(handlers):
             handler.next_handler = handlers[i]
-
+            
+    host = 'localhost';
+    port = 8888
+    
+    if len(sys.argv) > 0:
+        port = int(sys.argv[1])
+        
     try:
-        print "Serving " + cwd + " to http://localhost:8888"
-        make_server('localhost', 8888, handlers[0]).serve_forever()
+        print "Serving " + cwd + " to http://%s:%s" % (host, port)
+        make_server(host, port, handlers[0]).serve_forever()
     except KeyboardInterrupt, ki:
         print "\nBye bye"
 
