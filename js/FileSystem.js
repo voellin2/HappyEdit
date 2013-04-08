@@ -139,26 +139,4 @@ function FileSystem(eventSystem) {
 
         xhr.send(params);
     };
-
-    self.grep = function(q, callback) {
-        var xhr = new XMLHttpRequest();
-        var url = self.host + '/grep?q=' + q + '&token=' + self.authToken;
-
-        xhr.open("GET", url);
-
-        xhr.onload = function() {
-            if (xhr.status !== 200) {
-                console.log('Error:', xhr.responseText);
-                return;
-            }
-            var json = JSON.parse(xhr.responseText);
-            callback(json);
-        };
-
-        xhr.onerror = function() {
-            console.log('Unknown error while grepping');
-        };
-
-        xhr.send();
-    };
 }

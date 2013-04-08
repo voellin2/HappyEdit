@@ -4,15 +4,12 @@ import sys
 import os
 import mimetypes
 import json
-import subprocess
 from hashlib import md5
 from urlparse import parse_qsl
 from urllib import unquote
 from wsgiref.simple_server import make_server
 
 PROTOCOL_VERSION = "0.1"
-
-cached_project_files = {}
 
 class File:
 
@@ -103,12 +100,9 @@ class FileListing():
         self.next_handler = None
 
     def __call__(self, environ, start_response):
-        global cached_project_files
-        
         if environ['PATH_INFO'] in ['/files', '/files/']:
             params = dict(parse_qsl(environ['QUERY_STRING']))
-            cached_project_files = get_project_files(self.path, self.cfg)
-            response = json.dumps(cached_project_files)
+            response = json.dumps(get_project_files(self.path, self.cfg))
             start_response("200 OK", [
                 ('Access-Control-Allow-Origin', '*'),
                 ('Content-Type', 'application/json'),
@@ -145,40 +139,6 @@ class SaveHandler():
                 ('Content-Length', str(len(msg))),
             ])
             return [msg]
-        return self.next_handler(environ, start_response)
-
-class GrepHandler():
-
-    def __init__(self, path):
-        self.path = path
-        self.next_handler = None
-
-    def __call__(self, environ, start_response):
-        if environ['PATH_INFO'] == '/grep':
-            ret = []
-            params = dict(parse_qsl(environ['QUERY_STRING']))
-            # Get the GET parameter q
-            try:
-                q = unquote(params['q'])
-            # Else tell the user we need it and return
-            except KeyError:
-                ret = 'The GET parameter q is required for /grep'
-                start_response("501 Not Implemented", [
-                    ('Access-Control-Allow-Origin', '*'),
-                    ('Content-Type', 'text/plain'),
-                    ('Content-Length', str(len(ret))),
-                ])
-                return [ret] 
-                
-            ret = grep(q)
-            ret = json.dumps(ret)
-
-            start_response("200 OK", [
-                ('Access-Control-Allow-Origin', '*'),
-                ('Content-Type', 'application/json'),
-                ('Content-Length', str(len(ret))),
-            ])
-            return [ret]
         return self.next_handler(environ, start_response)
 
 class ProjectFilesServer(Directory):
@@ -274,27 +234,6 @@ def load_settings(path):
 
     return cfg
 
-def grep(q):
-    ret = []
-    for folder_name in cached_project_files.keys():
-        for filename in cached_project_files[folder_name]['files']:
-            filename = os.path.join(folder_name, filename)
-            try:
-                output = subprocess.check_output(['grep', '-inr', q, filename, '-n'])
-            except subprocess.CalledProcessError, cpe:
-                output = ''
-            for line in output.split('\n'):
-                split = line.split(':')
-                if len(split) > 2:
-                    line_number = int(split[1])
-                    snippet = split[2]
-                    ret.append({
-                        'filename': filename,
-                        'lineno': line_number,
-                        'snippet': snippet,
-                    })
-    return ret
-
 def main():
     cwd = os.getcwd()
 
@@ -303,7 +242,6 @@ def main():
     handlers = []
     handlers.append(ConnectHandler(cfg))
     handlers.append(PermissionHandler(cfg))
-    handlers.append(GrepHandler(cwd))
     handlers.append(FileListing(cwd, cfg))
     handlers.append(SaveHandler(cwd))
     handlers.append(ProjectFilesServer(cwd))
