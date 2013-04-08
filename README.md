@@ -54,3 +54,10 @@ JavaScript Code standards:
  * Indentation with 4 spaces.
  * Modifying object prototypes and 'inheritance' should be avoided.
  * Each 'class' should be in its separeate .js file named 'YourClass.js'.
+
+Contact
+-------
+
+ * Twitter: https://twitter.com/pthulin
+ * Email: per@happyedit.se
+
