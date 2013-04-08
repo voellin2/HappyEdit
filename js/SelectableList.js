@@ -8,12 +8,19 @@
 function SelectableList() {
     var self = this;
     self.items = [];
-    self.index = 0;
+    self.index = null;
     
     self.setData = function(items) {
         self.items = items;
-        self.index = 0;
+        self.index = null;
         if (items.length > 0) {
+            self.selectIndex(0);
+        }
+    };
+    
+    self.addItem = function(item) {
+        self.items.push(item);
+        if (self.index === null) {
             self.selectIndex(0);
         }
     };
@@ -29,7 +36,7 @@ function SelectableList() {
             index = self.items.length - 1;
         }
         
-        var $old = self.items[self.index].$view;
+        var $old = self.index === null ? null : self.items[self.index].$view;
         var $new = self.items[index].$view;
         
         Utils.removeClass($old, 'active');

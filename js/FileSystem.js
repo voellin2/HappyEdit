@@ -7,6 +7,21 @@ function FileSystem(eventSystem) {
     self.PROTOCOL_VERSION = "0.1";
     self.authToken = null;
     self.host = null;
+    
+    self.getFlatList = function() {
+        var ret = [];
+        var key;
+        
+        for (key in self.fileTree) {
+            if (self.fileTree.hasOwnProperty(key)) {
+                self.fileTree[key].files.forEach(function(filename) {
+                    ret.push(key + '/' + filename);
+                });
+            }
+        }
+        
+        return ret;
+    };
 
     self.loadFiles = function(host, authToken) {
         var xhr = new XMLHttpRequest();

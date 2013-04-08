@@ -7,6 +7,7 @@ function GrepView(happyEdit) {
     self.$ul = self.$view.querySelector('ul');
     self.$loading = self.$view.querySelector('.loading');
     self.$error = self.$view.querySelector('.error');
+    self.worker = new GrepWorker(happyEdit.fileSystem);
     
     self.openActiveItem = function() {
         var item = self.list.getSelectedItem();
@@ -57,28 +58,22 @@ function GrepView(happyEdit) {
     self.load = function(q) {
         self.reset();
         self.$h1.innerHTML = q;
-        self.$loading.style.display = 'block';
         
-        happyEdit.fileSystem.grep(q, function(data) {
-            self.$loading.style.display = 'none';
+        self.worker.findInAllFiles(q, function(filename, lineNumber, snippet) {
+            var model = {
+                snippet: snippet,
+                lineNumber: lineNumber,
+                filename: filename
+            };
             
-            if (data.length === 0) {
-                self.showError('No search results matching "' + q + '".');
-                return;
-            }
+            var $view = HTML.createGrepListItem(model);
             
-            data = data.map(function(x) {
-                return {
-                    model: x,
-                    $view: HTML.createGrepListItem(x)
-                };
+            self.list.addItem({
+                model: model,
+                $view: $view
             });
             
-            self.list.setData(data);
-            
-            data.forEach(function(item) {
-                self.$ul.appendChild(item.$view);
-            });
+            self.$ul.appendChild($view);
         });
     };
     
