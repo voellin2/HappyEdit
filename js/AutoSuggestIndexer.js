@@ -15,7 +15,9 @@ function AutoSuggestIndexer(happyEdit) {
             clearTimeout(timeout);
         }
         timeout = setTimeout(function() {
-            self.index(happyEdit.currentPane);
+            if (happyEdit.currentPane.constructor === Buffer) {
+                self.index(happyEdit.currentPane);
+            }
         }, 2000);
     });
     
