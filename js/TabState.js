@@ -10,6 +10,11 @@ function TabState(happyEdit) {
     var settings = happyEdit.settings;
     
     self.restore = function() {
+        if (self.project.tabs.length === 0) {
+            happyEdit.openFileExplorer();
+            return;
+        }
+        
         self.project.tabs.forEach(function(filename) {
             happyEdit.openRemoteFile(filename);
         });
