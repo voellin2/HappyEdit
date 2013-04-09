@@ -218,8 +218,8 @@ function CommandList(happyEdit) {
             alias: [],
             title: "Autocomplete current word",
             shortcut: {
-                win: "Shift-Space",
-                mac: "Shift-Space",
+                win: "Ctrl-Space",
+                mac: "Ctrl-Space",
             },
             callback: function(args, callback) {
                 happyEdit.autoCompleter.show();
