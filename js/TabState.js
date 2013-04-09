@@ -28,8 +28,8 @@ function TabState(happyEdit) {
         var tabs = [];
 
         happyEdit.topBar.tabs.forEach(function(tab) {
-            if (tab.file && tab.file.constructor === Buffer) {
-                tabs.push(tab.file.filename);
+            if (tab.pane.constructor === Buffer) {
+                tabs.push(tab.pane.filename);
             }
         });
         
