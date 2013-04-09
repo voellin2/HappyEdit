@@ -15,7 +15,7 @@
         "clipboardWrite"
     ],
     "icons": {
-        "16": "logo_16x16.png",
-        "128": "logo_128x128.png"
+        "16": "images/logo_16x16.png",
+        "128": "images/logo_128x128.png"
     }
 }
