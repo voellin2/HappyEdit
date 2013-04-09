@@ -10,7 +10,7 @@ function CommandList(happyEdit) {
                     throw "A filename must be provided";
                 }
                 var filename = args;
-                var buffer = happyEdit.createNewBuffer(filename, '');
+                var buffer = happyEdit.createBuffer(filename, '');
                 happyEdit.switchToFile(buffer);
                 callback();
             }

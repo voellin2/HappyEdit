@@ -182,16 +182,9 @@ function HappyEdit(settings) {
      * Creates a new buffer with given filename and body. If there's
      * an unnamed and available file, that will be used instead.
      */
-    self.createNewBuffer = function(filename, body) {
-        if (self.currentFile && self.currentFile.isDummy()) {
-            self.currentFile.rename(filename);
-            self.currentFile.setBody(body);
-            return self.currentFile;
-        }
-        
+    self.createBuffer = function(filename, body) {
         var file = new Buffer(self, filename, body);
         self.files[file.id] = file;
-        
         return file;
     };
 
@@ -202,7 +195,7 @@ function HappyEdit(settings) {
             callback(buffer);
             return;
         } else {
-            buffer = self.createNewBuffer(filename, '');
+            buffer = self.createBuffer(filename, '');
         }
 
         callback(buffer);
@@ -239,7 +232,7 @@ function HappyEdit(settings) {
     };
 
     self.openDummyBuffer = function() {
-        var buffer = self.createNewBuffer(null, '');
+        var buffer = self.createBuffer(null, '');
         self.switchToFile(buffer);
     };
     
