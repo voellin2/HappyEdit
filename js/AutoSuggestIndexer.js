@@ -15,7 +15,7 @@ function AutoSuggestIndexer(happyEdit) {
             clearTimeout(timeout);
         }
         timeout = setTimeout(function() {
-            self.index(happyEdit.currentFile);
+            self.index(happyEdit.currentPane);
         }, 2000);
     });
     

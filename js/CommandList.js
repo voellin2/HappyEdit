@@ -11,7 +11,7 @@ function CommandList(happyEdit) {
                 }
                 var filename = args;
                 var buffer = happyEdit.createBuffer(filename, '');
-                happyEdit.switchToFile(buffer);
+                happyEdit.switchPane(buffer);
                 callback();
             }
         },
@@ -24,15 +24,15 @@ function CommandList(happyEdit) {
                 mac: "Command-R",
             },
             callback: function(args, callback) {
-                if (happyEdit.currentFile.constructor !== Buffer) {
+                if (happyEdit.currentPane.constructor !== Buffer) {
                     return;
                 }
                 
-                var currentFile = happyEdit.currentFile;
-                var filename = currentFile.filename;
+                var currentPane = happyEdit.currentPane;
+                var filename = currentPane.filename;
                 
                 happyEdit.fileSystem.getFile(filename, function(body) {
-                    currentFile.setBody(body);
+                    currentPane.setBody(body);
                 });
             
                 callback();
@@ -111,7 +111,7 @@ function CommandList(happyEdit) {
                 mac: "Command-S",
             },
             callback: function(args, callback) {
-                happyEdit.fileSystem.write(happyEdit.currentFile, args);
+                happyEdit.fileSystem.write(happyEdit.currentPane, args);
                 callback(); // TODO: call when write is complete
             }
         },
@@ -158,16 +158,16 @@ function CommandList(happyEdit) {
             }
         },
         {
-            name: "closeFile",
+            name: "close",
             alias: [],
-            title: "Close Current file",
+            title: "Close current tab",
             global: true,
             shortcut: {
                 win: "Ctrl-W",
                 mac: "Command-W",
             },
             callback: function(args, callback) {
-                happyEdit.closeFile(happyEdit.currentFile);
+                happyEdit.closePane(happyEdit.currentPane);
                 callback();
             }
         },
@@ -199,7 +199,7 @@ function CommandList(happyEdit) {
             alias: ["q", "exit"],
             title: "Quit HappyEdit",
             callback: function(args, callback) {
-                happyEdit.closeFile(happyEdit.currentFile);
+                happyEdit.closePane(happyEdit.currentPane);
                 callback();
             }
         },

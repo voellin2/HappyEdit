@@ -58,7 +58,7 @@ function ProjectManager(happyEdit) {
     };
 
     self.disconnect = function() {
-        happyEdit.closeAllOpenFiles();
+        happyEdit.closeAllOpenPanes();
         happyEdit.openDummyBuffer();
         
         settings.set('currentProjectHost', null);
@@ -74,7 +74,7 @@ function ProjectManager(happyEdit) {
             throw "No project found for " + host;
         }
         
-        happyEdit.closeAllOpenFiles();
+        happyEdit.closeAllOpenPanes();
         
         self.project = project;
         

@@ -1,7 +1,7 @@
 function HappyEdit(settings) {
     var self = this;
     
-    self.currentFile;
+    self.currentPane;
     self.openPanes = {};
     self.editor = ace.edit("editor");
     self.$editor = document.getElementById('editor');
@@ -110,56 +110,56 @@ function HappyEdit(settings) {
         }
     };
 
-    self.switchToFile = function(file, updateTabs) {
-        if (self.currentFile) {
-            self.currentFile.blur();
+    self.switchPane = function(pane, updateTabs) {
+        if (self.currentPane) {
+            self.currentPane.blur();
         }
 
-        self.currentFile = file;
-        self.currentFile.focus();
+        self.currentPane = pane;
+        self.currentPane.focus();
 
         if (updateTabs || updateTabs === undefined) {
-            self.topBar.updateView(file);
+            self.topBar.updateView(pane);
         }
 
-        self.eventSystem.callEventListeners('file_changed', file);
+        self.eventSystem.callEventListeners('file_changed', pane);
     };
 
-    self.getNumberOfOpenFiles = function() {
+    self.getNumberOfOpenPanes = function() {
         return self.topBar.tabs.length;
     };
     
-    self.closeAllOpenFiles = function() {
-        var file;
+    self.closeAllOpenPanes = function() {
+        var pane;
         var key;
         for (key in self.openPanes) {
             if (self.openPanes.hasOwnProperty(key)) {
-                file = self.openPanes[key];
-                self.closeFile(file, true);
+                pane = self.openPanes[key];
+                self.closePane(pane, true);
             }
         }
     };
 
-    self.closeFile = function(file, keepAlive) {
-        var tab = self.topBar.getTabForFile(file);
+    self.closePane = function(pane, keepAlive) {
+        var tab = self.topBar.getTabForPane(pane);
 
         // TODO investigate why a match could not be found.
         if (tab) {
             tab.close(true);
         } else {
-            console.log('no tab found for ', file.filename, file);
+            console.log('no tab found for ', pane.filename, pane);
         }
 
-        delete self.openPanes[file.id];
+        delete self.openPanes[pane.id];
         
-        self.eventSystem.callEventListeners('file_closed', file);
+        self.eventSystem.callEventListeners('file_closed', pane);
         
-        if (self.getNumberOfOpenFiles() === 0 && keepAlive === false) {
+        if (self.getNumberOfOpenPanes () === 0 && keepAlive === false) {
             window.close();
         }
     };
 
-    self.getBufferById = function(id) {
+    self.getPaneById = function(id) {
         if (self.openPanes.hasOwnProperty(id)) {
             return self.openPanes[id];
         }
@@ -168,12 +168,16 @@ function HappyEdit(settings) {
     self.getBufferByFilename = function(filename) {
         var key;
         var buffer;
+        
         for (key in self.openPanes) {
-            if (self.openPanes.hasOwnProperty(key)) {
-                buffer = self.openPanes[key];
-                if (buffer.filename === filename) {
-                    return buffer;
-                }
+            if (!self.openPanes.hasOwnProperty(key)) {
+                return;
+            }
+            
+            buffer = self.openPanes[key];
+            
+            if (buffer.constructor === Buffer && buffer.filename === filename) {
+                return buffer;
             }
         }
     };
@@ -183,9 +187,9 @@ function HappyEdit(settings) {
      * an unnamed and available file, that will be used instead.
      */
     self.createBuffer = function(filename, body) {
-        var file = new Buffer(self, filename, body);
-        self.openPanes[file.id] = file;
-        return file;
+        var buffer = new Buffer(self, filename, body);
+        self.openPanes[buffer.id] = buffer;
+        return buffer;
     };
 
     self.getOrLoadRemoteFile = function(filename, lineNumber, callback) {
@@ -210,7 +214,7 @@ function HappyEdit(settings) {
 
     self.openRemoteFile = function(filename, lineNumber) {
         self.getOrLoadRemoteFile(filename, lineNumber, function(buffer) {
-            self.switchToFile(buffer);
+            self.switchPane(buffer);
             if (lineNumber) {
             }
         });
@@ -220,7 +224,7 @@ function HappyEdit(settings) {
         if (!self.openPanes.hasOwnProperty(self.explorer.id)) {
             self.openPanes[self.explorer.id] = self.explorer;
         }
-        self.switchToFile(self.explorer);
+        self.switchPane(self.explorer);
     };
 
     self.showGrepResults = function(q) {
@@ -228,12 +232,12 @@ function HappyEdit(settings) {
             self.openPanes[self.grepView.id] = self.grepView;
         }
         self.grepView.load(q);
-        self.switchToFile(self.grepView);
+        self.switchPane(self.grepView);
     };
 
     self.openDummyBuffer = function() {
         var buffer = self.createBuffer(null, '');
-        self.switchToFile(buffer);
+        self.switchPane(buffer);
     };
     
     self.getSelection = function() {

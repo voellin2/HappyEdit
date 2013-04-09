@@ -33,7 +33,7 @@ function TopBar(happyEdit) {
         }
     };
 
-    self.getTabForFile = function(file) {
+    self.getTabForPane = function(file) {
         var ret;
         
         self.tabs.forEach(function(tab) {
@@ -120,7 +120,7 @@ function TopBar(happyEdit) {
     };
 
     self.updateView = function(file) {
-        var tab = self.getTabForFile(file);
+        var tab = self.getTabForPane(file);
         
         if (tab === undefined) {
             tab = new Tab(file, self, happyEdit);

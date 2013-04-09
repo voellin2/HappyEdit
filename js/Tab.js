@@ -23,8 +23,8 @@ function Tab(file, topBar, happyEdit) {
         Utils.addClass(self.$view, 'selected');
         topBar.selectedTab = self;
 
-        if (self.file !== happyEdit.currentFile) {
-            happyEdit.switchToFile(self.file, false);
+        if (self.file !== happyEdit.currentPane) {
+            happyEdit.switchPane(self.file, false);
         }
     };
 
