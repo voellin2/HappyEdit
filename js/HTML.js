@@ -119,6 +119,12 @@ var HTML = {
         return $li;
     },
 
+    createStartScreenProjectItem: function(model) {
+        var $li = document.createElement('li');
+        $li.innerHTML = model.name || model.host;
+        return $li;
+    },
+
     fillAutoCompleteList: function($ul, data) {
         var count = 0;
         data.forEach(function(word, i) {

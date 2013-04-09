@@ -22,6 +22,7 @@ function HappyEdit(settings) {
     self.tabSpecificKeyboardHandlers = [];
     self.explorer = new Explorer(self);
     self.grepView = new GrepView(self);
+    self.startScreen = new StartScreen(self);
     self.globalCommandManager = new GlobalCommandManager(self);
     self.dragAndDropHandler = new DragAndDropHandler(self);
 
@@ -233,6 +234,13 @@ function HappyEdit(settings) {
         }
         self.grepView.load(q);
         self.switchPane(self.grepView);
+    };
+
+    self.showStartScreen = function(q) {
+        if (!self.openPanes.hasOwnProperty(self.startScreen.id)) {
+            self.openPanes[self.startScreen.id] = self.startScreen;
+        }
+        self.switchPane(self.startScreen);
     };
 
     self.openDummyBuffer = function() {

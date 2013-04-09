@@ -88,6 +88,15 @@ function CommandList(happyEdit) {
             }
         },
         {
+            name: "start",
+            alias: ["projects", "new"],
+            title: "Show start screen",
+            callback: function(args, callback) {
+                happyEdit.showStartScreen();
+                callback();
+            }
+        },
+        {
             name: "grep",
             alias: ["search", "find"],
             title: "Search in all files",

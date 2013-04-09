@@ -38,6 +38,10 @@ function ProjectManager(happyEdit) {
         self.loadProject(project.host);
     };
     
+    self.getProjects = function() {
+        return settings.get('projects');
+    }
+    
     self.renameCurrentProject = function(name) {
         if (!self.project) {
             throw "No current project";
