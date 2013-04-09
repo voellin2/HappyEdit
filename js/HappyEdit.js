@@ -2,7 +2,7 @@ function HappyEdit(settings) {
     var self = this;
     
     self.currentFile;
-    self.files = {};
+    self.openPanes = {};
     self.editor = ace.edit("editor");
     self.$editor = document.getElementById('editor');
     self.config = require('ace/config');
@@ -132,9 +132,9 @@ function HappyEdit(settings) {
     self.closeAllOpenFiles = function() {
         var file;
         var key;
-        for (key in self.files) {
-            if (self.files.hasOwnProperty(key)) {
-                file = self.files[key];
+        for (key in self.openPanes) {
+            if (self.openPanes.hasOwnProperty(key)) {
+                file = self.openPanes[key];
                 self.closeFile(file, true);
             }
         }
@@ -150,7 +150,7 @@ function HappyEdit(settings) {
             console.log('no tab found for ', file.filename, file);
         }
 
-        delete self.files[file.id];
+        delete self.openPanes[file.id];
         
         self.eventSystem.callEventListeners('file_closed', file);
         
@@ -160,17 +160,17 @@ function HappyEdit(settings) {
     };
 
     self.getBufferById = function(id) {
-        if (self.files.hasOwnProperty(id)) {
-            return self.files[id];
+        if (self.openPanes.hasOwnProperty(id)) {
+            return self.openPanes[id];
         }
     };
 
     self.getBufferByFilename = function(filename) {
         var key;
         var buffer;
-        for (key in self.files) {
-            if (self.files.hasOwnProperty(key)) {
-                buffer = self.files[key];
+        for (key in self.openPanes) {
+            if (self.openPanes.hasOwnProperty(key)) {
+                buffer = self.openPanes[key];
                 if (buffer.filename === filename) {
                     return buffer;
                 }
@@ -184,7 +184,7 @@ function HappyEdit(settings) {
      */
     self.createBuffer = function(filename, body) {
         var file = new Buffer(self, filename, body);
-        self.files[file.id] = file;
+        self.openPanes[file.id] = file;
         return file;
     };
 
@@ -217,15 +217,15 @@ function HappyEdit(settings) {
     };
 
     self.openFileExplorer = function() {
-        if (!self.files.hasOwnProperty(self.explorer.id)) {
-            self.files[self.explorer.id] = self.explorer;
+        if (!self.openPanes.hasOwnProperty(self.explorer.id)) {
+            self.openPanes[self.explorer.id] = self.explorer;
         }
         self.switchToFile(self.explorer);
     };
 
     self.showGrepResults = function(q) {
-        if (!self.files.hasOwnProperty(self.grepView.id)) {
-            self.files[self.grepView.id] = self.grepView;
+        if (!self.openPanes.hasOwnProperty(self.grepView.id)) {
+            self.openPanes[self.grepView.id] = self.grepView;
         }
         self.grepView.load(q);
         self.switchToFile(self.grepView);
