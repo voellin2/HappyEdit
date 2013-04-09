@@ -12,7 +12,6 @@ function CommandList(happyEdit) {
                 var filename = args;
                 var buffer = happyEdit.createBuffer(filename, '');
                 happyEdit.switchPane(buffer);
-                console.log('calling', buffer);
                 happyEdit.eventSystem.callEventListeners('file_created', buffer);
                 callback();
             }
