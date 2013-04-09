@@ -5,7 +5,7 @@ function GrepView(happyEdit) {
     self.$view = document.querySelector('#grep');
     self.$h1 = self.$view.querySelector('h1');
     self.$ul = self.$view.querySelector('ul');
-    self.$loading = self.$view.querySelector('.loading');
+    self.$progress = self.$view.querySelector('.progress');
     self.$error = self.$view.querySelector('.error');
     self.worker = new GrepWorker(happyEdit.fileSystem);
     
@@ -55,32 +55,38 @@ function GrepView(happyEdit) {
         return false;
     };
     
+    self.progressCallback = function(filename, count, nFiles) {
+        self.$progress.innerHTML = count + '/' + nFiles + ' ' + filename;
+    };
+    
+    self.matchFoundCallback = function(filename, lineNumber, snippet) {
+        var model = {
+            snippet: snippet,
+            lineNumber: lineNumber,
+            filename: filename
+        };
+        
+        var $view = HTML.createGrepListItem(model);
+        
+        self.list.addItem({
+            model: model,
+            $view: $view
+        });
+        
+        self.$ul.appendChild($view);
+    };
+    
     self.load = function(q) {
         self.reset();
         self.$h1.innerHTML = q;
-        
-        self.worker.findInAllFiles(q, function(filename, lineNumber, snippet) {
-            var model = {
-                snippet: snippet,
-                lineNumber: lineNumber,
-                filename: filename
-            };
-            
-            var $view = HTML.createGrepListItem(model);
-            
-            self.list.addItem({
-                model: model,
-                $view: $view
-            });
-            
-            self.$ul.appendChild($view);
-        });
+        self.worker.findInAllFiles(q, self.progressCallback, self.matchFoundCallback);
     };
     
     self.reset = function() {
         self.list.setData([]);
         self.$h1.innerHTML = '';
         self.$ul.innerHTML = '';
+        self.$progress.innerHTML = '';
         self.hideError();
     };
     
