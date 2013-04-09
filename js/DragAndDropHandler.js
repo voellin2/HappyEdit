@@ -76,8 +76,8 @@ function DragAndDropHandler(happyEdit) {
         var pane1 = happyEdit.getPaneById(id1);
         var pane2 = happyEdit.getPaneById(id2);
         
-        var tab1 = happyEdit.topBar.getTabForFile(pane1);
-        var tab2 = happyEdit.topBar.getTabForFile(pane2);
+        var tab1 = happyEdit.topBar.getTabForPane(pane1);
+        var tab2 = happyEdit.topBar.getTabForPane(pane2);
         
         happyEdit.topBar.swapTabs(tab1, tab2);
     };

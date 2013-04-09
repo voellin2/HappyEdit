@@ -1,18 +1,18 @@
-function Tab(file, topBar, happyEdit) {
+function Tab(pane, topBar, happyEdit) {
     var self = this;
-    this.file = file;
+    this.pane = pane;
     this.$title = document.createElement('span');
-    this.$title.innerHTML = file.getTabLabel();
+    this.$title.innerHTML = pane.getTabLabel();
     this.$fader = document.createElement('span');
     this.$fader.setAttribute('class', 'fader');
     this.$view = document.createElement('li');
     this.$view.setAttribute('class', 'tab');
     this.$view.appendChild(this.$title);
     this.$view.appendChild(this.$fader);
-    this.$view.setAttribute('rel', file.id);
+    this.$view.setAttribute('rel', pane.id);
 
-    file.onChange(function(file) {
-        self.$title.innerHTML = file.getTabLabel();
+    pane.onChange(function(pane) {
+        self.$title.innerHTML = pane.getTabLabel();
     });
 
     this.select = function() {
@@ -23,8 +23,8 @@ function Tab(file, topBar, happyEdit) {
         Utils.addClass(self.$view, 'selected');
         topBar.selectedTab = self;
 
-        if (self.file !== happyEdit.currentPane) {
-            happyEdit.switchPane(self.file, false);
+        if (self.pane !== happyEdit.currentPane) {
+            happyEdit.switchPane(self.pane, false);
         }
     };
 

@@ -33,11 +33,11 @@ function TopBar(happyEdit) {
         }
     };
 
-    self.getTabForPane = function(file) {
+    self.getTabForPane = function(pane) {
         var ret;
         
         self.tabs.forEach(function(tab) {
-            if (file === tab.file) {
+            if (pane === tab.pane) {
                 ret = tab;
                 return false;
             }
@@ -119,11 +119,11 @@ function TopBar(happyEdit) {
         self.$tabs.style.width = self.tabs.length * tabWidth + 'px';
     };
 
-    self.updateView = function(file) {
-        var tab = self.getTabForPane(file);
+    self.updateView = function(pane) {
+        var tab = self.getTabForPane(pane);
         
         if (tab === undefined) {
-            tab = new Tab(file, self, happyEdit);
+            tab = new Tab(pane, self, happyEdit);
             self.tabs.push(tab);
             self.$tabs.appendChild(tab.$view);
         }
