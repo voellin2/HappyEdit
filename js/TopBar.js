@@ -24,12 +24,12 @@ function TopBar(happyEdit) {
     };
 
     self.$maxButton.onclick = function() {
-        if (self.getAttribute('class') === 'restore') {
+        if (this.getAttribute('class') === 'restore') {
             chrome.app.window.current().restore();
-            self.setAttribute('class', '');
+            this.setAttribute('class', '');
         } else {
             chrome.app.window.current().maximize();
-            self.setAttribute('class', 'restore');
+            this.setAttribute('class', 'restore');
         }
     };
 
