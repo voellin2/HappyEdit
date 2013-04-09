@@ -13,11 +13,19 @@ function FileSystem(eventSystem) {
         var key;
         
         for (key in self.fileTree) {
-            if (self.fileTree.hasOwnProperty(key)) {
-                self.fileTree[key].files.forEach(function(filename) {
-                    ret.push(key + '/' + filename);
-                });
+            if (!self.fileTree.hasOwnProperty(key)) {
+                return;
             }
+            
+            self.fileTree[key].files.forEach(function(filename) {
+                var dirname = key;
+                
+                if (dirname !== '.') {
+                    dirname = './' + dirname;
+                }
+                
+                ret.push(dirname + '/' + filename);
+            });
         }
         
         return ret;

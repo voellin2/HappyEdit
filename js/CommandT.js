@@ -5,14 +5,23 @@ function CommandT(eventSystem, fileSystem) {
     function filenameToFilterListSource(filename) {
         return {
             value: filename,
-            keys: filename.toLowerCase().split('/')
+            keys: filename.substr(2).toLowerCase().split('/')
         };
     }
     
     eventSystem.addEventListener('filesystem_loaded', function() {
-        self.filterList .clear();
+        self.filterList.clear();
         var files = fileSystem.getFlatList();
         self.filterList.load(files.map(filenameToFilterListSource));
+    });
+    
+    eventSystem.addEventListener('file_created', function(buffer) {
+        if (!buffer.filename) {
+            return;
+        }
+        
+        var item = filenameToFilterListSource(buffer.filename);
+        self.filterList.indexItem(item);
     });
     
     /**

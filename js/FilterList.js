@@ -41,15 +41,22 @@ function FilterList(data) {
             }
         }
     };
+    
+    /**
+     * Index an item that should have two keys: value and keys.
+     */
+    self.indexItem = function(item) {
+        item.keys.forEach(function(key, i) {
+            self.add(key, item.value);
+        });
+    };
 
     /**
      * (Re)indexes the source data array.
      */
     self.index = function() {
         self.data.forEach(function(item, i) {
-            item.keys.forEach(function(key, i) {
-                self.add(key, item.value);
-            });
+            self.indexItem(item);
         });
     };
     

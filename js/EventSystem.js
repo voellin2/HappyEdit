@@ -4,6 +4,7 @@ function EventSystem() {
     self.listeners = {
         'project_loaded': [],
         'tabs_swapped': [],
+        'file_created': [],
         'file_changed': [],
         'file_loaded': [],
         'file_closed': [],
