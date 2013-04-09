@@ -34,9 +34,9 @@ Integrating HappyEdit
 ---------------------
 
 It's possible to write your own server implementation to, for example, let
-users edit files on a remote server.
+users edit files on your server.
 
-Basically, your server must implement a simple REST interface:
+Your server must implement a simple REST interface:
 
  * POST    /connect
  * GET     /files
@@ -54,6 +54,7 @@ JavaScript Code standards:
  * Indentation with 4 spaces.
  * Modifying object prototypes and 'inheritance' should be avoided.
  * Each 'class' should be in its separeate .js file named 'YourClass.js'.
+ * Explicit is better than implicit.
 
 Contact
 -------
