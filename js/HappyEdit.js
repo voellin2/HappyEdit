@@ -188,9 +188,9 @@ function HappyEdit(settings) {
         if (buffer) {
             callback(buffer);
             return;
-        } else {
-            buffer = self.createBuffer(filename, '');
         }
+        
+        buffer = self.createBuffer(filename, '');
 
         callback(buffer);
 
@@ -206,6 +206,7 @@ function HappyEdit(settings) {
         self.getOrLoadRemoteFile(filename, lineNumber, function(buffer) {
             self.switchPane(buffer);
             if (lineNumber) {
+                self.editor.gotoLine(lineNumber);
             }
         });
     };

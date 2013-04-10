@@ -18,7 +18,7 @@ function GrepView(happyEdit) {
         
         item = item.model;
         
-        happyEdit.openRemoteFile(item.filename, item.lineno);
+        happyEdit.openRemoteFile(item.filename, item.lineNumber);
     };
     
     self.isSearchFieldFocused = function() {
