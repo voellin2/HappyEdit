@@ -130,26 +130,15 @@ function HappyEdit(settings) {
         return self.topBar.tabs.length;
     };
     
-    self.closeAllOpenPanes = function() {
-        var pane;
-        var key;
-        for (key in self.openPanes) {
-            if (self.openPanes.hasOwnProperty(key)) {
-                pane = self.openPanes[key];
-                self.closePane(pane, true);
-            }
-        }
+    self.reset = function() {
+        self.openPanes = {};
+        self.topBar.reset();
     };
-
+    
     self.closePane = function(pane, keepAlive) {
         var tab = self.topBar.getTabForPane(pane);
 
-        // TODO investigate why a match could not be found.
-        if (tab) {
-            tab.close(true);
-        } else {
-            console.log('no tab found for ', pane.filename, pane);
-        }
+        tab.close(true);
 
         delete self.openPanes[pane.id];
         

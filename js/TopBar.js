@@ -32,7 +32,13 @@ function TopBar(happyEdit) {
             this.setAttribute('class', 'restore');
         }
     };
-
+    
+    self.reset = function() {
+    self.selectedTab = null;
+        self.tabs = [];
+        self.$tabs.innerHTML = '';
+    };
+    
     self.getTabForPane = function(pane) {
         var ret;
         
