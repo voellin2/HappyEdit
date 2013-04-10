@@ -3,7 +3,7 @@ function GrepView(happyEdit) {
     self.id = Utils.count();
     self.list = new SelectableList();
     self.$view = document.querySelector('#grep');
-    self.$h1 = self.$view.querySelector('h1');
+    self.$input = self.$view.querySelector('input');
     self.$ul = self.$view.querySelector('ul');
     self.$progress = self.$view.querySelector('.progress');
     self.$error = self.$view.querySelector('.error');
@@ -20,9 +20,26 @@ function GrepView(happyEdit) {
         
         happyEdit.openRemoteFile(item.filename, item.lineno);
     };
+    
+    self.isSearchFieldFocused = function() {
+        return document.activeElement === self.$input;
+    };
+    
+    self.runQueryInSearchField = function() {
+        var q = self.$input.value;
+        self.load(q);
+    };
 
     self.keyDown = function(event) {
         var keyCode = event.keyCode;
+        
+        if (self.isSearchFieldFocused()) {
+            if (keyCode === 13) {
+                self.runQueryInSearchField();
+            }
+            
+            return;
+        }
 
         if (keyCode === 78 || keyCode === 74) {
             keyCode = 40;
@@ -78,13 +95,13 @@ function GrepView(happyEdit) {
     
     self.load = function(q) {
         self.reset();
-        self.$h1.innerHTML = q;
+        self.$input.value = q;
         self.worker.findInAllFiles(q, self.progressCallback, self.matchFoundCallback);
     };
     
     self.reset = function() {
         self.list.setData([]);
-        self.$h1.innerHTML = '';
+        self.$input.value = '';
         self.$ul.innerHTML = '';
         self.$progress.innerHTML = '';
         self.hideError();
