@@ -73,6 +73,16 @@ function CommandList(happyEdit) {
             }
         },
         {
+            name: "start",
+            alias: ["projects", "new"],
+            title: "Show Start Screen",
+            showInMenu: true,
+            callback: function(args, callback) {
+                happyEdit.showStartScreen();
+                callback();
+            }
+        },
+        {
             name: "openFile",
             alias: [],
             title: "Quick Open File",
@@ -84,15 +94,6 @@ function CommandList(happyEdit) {
             },
             callback: function(args, callback) {
                 happyEdit.commandLine.show('');
-                callback();
-            }
-        },
-        {
-            name: "start",
-            alias: ["projects", "new"],
-            title: "Show start screen",
-            callback: function(args, callback) {
-                happyEdit.showStartScreen();
                 callback();
             }
         },
