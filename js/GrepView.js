@@ -97,6 +97,7 @@ function GrepView(happyEdit) {
         self.reset();
         self.$input.value = q;
         self.worker.findInAllFiles(q, self.progressCallback, self.matchFoundCallback);
+        self.$input.blur();
     };
     
     self.reset = function() {
