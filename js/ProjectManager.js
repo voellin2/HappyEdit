@@ -38,9 +38,22 @@ function ProjectManager(happyEdit) {
         self.loadProject(project.host);
     };
     
+    self.removeProject = function(host) {
+        var projects = settings.get('projects');
+        var newProjects = [];
+        
+        projects.forEach(function(project) {
+            if (project.host !== host) {
+                newProjects.push(project);
+            }
+        });
+        
+        settings.set('projects', newProjects);
+    };
+    
     self.getProjects = function() {
         return settings.get('projects');
-    }
+    };
     
     self.renameCurrentProject = function(name) {
         if (!self.project) {

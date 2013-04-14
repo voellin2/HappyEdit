@@ -73,6 +73,22 @@ function CommandList(happyEdit) {
             }
         },
         {
+            name: "deleteProject",
+            alias: [],
+            title: "Delete current project",
+            callback: function(args, callback) {
+                var project = happyEdit.projectManager.getCurrentProject();
+                
+                if (!project) {
+                    throw "There is no current project";
+                }
+                
+                happyEdit.projectManager.removeProject(project.host);
+                happyEdit.projectManager.disconnect();
+                callback();
+            }
+        },
+        {
             name: "start",
             alias: ["projects", "new"],
             title: "Show Start Screen",
