@@ -87,6 +87,31 @@ function FileSystem(eventSystem) {
 
         xhr.send(params);
     };
+    
+    self.deleteFile = function(filename, callback) {
+        if (!filename) {
+            throw "No filename given";
+        }
+
+        var xhr = new XMLHttpRequest();
+        var url = self.host + '/files/' + encodeURIComponent(filename) + '?token=' + self.authToken;
+
+        xhr.open("DELETE", url);
+
+        document.querySelector('#notification').style.visibility = 'visible';
+
+        xhr.onload = function() {
+            document.querySelector('#notification').style.visibility = 'hidden';
+            console.log(xhr.responseText);
+        };
+        
+        xhr.onerror = function() {
+            document.querySelector('#notification').style.visibility = 'hidden';
+            console.log(xhr.responseText);
+        };
+
+        xhr.send();
+    };
 
     self.getFile = function(filename, callback) {
         var xhr = new XMLHttpRequest();

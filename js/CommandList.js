@@ -40,6 +40,23 @@ function CommandList(happyEdit) {
             }
         },
         {
+            name: "delete",
+            alias: ["remove"],
+            title: "Delete current file from disk",
+            callback: function(args, callback) {
+                if (happyEdit.currentPane.constructor !== Buffer) {
+                    return;
+                }
+                
+                var filename = happyEdit.currentPane.filename;
+                
+                happyEdit.fileSystem.deleteFile(filename);
+                happyEdit.closePane(happyEdit.currentPane);
+                
+                callback();
+            }
+        },
+        {
             name: "connect",
             alias: [],
             title: "Connect to a remote server",
