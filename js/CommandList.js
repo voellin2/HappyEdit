@@ -57,6 +57,36 @@ function CommandList(happyEdit) {
             }
         },
         {
+            name: "rename",
+            alias: ["move", "mv"],
+            title: "Rename current file",
+            callback: function(args, callback) {
+                if (happyEdit.currentPane.constructor !== Buffer) {
+                    return;
+                }
+                
+                if (!args) {
+                    throw "A filename must be provided";
+                }
+                
+                var oldName = happyEdit.currentPane.filename;
+                var newName = args;
+                var buffer = happyEdit.currentPane;
+                
+                if (!Utils.startsWith(newName, './')) {
+                    newName = buffer.dirname + "/" + newName;
+                }
+                
+                buffer.rename(newName);
+                
+                happyEdit.fileSystem.write(buffer, null, function() {
+                    happyEdit.fileSystem.deleteFile(oldName);
+                });
+                
+                callback();
+            }
+        },
+        {
             name: "connect",
             alias: [],
             title: "Connect to a remote server",
