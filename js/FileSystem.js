@@ -58,7 +58,7 @@ function FileSystem(eventSystem) {
      * A filename can be specified in addition to the buffer so that the file
      * can be saved to another destination file.
      */
-    self.write = function(buffer, filename) {
+    self.write = function(buffer, filename, callback) {
         filename = filename || buffer.filename;
 
         if (!filename) {
@@ -81,6 +81,10 @@ function FileSystem(eventSystem) {
 
                 if (!buffer.filename) {
                     buffer.rename(filename);
+                }
+                
+                if (callback) {
+                    callback();
                 }
             }
         };
