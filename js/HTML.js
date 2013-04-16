@@ -81,6 +81,7 @@ var HTML = {
     
     createDirectoryView: function(dir) {
         var $ul = document.createElement('ul');
+        $ul.setAttribute('class', 'list-view');
         return $ul;
     },
 
