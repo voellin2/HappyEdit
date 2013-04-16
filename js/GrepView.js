@@ -9,7 +9,7 @@ function GrepView(happyEdit) {
     self.$error = self.$view.querySelector('.error');
     self.worker = new GrepWorker(happyEdit.fileSystem);
     
-    self.openActiveItem = function() {
+    self.list.onSelect = function() {
         var item = self.list.getSelectedItem();
         
         if (!item) {
@@ -31,41 +31,14 @@ function GrepView(happyEdit) {
     };
 
     self.keyDown = function(event) {
-        var keyCode = event.keyCode;
-        
         if (self.isSearchFieldFocused()) {
-            if (keyCode === 13) {
+            if (event.keyCode === 13) {
                 self.runQueryInSearchField();
             }
-            
             return;
         }
-
-        if (keyCode === 78 || keyCode === 74) {
-            keyCode = 40;
-        } else if (keyCode === 80 || keyCode === 75) {
-            keyCode = 38;
-        }
-
-        switch (keyCode) {
-            case 40:
-            self.list.navigateDown();
-            break;
-
-            case 38:
-            self.list.navigateUp();
-            break;
-
-            case 9: // Tab
-            break;
-
-            case 13:
-            self.openActiveItem();
-            break;
-
-            default:
-            // Empty for now
-        }
+        
+        self.list.keyDown(event);
     };
 
     self.isDummy = function() {

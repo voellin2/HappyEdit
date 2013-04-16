@@ -54,4 +54,37 @@ function SelectableList() {
     self.navigateDown = function() {
          self.selectIndex(self.index + 1);
     };
+    
+    self.keyDown = function(event) {
+        var keyCode = event.keyCode;
+
+        if (keyCode === 78 || keyCode === 74) {
+            keyCode = 40;
+        } else if (keyCode === 80 || keyCode === 75) {
+            keyCode = 38;
+        }
+
+        switch (keyCode) {
+            case 40:
+            self.navigateDown();
+            break;
+
+            case 38:
+            self.navigateUp();
+            break;
+
+            case 9: // Tab
+            break;
+
+            case 13:
+            self.onSelect();
+            break;
+
+            default:
+            // Empty for now
+        }
+    };
+    
+    self.onSelect = function() {
+    };
 }
