@@ -15,8 +15,18 @@ function SelectableList() {
         self.index = null;
     };
     
+    self.onItemClick = function() {
+        var index = this.dataset.index; // 'this' refers to a DOM element
+        self.selectIndex(index);
+        self.openSelectedItem();
+    };
+    
     self.addItem = function(item) {
+        item.$view.dataset.index = self.items.length;
+        item.$view.onclick = self.onItemClick;
+        
         self.items.push(item);
+        
         if (self.index === null) {
             self.selectIndex(0);
         }
@@ -78,14 +88,18 @@ function SelectableList() {
             break;
 
             case 13:
-            var item = self.getSelectedItem();
-            if (item) {
-                self.onOpen(item);
-            }
+            self.openSelectedItem();
             break;
 
             default:
             // Empty for now
+        }
+    };
+    
+    self.openSelectedItem = function() {
+        var item = self.getSelectedItem();
+        if (item) {
+            self.onOpen(item);
         }
     };
     
