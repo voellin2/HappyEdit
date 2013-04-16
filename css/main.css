@@ -101,7 +101,6 @@ body {
     font-size: 16px;
     position: relative;
 }
-.command-line li:hover,
 .menu li:hover,
 .popup .clickme,
 .command-line li.hover {
@@ -112,9 +111,7 @@ body {
 .command-line li .shortcut {
     color: #777
 }
-.command-line li:hover .shortcut,
 .command-line li.hover .shortcut,
-.command-line li:hover .extra,
 .command-line li.hover .extra {
     color: #ddd;
 }

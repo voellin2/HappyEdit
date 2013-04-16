@@ -196,6 +196,11 @@ function CommandLine(happyEdit) {
         if (suggestions && suggestions.length) {
             suggestions.forEach(function(suggestion, i) {
                 var $li = HTML.createSuggestionView(suggestion);
+                
+                $li.onmousemove = function() {
+                    self.selectSuggestion(i);
+                };
+                
                 fragment.appendChild($li);
                 self.suggestionElements.push($li);
             });
@@ -266,7 +271,7 @@ function CommandLine(happyEdit) {
             throw e; // We want to see the traceback in the console.
         }
     };
-
+    
     self.showAlert = function(e) {
         self.$alertContent.innerHTML = e; // TODO escape?
         self.$alert.style.display = 'block';
