@@ -5,6 +5,23 @@ function Explorer(happyEdit) {
     self.columns = [];
     self.activeColumn = null;
     self.columnIndex = 0;
+    
+    self.onOpen = function(item) {
+        var model = item.model;
+        var path = self.activeColumn.dirname + '/' + model.filename;
+
+        if (path.substr(0, 2) === './') {
+            path = path.substr(2);
+        }
+
+        if (model.type === 'directory') {
+            self.removeAllColumnsToTheRight();
+            self.addColumn(path);
+            self.navigateRight();
+        } else {
+            happyEdit.openRemoteFile(path);
+         }
+     };
 
     self.isDummy = function() {
         return false;
@@ -13,6 +30,7 @@ function Explorer(happyEdit) {
     self.addColumn = function(key) {
         var dir = happyEdit.fileSystem.fileTree[key];
         var col = new ExplorerColumn(dir, key);
+        col.list.onOpen = self.onOpen;
         self.columns.push(col);
         self.$view.appendChild(col.$view);
     };
@@ -90,20 +108,8 @@ function Explorer(happyEdit) {
             // Leave?
             break;
 
-            case 40:
-            self.activeColumn.navigateDown();
-            break;
-
-            case 38:
-            self.activeColumn.navigateUp();
-            break;
-
             case 72:
             self.navigateLeft();
-            break;
-
-            case 76:
-            self.openActiveItem();
             break;
 
             case 17:
@@ -113,29 +119,8 @@ function Explorer(happyEdit) {
             case 9: // Tab
             break;
 
-            case 13:
-            self.openActiveItem();
-            break;
-
             default:
-            // Empty for now
-        }
-    };
-    
-    self.openActiveItem = function() {
-        var $row = self.activeColumn.getActiveRow();
-        var key = self.activeColumn.$view.getAttribute('rel') + '/' + $row.getAttribute('rel');
-
-        if (key.substr(0, 2) === './') {
-            key = key.substr(2); 
-        }
-
-        if (Utils.hasClass($row, 'directory')) {
-            self.removeAllColumnsToTheRight();
-            self.addColumn(key);
-            self.navigateRight();
-        } else {
-            happyEdit.openRemoteFile(key);
+            self.activeColumn.keyDown(event);
         }
     };
     

@@ -53,63 +53,34 @@ var HTML = {
         return $li;
     },
 
-    createDirectoryView: function(dir, key) {
-        var $ul = document.createElement('ul');
-        var file;
+    createExplorerItem: function(model) {
         var $li;
         var $icon;
         var $title;
-        var count = 0;
-        var i = 0;
+        
+        $li = document.createElement('li');
+        $li.setAttribute('class', 'item ' + model.type);
 
-        $ul.setAttribute('rel', key);
+        $title = document.createElement('span');
+        $title.setAttribute('class', 'title');
+        $title.innerHTML = model.filename;
+        $li.appendChild($title);
 
-        for (i = 0; i < dir.directories.length; i += 1) {
-            file = dir.directories[i];
-
-            $li = document.createElement('li');
-            $li.setAttribute('class', 'directory item' + String(count));
-            $li.setAttribute('rel', file);
-
-            $title = document.createElement('span');
-            $title.setAttribute('class', 'title');
-            $title.innerHTML = file;
-
+        if (model.type === 'directory') {
             $icon = document.createElement('span');
             $icon.setAttribute('class', 'icon');
-
-            if (file[0] === '.') {
-                Utils.addClass($li, 'hidden');
-            }
-
-            $li.appendChild($title);
             $li.appendChild($icon);
-            $ul.appendChild($li);
-
-            count += 1;
         }
 
-        for (i = 0; i < dir.files.length; i += 1) {
-            file = dir.files[i];
-
-            $li = document.createElement('li');
-            $li.setAttribute('class', 'file item' + String(count));
-            $li.setAttribute('rel', file);
-
-            $title = document.createElement('span');
-            $title.setAttribute('class', 'title');
-            $title.innerHTML = file;
-
-            if (file[0] === '.') {
-                Utils.addClass($li, 'hidden');
-            }
-
-            $li.appendChild($title);
-            $ul.appendChild($li);
-
-            count += 1;
+        if (model.filename[0] === '.') {
+            Utils.addClass($li, 'hidden');
         }
 
+        return $li;
+    },
+    
+    createDirectoryView: function(dir) {
+        var $ul = document.createElement('ul');
         return $ul;
     },
 

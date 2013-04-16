@@ -63,6 +63,10 @@ function SelectableList() {
         } else if (keyCode === 80 || keyCode === 75) {
             keyCode = 38;
         }
+        
+        if (keyCode === 76 || keyCode === 108) { // 'L' 'l'
+            keyCode = 13;
+        }
 
         switch (keyCode) {
             case 40:
@@ -72,7 +76,7 @@ function SelectableList() {
             case 38:
             self.navigateUp();
             break;
-
+            
             case 9: // Tab
             break;
 
