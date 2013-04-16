@@ -10,9 +10,14 @@ function SelectableList() {
     self.items = [];
     self.index = null;
     
-    self.setData = function(items) {
-        self.items = items;
+    self.clear = function() {
+        self.items = [];
         self.index = null;
+    };
+    
+    self.setData = function(items) {
+        self.clear();
+        self.items = items;
         if (items.length > 0) {
             self.selectIndex(0);
         }
@@ -67,7 +72,7 @@ function SelectableList() {
         if (keyCode === 76 || keyCode === 108) { // 'L' 'l'
             keyCode = 13;
         }
-
+        
         switch (keyCode) {
             case 40:
             self.navigateDown();

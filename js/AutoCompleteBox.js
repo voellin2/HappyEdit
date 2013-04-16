@@ -13,20 +13,17 @@ function AutoCompleteBox(happyEdit) {
     
     self.$view = document.querySelector('#autocomplete');
     self.$ul = self.$view.querySelector('ul');
-    
-    self.index = 0;
+    self.list = new SelectableList();
     
     self.indexer = new AutoSuggestIndexer(happyEdit);
     
-    self.matches = [];
-    
     self.commands = {
-        "Ctrl-k": function(editor) { self.navigateUp(); },
-        "Ctrl-j": function(editor) { self.navigateDown(); },
-        "Ctrl-p": function(editor) { self.navigateUp(); },
-        "Ctrl-n": function(editor) { self.navigateDown(); },
-        "up": function(editor) { self.navigateUp(); },
-        "down": function(editor) { self.navigateDown(); },
+        "Ctrl-k": function(editor) { self.list.navigateUp(); },
+        "Ctrl-j": function(editor) { self.list.navigateDown(); },
+        "Ctrl-p": function(editor) { self.list.navigateUp(); },
+        "Ctrl-n": function(editor) { self.list.navigateDown(); },
+        "up": function(editor) { self.list.navigateUp(); },
+        "down": function(editor) { self.list.navigateDown(); },
         "esc": function(editor) { self.hide(); },
         "space": function(editor) { self.hide(); editor.insert(" "); },
         "Return": function(editor) { self.insertMatch(); },
@@ -54,42 +51,12 @@ function AutoCompleteBox(happyEdit) {
     }
     
     self.insertMatch = function() {
-        var text = self.getSelectedItem();
+        var text = self.list.getSelectedItem().model;
         self.hide();
         editor.removeWordLeft();
         editor.insert(text);
     };
     
-    self.getSelectedItem = function() {
-        return self.$ul.querySelector('.active').innerHTML;
-    };
-    
-    self.selectIndex = function(index) {
-        if (index < 0) {
-            index = 0;
-        } else if (index > self.matches.length - 1) {
-            index = self.matches.length - 1;
-        }
-        
-        self.index = index;
-        
-        var $old = self.$ul.querySelector('.active');
-        var $new = self.$ul.querySelector('.item' + index);
-        
-        Utils.removeClass($old, 'active');
-        Utils.addClass($new, 'active');
-        
-        $new.scrollIntoViewIfNeeded(false);
-    };
-    
-    self.navigateUp = function() {
-         self.selectIndex(self.index - 1);
-    };
-    
-    self.navigateDown = function() {
-         self.selectIndex(self.index + 1);
-    };
-
     self.updatePosition = function() {
         var cursor = editor.getCursorPosition();
         var coords = editor.renderer.textToScreenCoordinates(cursor.row, cursor.column);
@@ -138,17 +105,28 @@ function AutoCompleteBox(happyEdit) {
     
     self.populateList = function(matches) {
         self.$ul.innerHTML = '';
-        HTML.fillAutoCompleteList(self.$ul, matches);
+        self.list.clear();
+        
+        matches.forEach(function(match) {
+            var model = match;
+            var $view = HTML.createAutoCompleteItem(model);
+            
+            self.list.addItem({
+                model: model,
+                $view: $view
+            });
+            
+            self.$ul.appendChild($view);
+        });
     };
     
     self.show = function() {
         var word = getWordAtLeft();
-        self.matches = self.getMatches(word);
-        if (self.matches.length) {
-            self.populateList(self.matches);
+        var matches = self.getMatches(word);
+        if (matches.length) {
+            self.populateList(matches);
             self.updatePosition();
             self.attachKeyboardHandler();
-            self.selectIndex(0);
             self.$view.style.display = 'block';
         }
     };

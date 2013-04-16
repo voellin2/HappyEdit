@@ -95,15 +95,11 @@ var HTML = {
         $li.innerHTML = model.name || model.host;
         return $li;
     },
-
-    fillAutoCompleteList: function($ul, data) {
-        var count = 0;
-        data.forEach(function(word, i) {
-            var $li = document.createElement('li');
-            $li.setAttribute('class', 'item' + String(count));
-            $li.innerHTML = word;
-            $ul.appendChild($li);
-            count += 1;
-        });
+    
+    createAutoCompleteItem: function(word) {
+        var $li = document.createElement('li');
+        $li.setAttribute('class', 'item');
+        $li.innerHTML = word;
+        return $li;
     }
 };
