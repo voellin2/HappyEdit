@@ -5,6 +5,10 @@ function StartScreen(happyEdit) {
     self.id = Utils.count();
     self.list = new SelectableList();
     
+    self.list.onOpen = function(item) {
+        happyEdit.projectManager.loadProject(item.model.host);
+    };
+    
     happyEdit.projectManager.getProjects().forEach(function(project) {
         var $view = HTML.createStartScreenProjectItem(project);
         self.list.addItem({
@@ -15,43 +19,7 @@ function StartScreen(happyEdit) {
     });
     
     self.keyDown = function(event) {
-        var keyCode = event.keyCode;
-
-        if (keyCode === 78 || keyCode === 74) {
-            keyCode = 40;
-        } else if (keyCode === 80 || keyCode === 75) {
-            keyCode = 38;
-        }
-
-        switch (keyCode) {
-            case 40:
-            self.list.navigateDown();
-            break;
-
-            case 38:
-            self.list.navigateUp();
-            break;
-
-            case 9: // Tab
-            break;
-
-            case 13:
-            self.openActiveItem();
-            break;
-
-            default:
-            // Empty for now
-        }
-    };
-    
-    self.openActiveItem = function() {
-        var item = self.list.getSelectedItem();
-        
-        if (!item) {
-            return;
-        }
-        
-        happyEdit.projectManager.loadProject(item.model.host);
+        self.list.keyDown(event);
     };
     
     self.getTabLabel = function() {
