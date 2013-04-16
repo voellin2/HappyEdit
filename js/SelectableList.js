@@ -77,7 +77,10 @@ function SelectableList() {
             break;
 
             case 13:
-            self.onOpen();
+            var item = self.getSelectedItem();
+            if (item) {
+                self.onOpen(item);
+            }
             break;
 
             default:

@@ -9,16 +9,9 @@ function GrepView(happyEdit) {
     self.$error = self.$view.querySelector('.error');
     self.worker = new GrepWorker(happyEdit.fileSystem);
     
-    self.list.onOpen = function() {
-        var item = self.list.getSelectedItem();
-        
-        if (!item) {
-            return;
-        }
-        
-        item = item.model;
-        
-        happyEdit.openRemoteFile(item.filename, item.lineNumber);
+    self.list.onOpen = function(item) {
+        var model = item.model;
+        happyEdit.openRemoteFile(model.filename, model.lineNumber);
     };
     
     self.isSearchFieldFocused = function() {
