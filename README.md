@@ -42,6 +42,7 @@ Your server must implement a simple REST interface:
  * GET     /files
  * GET     /files/:path
  * POST    /files/:path
+ * DELETE  /files/:path
 
 See server.py for reference.
 
