@@ -9,7 +9,7 @@ function GrepView(happyEdit) {
     self.$error = self.$view.querySelector('.error');
     self.worker = new GrepWorker(happyEdit.fileSystem);
     
-    self.list.onSelect = function() {
+    self.list.onOpen = function() {
         var item = self.list.getSelectedItem();
         
         if (!item) {

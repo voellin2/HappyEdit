@@ -77,7 +77,7 @@ function SelectableList() {
             break;
 
             case 13:
-            self.onSelect();
+            self.onOpen();
             break;
 
             default:
@@ -85,6 +85,6 @@ function SelectableList() {
         }
     };
     
-    self.onSelect = function() {
+    self.onOpen = function() {
     };
 }
