@@ -15,14 +15,6 @@ function SelectableList() {
         self.index = null;
     };
     
-    self.setData = function(items) {
-        self.clear();
-        self.items = items;
-        if (items.length > 0) {
-            self.selectIndex(0);
-        }
-    };
-    
     self.addItem = function(item) {
         self.items.push(item);
         if (self.index === null) {

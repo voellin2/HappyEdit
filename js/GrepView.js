@@ -67,7 +67,7 @@ function GrepView(happyEdit) {
     };
     
     self.reset = function() {
-        self.list.setData([]);
+        self.list.clear();
         self.$input.value = '';
         self.$ul.innerHTML = '';
         self.$progress.innerHTML = '';
