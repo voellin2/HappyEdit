@@ -7,7 +7,7 @@ function TabState(happyEdit) {
     self.project = null;
     
     var eventSystem = happyEdit.eventSystem;
-    var settings = happyEdit.settings;
+    var dataStore = happyEdit.dataStore;
     
     self.restore = function() {
         if (self.project.tabs.length === 0) {
@@ -35,8 +35,8 @@ function TabState(happyEdit) {
         
         self.project.tabs = tabs;
         
-        // project is a reference to an item in settings.
-        settings.save();
+        // project is a reference to an item in dataStore.
+        dataStore.save();
     };
     
     eventSystem.addEventListener('project_loaded', function(project) {

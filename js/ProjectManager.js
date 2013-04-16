@@ -1,6 +1,6 @@
 /**
  * Listens for the 'connected' event and correctly updates
- * settings.projects and settings.currentProjectIndex.
+ * dataStore.projects and dataStore.currentProjectIndex.
  */
 function ProjectManager(happyEdit) {
     var self = this;
@@ -8,7 +8,7 @@ function ProjectManager(happyEdit) {
     self.project = null;
     
     var eventSystem = happyEdit.eventSystem;
-    var settings = happyEdit.settings;
+    var dataStore = happyEdit.dataStore;
     var fileSystem = happyEdit.fileSystem;
     
     eventSystem.addEventListener('connected', function(data) {
@@ -18,7 +18,7 @@ function ProjectManager(happyEdit) {
     
     self.addOrUpdateProject = function(host, authToken) {
         var project = self.getProjectByHost(host);
-        var projects = settings.get('projects');
+        var projects = dataStore.get('projects');
         
         if (project ) {
             project .authToken = authToken;
@@ -33,13 +33,13 @@ function ProjectManager(happyEdit) {
             self.createAutoCompletions();
         }
 
-        settings.save();
+        dataStore.save();
         
         self.loadProject(project.host);
     };
     
     self.removeProject = function(host) {
-        var projects = settings.get('projects');
+        var projects = dataStore.get('projects');
         var newProjects = [];
         
         projects.forEach(function(project) {
@@ -48,11 +48,11 @@ function ProjectManager(happyEdit) {
             }
         });
         
-        settings.set('projects', newProjects);
+        dataStore.set('projects', newProjects);
     };
     
     self.getProjects = function() {
-        return settings.get('projects');
+        return dataStore.get('projects');
     };
     
     self.renameCurrentProject = function(name) {
@@ -61,7 +61,7 @@ function ProjectManager(happyEdit) {
         }
         
         self.project.name = name;
-        settings.save();
+        dataStore.save();
     };
     
     self.switchProject = function(host) {
@@ -78,8 +78,8 @@ function ProjectManager(happyEdit) {
         happyEdit.reset();
         happyEdit.openDummyBuffer();
         
-        settings.set('currentProjectHost', null);
-        settings.save();
+        dataStore.set('currentProjectHost', null);
+        dataStore.save();
         
         eventSystem.callEventListeners('disconnected');
     };
@@ -95,8 +95,8 @@ function ProjectManager(happyEdit) {
         
         self.project = project;
         
-        settings.set('currentProjectHost', project.host);
-        settings.save();
+        dataStore.set('currentProjectHost', project.host);
+        dataStore.save();
         
         fileSystem.loadFiles(project.host, project.authToken);
         eventSystem.callEventListeners('project_loaded', project);
@@ -108,7 +108,7 @@ function ProjectManager(happyEdit) {
     
     self.getProjectByHost = function(host) {
         var ret;
-        var projects = settings.get('projects');
+        var projects = dataStore.get('projects');
         
         projects.forEach(function(project) {
             if (project.host === host) {
@@ -121,7 +121,7 @@ function ProjectManager(happyEdit) {
     };
     
     self.createAutoCompletions = function() {
-        var projects = settings.get('projects');
+        var projects = dataStore.get('projects');
         var map = projects.map(function(project) {
             var keys = [project.host, 'switch', 'change'];
 

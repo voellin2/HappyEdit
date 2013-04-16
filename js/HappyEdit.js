@@ -1,4 +1,4 @@
-function HappyEdit(settings) {
+function HappyEdit(dataStore) {
     var self = this;
     
     self.currentPane;
@@ -7,7 +7,7 @@ function HappyEdit(settings) {
     self.$editor = document.getElementById('editor');
     self.config = require('ace/config');
     
-    self.settings = settings;
+    self.dataStore = dataStore;
     self.eventSystem = new EventSystem();
     self.commands = new CommandList(self);
     self.commandLine = new CommandLine(self);
@@ -246,7 +246,7 @@ function HappyEdit(settings) {
     
     self.openDummyBuffer();
 
-    var host = settings.get('currentProjectHost');
+    var host = dataStore.get('currentProjectHost');
     if (host) {
         self.projectManager.loadProject(host);
     }
@@ -255,8 +255,8 @@ function HappyEdit(settings) {
 }
 
 window.onload = function() {
-    var settings = new Settings();
-    settings.load(function() {
-        window.happyEdit = new HappyEdit(settings);
+    var dataStore = new DataStore();
+    dataStore.load(function() {
+        window.happyEdit = new HappyEdit(dataStore);
     });
 };

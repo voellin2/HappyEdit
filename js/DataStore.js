@@ -1,6 +1,6 @@
-function Settings() {
+function DataStore() {
     var self = this;
-
+    
     self.defaults = {
         currentProjectHost: null,
         projects: []
@@ -20,7 +20,7 @@ function Settings() {
     };
 
     self.load = function(callback) {
-        Storage.get('settings', self.defaults, function(data) {
+        Storage.get('dataStore', self.defaults, function(data) {
             self.data = data;
             if (callback) {
                 callback(self);
@@ -29,7 +29,7 @@ function Settings() {
     };
 
     self.save = function(callback) {
-        Storage.set('settings', self.data, function() {
+        Storage.set('dataStore', self.data, function() {
             if (callback) {
                 callback(self);
             }
