@@ -5,39 +5,27 @@ function ExplorerColumn(dir, key) {
     self.list = new SelectableList();
     self.dirname = key;
     
-    dir.directories.forEach(function(filename) {
-        var model = {
-            path: self.dirname + '/' + filename,
-            filename: filename,
-            type: 'directory'
-        };
-        
-        var $view = HTML.createExplorerItem(model);
-        
-        self.list.addItem({
-            model: model,
-            $view: $view
+    function addItems(list, type) {
+        list.forEach(function(filename) {
+            var model = {
+                path: self.dirname + '/' + filename,
+                filename: filename,
+                type: type
+            };
+            
+            var $view = HTML.createExplorerItem(model);
+            
+            self.list.addItem({
+                model: model,
+                $view: $view
+            });
+            
+            self.$view.appendChild($view);
         });
-        
-        self.$view.appendChild($view);
-    });
+    }
     
-    dir.files.forEach(function(filename) {
-        var model = {
-            path: self.dirname + '/' + filename,
-            filename: filename,
-            type: 'file'
-        };
-        
-        var $view = HTML.createExplorerItem(model);
-        
-        self.list.addItem({
-            model: model,
-            $view: $view
-        });
-        
-        self.$view.appendChild($view);
-    });
+    addItems(dir.directories, 'directory');
+    addItems(dir.files, 'file');
     
     self.keyDown = function(event) {
         self.list.keyDown(event);
