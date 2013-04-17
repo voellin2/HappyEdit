@@ -1,4 +1,23 @@
 var HTML = {
+    createTab: function(pane) {
+        var $view = document.createElement('li');
+        var $title = document.createElement('span');
+        var $fader = document.createElement('span');
+        
+        $view.setAttribute('rel', pane.id);
+        
+        $title.innerHTML = pane.getTabLabel();
+        
+        $view.setAttribute('class', 'tab');
+        $title.setAttribute('class', 'title');
+        $fader.setAttribute('class', 'fader');
+        
+        $view.appendChild($title);
+        $view.appendChild($fader);
+        
+        return $view;
+    },
+    
     createSuggestionView: function(args) {
         var $li = document.createElement('li');
         var $title = document.createElement('span');
