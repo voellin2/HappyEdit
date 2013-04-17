@@ -5,10 +5,11 @@
  * The list being passed in should be a list of associative array. Each item
  * should  have a 'model' and '$view' key.
  */
-function SelectableList() {
+function SelectableList($parent) {
     var self = this;
     self.items = [];
     self.index = null;
+    self.$parent = $parent;
     
     self.clear = function() {
         self.items = [];
@@ -19,6 +20,14 @@ function SelectableList() {
         var index = this.dataset.index; // 'this' refers to a DOM element
         self.selectIndex(index);
         self.openSelectedItem();
+    };
+    
+    self.getLength = function() {
+        return self.items.length;
+    };
+    
+    self.getIndex = function() {
+        return self.index;
     };
     
     self.addItem = function(item) {
@@ -32,6 +41,16 @@ function SelectableList() {
         }
     };
     
+    self.removeItemAtIndex = function(index) {
+        var item = self.items.splice(index, 1)[0];
+        
+        if (self.$parent) {
+            self.$parent.removeChild(item.$view);
+        }
+        
+        return item;
+    };
+    
     self.getSelectedItem = function() {
         return self.items[self.index];
     };
@@ -43,15 +62,27 @@ function SelectableList() {
             index = self.items.length - 1;
         }
         
-        var $old = self.index === null ? null : self.items[self.index].$view;
-        var $new = self.items[index].$view;
+        if (self.index !== null) {
+            var oldItem = self.items[self.index];
+            
+            if (oldItem.model.blur) {
+                oldItem.model.blur();
+            } 
+            
+            Utils.removeClass(oldItem.$view, 'active');
+        }
         
-        Utils.removeClass($old, 'active');
-        Utils.addClass($new, 'active');
+        var newItem = self.items[index];
+        
+        if (newItem.model.focus) {
+            newItem.model.focus();
+        } 
+        
+        Utils.addClass(newItem.$view, 'active');
         
         self.index = index;
         
-        $new.scrollIntoViewIfNeeded(false);
+        newItem.$view.scrollIntoViewIfNeeded(false);
     };
     
     self.navigateUp = function() {

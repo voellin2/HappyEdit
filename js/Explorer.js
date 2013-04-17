@@ -2,9 +2,7 @@ function Explorer(happyEdit) {
     var self = this;
     self.id = Utils.count();
     self.$view = document.getElementById('explorer');
-    self.columns = [];
-    self.activeColumn = null;
-    self.columnIndex = 0;
+    self.list = new SelectableList(self.$view);
     
     self.onOpen = function(item) {
         var model = item.model;
@@ -17,7 +15,7 @@ function Explorer(happyEdit) {
         if (model.type === 'directory') {
             self.removeAllColumnsToTheRight();
             self.addColumn(path);
-            self.navigateRight();
+            self.list.navigateDown();
         } else {
             happyEdit.openRemoteFile(path);
          }
@@ -31,48 +29,21 @@ function Explorer(happyEdit) {
         var dir = happyEdit.fileSystem.fileTree[key];
         var col = new ExplorerColumn(dir, key);
         col.list.onOpen = self.onOpen;
-        self.columns.push(col);
+        
+        self.list.addItem({
+            model: col,
+            $view: col.$view
+        });
+        
         self.$view.appendChild(col.$view);
     };
 
-    self.removeColumn = function(index) {
-        var col = self.columns[index];
-        self.$view.removeChild(col.$view);
-        self.columns.pop(index);
-    };
-
     self.removeAllColumnsToTheRight = function() {
-        var count = (self.columns.length - 1) - self.columnIndex;
+        var count = (self.list.getLength() - 1) - self.list.getIndex();
         var i;
         for (i = 0; i < count; i += 1) {
-            self.removeColumn(self.columns.length - 1);
+            self.list.removeItemAtIndex(self.list.getLength() - 1);
         }
-    };
-
-    self.navigateRight = function() {
-        var index = self.columnIndex + 1;
-        if (index > self.columns.length - 1) {
-            index = self.columns.length - 1;
-        }
-        self.selectIndex(index);
-    };
-
-    self.navigateLeft = function() {
-        var index = self.columnIndex - 1;
-        if (index < 0) {
-            index = 0;
-        }
-        self.selectIndex(index);
-        self.removeAllColumnsToTheRight();
-    };
-
-    self.selectIndex = function(index) {
-        self.columnIndex = index;
-        if (self.activeColumn) {
-            self.activeColumn.blur();
-        }
-        self.activeColumn = self.columns[self.columnIndex];
-        self.activeColumn.focus();
     };
     
     self.getTabLabel = function() {
@@ -109,31 +80,22 @@ function Explorer(happyEdit) {
             break;
 
             case 72:
-            self.navigateLeft();
-            break;
-
-            case 17:
-            // do nothing, it was just the ctrl key lifted up
-            break;
-
-            case 9: // Tab
+            self.list.navigateUp();
+            self.removeAllColumnsToTheRight();
             break;
 
             default:
-            self.activeColumn.keyDown(event);
+            self.list.getSelectedItem().model.keyDown(event);
         }
     };
     
     self.reset = function() {
         self.$view.innerHTML = '';
-        self.columns = [];
-        self.activeColumn = null;
-        self.columnIndex = 0;
+        self.list.clear();
     };
     
     happyEdit.eventSystem.addEventListener('filesystem_loaded', function(fs) {
         self.reset();
         self.addColumn('.');
-        self.selectIndex(0);
     });
 }
