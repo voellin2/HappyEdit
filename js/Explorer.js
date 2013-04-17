@@ -8,7 +8,7 @@ function Explorer(happyEdit) {
     
     self.onOpen = function(item) {
         var model = item.model;
-        var path = self.activeColumn.dirname + '/' + model.filename;
+        var path = model.path;
 
         if (path.substr(0, 2) === './') {
             path = path.substr(2);

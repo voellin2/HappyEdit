@@ -7,6 +7,7 @@ function ExplorerColumn(dir, key) {
     
     dir.directories.forEach(function(filename) {
         var model = {
+            path: self.dirname + '/' + filename,
             filename: filename,
             type: 'directory'
         };
@@ -23,6 +24,7 @@ function ExplorerColumn(dir, key) {
     
     dir.files.forEach(function(filename) {
         var model = {
+            path: self.dirname + '/' + filename,
             filename: filename,
             type: 'file'
         };
