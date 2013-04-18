@@ -156,7 +156,7 @@ function CommandList(happyEdit) {
                 mac: "Command-T",
             },
             callback: function(args, callback) {
-                happyEdit.commandLine.show('');
+                happyEdit.commandLine.show();
                 callback();
             }
         },

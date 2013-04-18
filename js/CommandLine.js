@@ -26,7 +26,7 @@ function CommandLine(happyEdit) {
 
             case 'project':
             self.hide();
-            happyEdit.projectManager.switchProject(project.host);
+            happyEdit.projectManager.switchProject(model.project.host);
             break;
 
             case 'lineJump':
@@ -292,21 +292,14 @@ function CommandLine(happyEdit) {
      * Display the command line. If startingChar is null, the last state will
      * be preserved.
      */
-    self.show = function(startingChar) {
+    self.show = function() {
         self.isVisible = true;
 
-        self.$blocker.onclick = function() {
-            self.hide();
-        };
-
-        if (startingChar !== null) {
-            self.$input.value = startingChar;
-            self.runKeyUpHandler = true;
-            self.$input.onkeyup();
-            self.$suggestions.innerHTML = '';
-            self.$suggestions.style.display = 'none';
-        }
-
+        self.$input.value = '';
+        self.runKeyUpHandler = false;
+        self.clearSuggestions();
+        self.hideAlert();
+    
         self.$popup.style.display = 'block';
         self.$blocker.style.display = 'block';
 
@@ -316,10 +309,10 @@ function CommandLine(happyEdit) {
 
     self.hide = function() {
         self.isVisible = false;
+        
         self.$popup.style.display = 'none';
         self.$blocker.style.display = 'none';
-        self.hideAlert();
-        self.$input.value = '';
+
         self.$input.blur();
         happyEdit.editor.focus();
     };
