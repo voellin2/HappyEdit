@@ -8,11 +8,18 @@
  * If a $parent element has been given, the items will be automatically
  * added/removed from it.
  */
-function SelectableList($parent) {
+function SelectableList(args) {
     var self = this;
+    
+    var defaults = {
+        $parent: null
+    };
+    
+    args = Utils.extend(defaults, (args || {}));
+    
     self.items = [];
     self.index = null;
-    self.$parent = $parent;
+    self.$parent = args.$parent;
     
     self.clear = function() {
         self.items = [];
@@ -139,7 +146,6 @@ function SelectableList($parent) {
     
     self.openSelectedItem = function() {
         var item = self.getSelectedItem();
-        console.log('opening item', item);
         if (item) {
             self.onOpen(item);
         }

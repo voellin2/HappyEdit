@@ -2,12 +2,9 @@ function Explorer(happyEdit) {
     var self = this;
     self.id = Utils.count();
     self.$view = document.getElementById('explorer');
-    self.list = new SelectableList(self.$view);
-    
-    self.list.onOpen = function(item) {
-        var index = Number(item.$view.dataset.index);
-        console.log('selecting col at index', index, item);
-    };
+    self.list = new SelectableList({
+        $parent: self.$view
+    });
     
     self.list.onSelect = function(item) {
         self.removeAllColumnsToTheRight();
@@ -18,8 +15,6 @@ function Explorer(happyEdit) {
     };
 
     self.addColumn = function(key) {
-        console.log('adding column', key)
-        
         var dir = happyEdit.fileSystem.fileTree[key];
         var col = new ExplorerColumn(self, happyEdit, dir, key);
         
