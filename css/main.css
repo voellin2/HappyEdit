@@ -429,7 +429,6 @@ body.hide-window-controls #top .controls div {
 }
 .list-view li {
     padding: 5px;
-    cursor: pointer;
 }
 .list-view li.active {
     background: rgb(93, 52, 249);

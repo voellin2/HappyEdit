@@ -12,7 +12,8 @@ function SelectableList(args) {
     var self = this;
     
     var defaults = {
-        $parent: null
+        $parent: null,
+        hover: true
     };
     
     args = Utils.extend(defaults, (args || {}));
@@ -33,6 +34,17 @@ function SelectableList(args) {
         self.openSelectedItem();
     };
     
+    self.onItemMouseMove = function() {
+        if (!args.hover) {
+            return;
+        }
+        
+        var $elem = this;
+        var index = Number($elem.dataset.index);
+        
+        self.selectIndex(index);
+    };
+    
     self.getLength = function() {
         return self.items.length;
     };
@@ -44,6 +56,7 @@ function SelectableList(args) {
     self.addItem = function(item) {
         item.$view.dataset.index = self.items.length;
         item.$view.onclick = self.onItemClick;
+        item.$view.onmousemove = self.onItemMouseMove;
         
         self.items.push(item);
         

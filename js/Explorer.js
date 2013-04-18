@@ -3,7 +3,8 @@ function Explorer(happyEdit) {
     self.id = Utils.count();
     self.$view = document.getElementById('explorer');
     self.list = new SelectableList({
-        $parent: self.$view
+        $parent: self.$view,
+        hover: false
     });
     
     self.list.onSelect = function(item) {
