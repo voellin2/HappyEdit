@@ -4,6 +4,9 @@
  * 
  * The list being passed in should be a list of associative array. Each item
  * should  have a 'model' and '$view' key.
+ * 
+ * If a $parent element has been given, the items will be automatically
+ * added/removed from it.
  */
 function SelectableList($parent) {
     var self = this;
@@ -17,7 +20,8 @@ function SelectableList($parent) {
     };
     
     self.onItemClick = function() {
-        var index = this.dataset.index; // 'this' refers to a DOM element
+        var $elem = this;
+        var index = Number($elem.dataset.index);
         self.selectIndex(index);
         self.openSelectedItem();
     };
@@ -35,6 +39,10 @@ function SelectableList($parent) {
         item.$view.onclick = self.onItemClick;
         
         self.items.push(item);
+        
+        if (self.$parent) {
+            self.$parent.appendChild(item.$view);
+        }
         
         if (self.index === null) {
             self.selectIndex(0);
@@ -83,6 +91,8 @@ function SelectableList($parent) {
         self.index = index;
         
         newItem.$view.scrollIntoViewIfNeeded(false);
+        
+        self.onSelect(newItem);
     };
     
     self.navigateUp = function() {
@@ -129,11 +139,15 @@ function SelectableList($parent) {
     
     self.openSelectedItem = function() {
         var item = self.getSelectedItem();
+        console.log('opening item', item);
         if (item) {
             self.onOpen(item);
         }
     };
     
-    self.onOpen = function() {
+    self.onOpen = function(item) {
+    };
+    
+    self.onSelect = function(item) {
     };
 }

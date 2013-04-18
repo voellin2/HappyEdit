@@ -4,38 +4,31 @@ function Explorer(happyEdit) {
     self.$view = document.getElementById('explorer');
     self.list = new SelectableList(self.$view);
     
-    self.onOpen = function(item) {
-        var model = item.model;
-        var path = model.path;
-
-        if (path.substr(0, 2) === './') {
-            path = path.substr(2);
-        }
-
-        if (model.type === 'directory') {
-            self.removeAllColumnsToTheRight();
-            self.addColumn(path);
-            self.list.navigateDown();
-        } else {
-            happyEdit.openRemoteFile(path);
-         }
-     };
-
+    self.list.onOpen = function(item) {
+        var index = Number(item.$view.dataset.index);
+        console.log('selecting col at index', index, item);
+    };
+    
+    self.list.onSelect = function(item) {
+        self.removeAllColumnsToTheRight();
+    };
+    
     self.isDummy = function() {
         return false;
     };
 
     self.addColumn = function(key) {
+        console.log('adding column', key)
+        
         var dir = happyEdit.fileSystem.fileTree[key];
-        var col = new ExplorerColumn(dir, key);
-        col.list.onOpen = self.onOpen;
+        var col = new ExplorerColumn(self, happyEdit, dir, key);
         
         self.list.addItem({
             model: col,
             $view: col.$view
         });
         
-        self.$view.appendChild(col.$view);
+        self.list.navigateDown(); // select the newly added column
     };
 
     self.removeAllColumnsToTheRight = function() {
@@ -81,7 +74,6 @@ function Explorer(happyEdit) {
 
             case 72:
             self.list.navigateUp();
-            self.removeAllColumnsToTheRight();
             break;
 
             default:

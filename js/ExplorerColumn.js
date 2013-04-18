@@ -1,9 +1,24 @@
-function ExplorerColumn(dir, key) {
+function ExplorerColumn(explorer, happyEdit, dir, key) {
     var self = this;
     self.$view = HTML.createDirectoryView(dir);
     self.activeIndex = 0;
-    self.list = new SelectableList();
     self.dirname = key;
+    self.list = new SelectableList();
+    
+    self.list.onOpen = function(item) {
+        var model = item.model;
+        var path = model.path;
+
+        if (path.substr(0, 2) === './') {
+            path = path.substr(2);
+        }
+
+        if (model.type === 'directory') {
+            explorer.addColumn(path);
+        } else {
+            happyEdit.openRemoteFile(path);
+        }
+    };
     
     function addItems(list, type) {
         list.forEach(function(filename) {
