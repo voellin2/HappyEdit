@@ -3,17 +3,20 @@ var HTML = {
         var $view = document.createElement('li');
         var $title = document.createElement('span');
         var $fader = document.createElement('span');
+        var $close = document.createElement('span');
         
+        $close.innerHTML = 'x';
         $view.setAttribute('rel', pane.id);
-        
         $title.innerHTML = pane.getTabLabel();
         
         $view.setAttribute('class', 'tab');
         $title.setAttribute('class', 'title');
         $fader.setAttribute('class', 'fader');
+        $close.setAttribute('class', 'close');
         
         $view.appendChild($title);
         $view.appendChild($fader);
+        $view.appendChild($close);
         
         return $view;
     },

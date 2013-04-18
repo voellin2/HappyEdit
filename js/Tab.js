@@ -3,6 +3,10 @@ function Tab(pane, topBar, happyEdit) {
     self.pane = pane;
     self.$view = HTML.createTab(pane);
     self.$title = self.$view.querySelector('.title');
+    
+    self.$view.querySelector('.close').onclick = function() {
+        self.close(true);
+    };
 
     pane.onChange(function(pane) {
         self.$title.innerHTML = pane.getTabLabel();
