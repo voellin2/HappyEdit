@@ -12,7 +12,31 @@ function CommandLine(happyEdit) {
     self.list = new SelectableList();
     
     self.list.onOpen = function(item) {
-        item.$view.onclick();
+        var model = item.model;
+
+        switch (model.type) {
+            case 'command':
+            self.executeCommand(model.command.name, null);
+            break;
+
+            case 'file':
+            self.hide();
+            happyEdit.openRemoteFile(model.filename);
+            break;
+
+            case 'project':
+            self.hide();
+            happyEdit.projectManager.switchProject(project.host);
+            break;
+
+            case 'lineJump':
+            happyEdit.editor.gotoLine(model.lineNumber);
+            self.hide();
+            break;
+
+            default:
+            break;
+        }
     };
 
     self.keyDown = function(event) {
@@ -91,9 +115,10 @@ function CommandLine(happyEdit) {
 
         if (Utils.isNumeric(inputString)) {
             ret.push({
+                type: 'lineJump',
                 title: 'Jump to line',
                 extra: 'Jump to line ' + inputString,
-                onclick: self.jumpSuggestionCallback
+                lineNumber: Number(inputString)
             });
         }
 
@@ -142,29 +167,6 @@ function CommandLine(happyEdit) {
         self.$suggestions.style.display = 'none';
     };
 
-    self.fileSuggestionClickCallback = function() {
-        self.hide();
-        var filename = this.getAttribute('rel');
-        happyEdit.openRemoteFile(filename);
-    };
-
-    self.commandSuggestionClickCallback = function() {
-        var name = this.getAttribute('rel');
-        self.executeCommand(name, null);
-    };
-
-    self.projectSuggestionCallback = function() {
-        self.hide();
-        var host = this.getAttribute('rel');
-        happyEdit.projectManager.switchProject(host);
-    };
-
-    self.jumpSuggestionCallback = function() {
-        var inputString = self.$input.value;
-        happyEdit.editor.gotoLine(inputString);
-        self.hide();
-    };
-
     self.fillSuggestionsList = function(suggestions) {
         self.clearSuggestions();
 
@@ -195,10 +197,10 @@ function CommandLine(happyEdit) {
         results.forEach(function(suggestion) {
             var split = suggestion.split(PATH_SEPARATOR);
             ret.push({
+                type: 'file',
                 title: split.pop(),
                 extra: Utils.capFileName(suggestion, 60),
-                onclick: self.fileSuggestionClickCallback,
-                rel: suggestion
+                filename: suggestion
             });
         });
 
@@ -213,9 +215,10 @@ function CommandLine(happyEdit) {
         results.forEach(function(suggestion) {
             var command = commandList.getCommandByName(suggestion);
             ret.push({
+                type: 'command',
                 title: command.name,
                 extra: command.title || '',
-                onclick: self.commandSuggestionClickCallback,
+                command: command,
                 shortcut: Utils.getShortcutForCommand(command)
             });
         });
@@ -231,10 +234,10 @@ function CommandLine(happyEdit) {
         results.forEach(function(host) {
             var project = projectManager.getProjectByHost(host);
             ret.push({
+                type: 'project',
                 title: project.name || project.host,
                 extra: 'Switch to project (' + project.host + ')',
-                onclick: self.projectSuggestionCallback,
-                rel: project.host
+                project: project
             });
         });
         
