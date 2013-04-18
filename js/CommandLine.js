@@ -11,6 +11,10 @@ function CommandLine(happyEdit) {
     self.isVisible = false;
     self.list = new SelectableList();
     
+    self.$blocker.onclick = function() {
+        self.hide();
+    };
+    
     self.list.onOpen = function(item) {
         var model = item.model;
 
