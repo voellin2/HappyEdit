@@ -30,8 +30,8 @@ function CommandLine(happyEdit) {
             break;
 
             case 'lineJump':
-            happyEdit.editor.gotoLine(model.lineNumber);
             self.hide();
+            happyEdit.editor.gotoLine(model.lineNumber);
             break;
 
             default:
@@ -69,9 +69,7 @@ function CommandLine(happyEdit) {
             break;
 
             case 9: // Tab
-            if (self.hasSuggestions()) {
-                self.enterTextFromFirstSuggestion();
-            }
+            self.tabComplete();
             event.preventDefault();
             break;
 
@@ -144,21 +142,15 @@ function CommandLine(happyEdit) {
         return self.list.getLength() > 0;
     };
 
-    self.enterTextFromFirstSuggestion = function() {
-        if (!self.suggestionElements) {
+    self.tabComplete = function() {
+        if (!self.hasSuggestions()) {
             return;
         }
 
-        var $elem = self.list.getSelectedItem().$view;
-        var value = $elem.getAttribute('rel') || $elem.querySelector('.title').innerHTML;
+        var item = self.list.getSelectedItem();
+        var value = item.model.title;
 
-        // Are we completing a command argument or an entire command?
-        if (self.$input.value.indexOf(' ') !== -1) {
-            var split = self.$input.value.split(' ');
-            self.$input.value = split[0] + ' ' + value;
-        } else {
-            self.$input.value = value;
-        }
+        self.$input.value = value;
     };
 
     self.clearSuggestions = function(suggestions) {
