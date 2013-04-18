@@ -138,27 +138,5 @@ function ProjectManager(happyEdit) {
         self.autoCompletions = new FilterList(map);
     };
     
-    /**
-     * Gets a list of auto completions in the format expected by the
-     * CommandLine.
-     */
-    self.getSuggestions = function(q) {
-        var ret = [];
-        var suggestions = self.autoCompletions.getSuggestions(q);
-        var host;
-        var project;
-        
-        suggestions.forEach(function(host) {
-            project = self.getProjectByHost(host);
-            ret.push({
-                title: project.name || project.host,
-                extra: 'Switch to project (' + project.host + ')',
-                rel: project.host
-            });
-        });
-        
-        return ret;
-    };
-    
     self.createAutoCompletions();
 }

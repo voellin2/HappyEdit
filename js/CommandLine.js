@@ -187,30 +187,58 @@ function CommandLine(happyEdit) {
         self.$suggestions.style.display = 'block';
     };
 
-    self.getCommandTSuggestions = function(s) {
-        var suggestions = happyEdit.commandT.getSuggestions(s);
-        return suggestions.map(function(x) {
-            var y = x;
-            y.onclick = self.fileSuggestionClickCallback;
-            return y;
+    self.getCommandTSuggestions = function(q) {
+        var commandT = happyEdit.commandT;
+        var ret = [];
+        var results = commandT.filterList.getSuggestions(q);
+
+        results.forEach(function(suggestion) {
+            var split = suggestion.split(PATH_SEPARATOR);
+            ret.push({
+                title: split.pop(),
+                extra: Utils.capFileName(suggestion, 60),
+                onclick: self.fileSuggestionClickCallback,
+                rel: suggestion
+            });
         });
+
+        return ret;
     };
 
-    self.getCommandSuggestions = function(s) {
-        return happyEdit.commands.getSuggestions(s).map(function(x) {
-            var y = x;
-            y.onclick = self.commandSuggestionClickCallback;
-            return y;
+    self.getCommandSuggestions = function(q) {
+        var commandList = happyEdit.commands;
+        var ret = [];
+        var results = commandList.autoCompletions.getSuggestions(q);
+        
+        results.forEach(function(suggestion) {
+            var command = commandList.getCommandByName(suggestion);
+            ret.push({
+                title: command.name,
+                extra: command.title || '',
+                onclick: self.commandSuggestionClickCallback,
+                shortcut: Utils.getShortcutForCommand(command)
+            });
         });
+        
+        return ret;
     };
 
-    self.getProjectSuggestions = function(s) {
-        var suggestions = happyEdit.projectManager.getSuggestions(s);
-        return suggestions.map(function(x) {
-            var y = x;
-            y.onclick = self.projectSuggestionCallback;
-            return y;
+    self.getProjectSuggestions = function(q) {
+        var projectManager = happyEdit.projectManager;
+        var ret = [];
+        var results = projectManager.autoCompletions.getSuggestions(q);
+        
+        results.forEach(function(host) {
+            var project = projectManager.getProjectByHost(host);
+            ret.push({
+                title: project.name || project.host,
+                extra: 'Switch to project (' + project.host + ')',
+                onclick: self.projectSuggestionCallback,
+                rel: project.host
+            });
         });
+        
+        return ret;
     };
 
     /**

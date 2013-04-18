@@ -23,28 +23,4 @@ function CommandT(eventSystem, fileSystem) {
         var item = filenameToFilterListSource(buffer.filename);
         self.filterList.indexItem(item);
     });
-    
-    /**
-     * Gets a list of auto completions in the format expected by the
-     * CommandLine
-     */
-    self.getSuggestions = function(q) {
-        var suggestions = [];
-        var i;
-        var split;
-        var autoCompletions = self.filterList.getSuggestions(q);
-        var autoCompletion;
-
-        for (i = 0; i < autoCompletions.length; i += 1) {
-            autoCompletion = autoCompletions[i];
-            split = autoCompletion.split(PATH_SEPARATOR);
-            suggestions.push({
-                title: split.pop(),
-                extra: Utils.capFileName(autoCompletion, 60),
-                rel: autoCompletion
-            });
-        }
-
-        return suggestions;
-    };
 }

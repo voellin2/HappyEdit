@@ -319,27 +319,4 @@ function CommandList(happyEdit) {
             }
         }
     };
-
-    /**
-     * Gets a list of auto completions in the format expected by the
-     * CommandLine.
-     */
-    self.getSuggestions = function(q) {
-        var suggestions = [];
-        var i;
-        var autoCompletions = self.autoCompletions.getSuggestions(q);
-        var autoCompletion;
-        var command;
-        for (i = 0; i < autoCompletions.length; i += 1) {
-            autoCompletion = autoCompletions[i];
-            command = self.getCommandByName(autoCompletion);
-            suggestions.push({
-                title: command.name,
-                extra: command.title || '',
-                shortcut: Utils.getShortcutForCommand(command),
-                rel: command.name,
-            });
-        }
-        return suggestions;
-    };
 }
