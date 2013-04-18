@@ -103,7 +103,7 @@ body {
 }
 .menu li:hover,
 .popup .clickme,
-.command-line li.hover {
+.command-line li.active {
     background: rgb(93, 52, 249);
     color: white;
 }
@@ -111,8 +111,8 @@ body {
 .command-line li .shortcut {
     color: #777
 }
-.command-line li.hover .shortcut,
-.command-line li.hover .extra {
+.command-line li.active .shortcut,
+.command-line li.active .extra {
     color: #ddd;
 }
 .command-line li .title {
