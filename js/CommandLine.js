@@ -16,7 +16,7 @@ function CommandLine(happyEdit) {
 
         switch (model.type) {
             case 'command':
-            self.executeCommand(model.command.name, null);
+            self.executeCommand(model.command, null);
             break;
 
             case 'file':
@@ -153,7 +153,7 @@ function CommandLine(happyEdit) {
         self.$input.value = value;
     };
 
-    self.clearSuggestions = function(suggestions) {
+    self.clearSuggestions = function() {
         self.list.clear();
         self.$suggestions.innerHTML = '';
         self.$suggestions.style.display = 'none';
@@ -242,20 +242,20 @@ function CommandLine(happyEdit) {
     self.execute = function() {
         var inputString = self.$input.value;
         var extract = self.extractCommandParts(inputString);
-        self.executeCommand(extract.name, extract.args);
+        var command = happyEdit.commands.getCommandByName(extract.name);
+
+        if (!command) {
+            self.showAlert("Unknown command '" + extract.name + "'");
+            return;
+        }
+        
+        self.executeCommand(command, extract.args);
     };
 
     /**
      * Handles a :<command>.
      */
-    self.executeCommand = function(cmd, args) {
-        var command = happyEdit.commands.getCommandByName(cmd);
-
-        if (!command) {
-            self.showAlert("Unknown command '" + cmd + "'");
-            return;
-        }
-
+    self.executeCommand = function(command, args) {
         try {
             command.callback(args, function(error) {
                 if (error) {
