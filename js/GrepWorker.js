@@ -61,11 +61,3 @@ function GrepWorker(fileSystem) {
         });
     };
 }
-
-function testGrepWorker() {
-    var worker = new GrepWorker(happyEdit.fileSystem);
-    var q = 'test';
-    worker.findInAllFiles(q, function(filename, lineNumber, snippet) {
-        console.log('matchFoundCallback', lineNumber, snippet);
-    });
-}
