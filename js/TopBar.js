@@ -10,6 +10,10 @@ function TopBar(happyEdit) {
     self.$maxButton = self.$view.querySelector('.controls .max');
     self.$tabs = self.$view.querySelector('.tabs');
     self.PREFERRED_TAB_WIDTH = 120;
+    
+    self.getNumberOfTabs = function() {
+        return self.tabs.length;
+    };
 
     self.$menuButton.onclick = function() {
         happyEdit.menu.show();
@@ -34,7 +38,7 @@ function TopBar(happyEdit) {
     };
     
     self.reset = function() {
-    self.selectedTab = null;
+        self.selectedTab = null;
         self.tabs = [];
         self.$tabs.innerHTML = '';
     };
@@ -123,6 +127,16 @@ function TopBar(happyEdit) {
         });
         
         self.$tabs.style.width = self.tabs.length * tabWidth + 'px';
+    };
+    
+    self.getClosestSibling = function(tab) {
+        var i = self.getIndexForTab(tab);
+        
+        if (i === self.tabs.length - 1) {
+            return self.tabs[i - 1];
+        }
+        
+        return self.tabs[i + 1];
     };
 
     self.updateView = function(pane) {

@@ -5,7 +5,7 @@ function Tab(pane, topBar, happyEdit) {
     self.$title = self.$view.querySelector('.title');
     
     self.$view.querySelector('.close').onclick = function() {
-        self.close(true);
+        happyEdit.closePane(self.pane);
     };
 
     pane.onChange(function(pane) {
@@ -25,21 +25,13 @@ function Tab(pane, topBar, happyEdit) {
         }
     };
 
-    self.close = function(selectClosestSibling) {
-        var i = topBar.getIndexForTab(this);
-        if (selectClosestSibling) {
-            var closestSibling;
-            if (i === topBar.tabs.length - 1) {
-                closestSibling = topBar.tabs[i - 1];
-            } else {
-                closestSibling = topBar.tabs[i + 1];
-            }
-            if (closestSibling) {
-                closestSibling.select();
-            }
-        }
+    /**
+     * Removes this tab from the TopBar.
+     */
+    self.close = function() {
+        var i = topBar.getIndexForTab(self);
         topBar.tabs.splice(i, 1);
-        topBar.$tabs.removeChild(this.$view);
+        topBar.$tabs.removeChild(self.$view);
         topBar.updateTabPositions();
     };
 

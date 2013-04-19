@@ -126,27 +126,28 @@ function HappyEdit(dataStore) {
         self.eventSystem.callEventListeners('file_changed', pane);
     };
 
-    self.getNumberOfOpenPanes = function() {
-        return self.topBar.tabs.length;
-    };
-    
     self.reset = function() {
         self.openPanes = {};
         self.topBar.reset();
     };
     
-    self.closePane = function(pane, keepAlive) {
+    self.closePane = function(pane) {
         var tab = self.topBar.getTabForPane(pane);
+        
+        if (self.topBar.getNumberOfTabs() === 1) {
+            return;
+        }
+        
+        if (pane === self.currentPane) {
+            var sibling = self.topBar.getClosestSibling(tab);
+            sibling.select();
+        }
 
-        tab.close(true);
+        tab.close();
 
         delete self.openPanes[pane.id];
         
         self.eventSystem.callEventListeners('file_closed', pane);
-        
-        if (self.getNumberOfOpenPanes () === 0 && keepAlive === false) {
-            window.close();
-        }
     };
 
     self.getPaneById = function(id) {
