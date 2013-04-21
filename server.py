@@ -4,6 +4,7 @@ import sys
 import os
 import mimetypes
 import json
+from os.path import expanduser
 from hashlib import md5
 from urlparse import parse_qsl
 from urllib import unquote
@@ -11,68 +12,13 @@ from wsgiref.simple_server import make_server
 
 PROTOCOL_VERSION = "0.1"
 
-class File:
-
-    def __init__(self, path):
-        self.path = path
-
-    def __call__(self, environ, start_response):
-        start_response("200 OK", [
-            ('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS'),
-            ('Access-Control-Allow-Origin', '*'),
-            ('Content-Type', mimetypes.guess_type(self.path)[0] or 'text/plain'),
-            ('Content-Length', str(os.path.getsize(self.path))),
-        ])
-        return [open(self.path, 'rb').read()]
-
-class Directory(dict):
-
-    def __init__(self, path):
-        self.path = path
-        self.load()
-
-    def load(self):
-        self.clear()
-        for child in os.listdir(self.path):
-            childpath = os.path.join(self.path, child)
-            if os.path.isdir(childpath):
-                self[child] = Directory(childpath)
-            else:
-                self[child] = File(childpath)
-
-    def __getitem__(self, key):
-        self.load()
-        return dict.__getitem__(self, key)
-
-    def notfound(self, part, environ, start_response):
-        msg =  part + ' not found in ' + repr(self)
-        start_response("404 Not Found", [
-            ('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS'),
-            ('Access-Control-Allow-Origin', '*'),
-            ('Content-Type', 'text/plain'),
-            ('Content-Length', str(len(msg))),
-        ])
-        return [msg]
-
-    def __call__(self, environ, start_response):
-        parts = [i for i in environ['PATH_INFO'].split('/') if i != '']
-        obj = self
-        for part in parts:
-            if part not in obj:
-                return self.notfound(part, environ, start_response)
-            obj = obj[part]
-        return obj(environ, start_response)
-
-    def __repr__(self):
-        return self.path
-
-def get_project_files(project_path, cfg):
+def get_project_files(project):
     tree = {}
 
-    ignored_directories = cfg['ignoredDirectories']
-    ignored_extensions = cfg['ignoredExtensions']
+    ignored_directories = project.get('ignoredDirectories', [])
+    ignored_extensions = project.get('ignoredExtensions', [])
 
-    for dirpath, dirnames, filenames in os.walk(project_path):
+    for dirpath, dirnames, filenames in os.walk(project['path']):
         for dirname in ignored_directories:
             if dirname in dirnames:
                 dirnames.remove(dirname)
@@ -96,15 +42,10 @@ def get_project_files(project_path, cfg):
 
 class FileListing():
 
-    def __init__(self, path, cfg):
-        self.cfg = cfg
-        self.path = path
-        self.next_handler = None
-
     def __call__(self, environ, start_response):
         if environ['PATH_INFO'] in ['/files', '/files/']:
             params = dict(parse_qsl(environ['QUERY_STRING']))
-            response = json.dumps(get_project_files(self.path, self.cfg))
+            response = json.dumps(get_project_files(environ['PROJECT']))
             start_response("200 OK", [
                 ('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS'),
                 ('Access-Control-Allow-Origin', '*'),
@@ -114,78 +55,67 @@ class FileListing():
             return [response]
         return self.next_handler(environ, start_response)
 
-class SaveHandler():
+class FileHandler():
 
-    def __init__(self, path):
-        self.path = path
-        self.next_handler = None
+    def GET(self, environ, start_response, filename):
+        start_response("200 OK", [
+            ('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS'),
+            ('Access-Control-Allow-Origin', '*'),
+            ('Content-Type', mimetypes.guess_type(filename)[0] or 'text/plain'),
+            ('Content-Length', str(os.path.getsize(filename))),
+        ])
+        return [open(filename, 'rb').read()]
+
+    def POST(self, environ, start_response, filename):
+        length = int(environ['CONTENT_LENGTH'])
+        params = dict(parse_qsl(environ['wsgi.input'].read(length)))
+        open(filename, 'w').write(params.get('body', ''))
+        msg = 'File "%s" saved' % filename
+        start_response("200 OK", [
+            ('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS'),
+            ('Access-Control-Allow-Origin', '*'),
+            ('Content-Type', 'application/json'),
+            ('Content-Length', str(len(msg))),
+        ])
+        return [msg]
+
+    def DELETE(self, environ, start_response, filename):
+        os.remove(filename)
+        msg = 'File "%s" deleted' % filename
+        start_response("200 OK", [
+            ('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS'),
+            ('Access-Control-Allow-Origin', '*'),
+            ('Content-Type', 'application/json'),
+            ('Content-Length', str(len(msg))),
+        ])
+        return [msg]
 
     def __call__(self, environ, start_response):
-        if environ['REQUEST_METHOD'] == 'POST' and environ['PATH_INFO'].startswith('/files'):
-            filename = self.path + os.path.sep + os.path.join(environ['PATH_INFO'][7:])
-            # The file must be under the cwd
-            if self.path not in os.path.realpath(filename):
-                msg = 'Forbidden'
-                start_response("403 Forbidden", [
-                    ('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS'),
-                    ('Access-Control-Allow-Origin', '*'),
-                    ('Content-Type', 'text/plain'),
-                    ('Content-Length', str(len(msg))),
-                ])
-                return [msg]
-            length = int(environ['CONTENT_LENGTH'])
-            params = dict(parse_qsl(environ['wsgi.input'].read(length)))
-            open(filename, 'w').write(params.get('body', ''))
-            msg = 'File "%s" saved' % filename
-            start_response("200 OK", [
+        if not environ['PATH_INFO'].startswith('/files'):
+            return self.next_handler(environ, start_response)
+
+        project_path = environ['PROJECT']['path']
+        filename = os.path.join(project_path, environ['PATH_INFO'][7:])
+        filename = os.path.realpath(filename)
+        
+        # The file must be under the cwd
+        if not os.path.realpath(filename).startswith(project_path):
+            print "Forbidden attempt to access file %s (path does not start with %s)" % (filename, project_path)
+            msg = 'Forbidden'
+            start_response("403 Forbidden", [
                 ('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS'),
                 ('Access-Control-Allow-Origin', '*'),
-                ('Content-Type', 'application/json'),
+                ('Content-Type', 'text/plain'),
                 ('Content-Length', str(len(msg))),
             ])
             return [msg]
-        return self.next_handler(environ, start_response)
 
-class DeleteHandler():
-
-    def __init__(self, path):
-        self.path = path
-        self.next_handler = None
-
-    def __call__(self, environ, start_response):
-        if environ['REQUEST_METHOD'] == 'DELETE' and environ['PATH_INFO'].startswith('/files'):
-            filename = self.path + os.path.sep + os.path.join(environ['PATH_INFO'][7:])
-            
-            # The file must be under the cwd
-            if self.path not in os.path.realpath(filename):
-                msg = 'Forbidden'
-                start_response("403 Forbidden", [
-                    ('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS'),
-                    ('Access-Control-Allow-Origin', '*'),
-                    ('Content-Type', 'text/plain'),
-                    ('Content-Length', str(len(msg))),
-                ])
-                return [msg]
-                
-            os.remove(filename)
-            msg = 'File "%s" deleted' % filename
-            
-            start_response("200 OK", [
-                ('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS'),
-                ('Access-Control-Allow-Origin', '*'),
-                ('Content-Type', 'application/json'),
-                ('Content-Length', str(len(msg))),
-            ])
-            return [msg]
-        return self.next_handler(environ, start_response)
-
-class ProjectFilesServer(Directory):
-
-    def __call__(self, environ, start_response):
-        if environ['REQUEST_METHOD'] == 'GET' and environ['PATH_INFO'].startswith('/files/'):
-            environ['PATH_INFO'] = environ['PATH_INFO'][7:]
-            return Directory.__call__(self, environ, start_response)
-        return self.next_handler(environ, start_response)
+        if environ['REQUEST_METHOD'] == 'GET':
+            return self.GET(environ, start_response, filename)
+        if environ['REQUEST_METHOD'] == 'POST':
+            return self.POST(environ, start_response, filename)
+        if environ['REQUEST_METHOD'] == 'DELETE':
+            return self.DELETE(environ, start_response, filename)
 
 class NotFoundHandler:
 
@@ -249,21 +179,21 @@ class PermissionHandler:
             return [msg]
         return self.next_handler(environ, start_response)
 
-def load_settings(path):
-    filepath = os.path.join(path, '.happyedit.json')
+def load_settings():
+    home = expanduser("~")
+    filepath = os.path.join(home, '.happyedit.json')
 
     cfg = {
-        'password': None,
-        'ignoredDirectories': [],
-        'ignoredExtensions': [],
+        "password": "",
+        "projects": [],
     }
 
     if os.path.exists(filepath):
         try:
             f = open(filepath)
             project_cfg = json.loads(f.read())
-            f.close()
             cfg.update(project_cfg)
+            f.close()
         except Exception as e:
             print e
     else:
@@ -272,22 +202,37 @@ def load_settings(path):
         f.close()
 
     if not cfg['password']:
+        print cfg
         raise Exception("You must set a password in " + filepath)
 
+    if len(cfg['projects']) == 0:
+        raise Exception("You must configure at least one project in " + filepath)
+
     return cfg
+
+class ProjectFinder:
+
+    def __init__(self, cfg):
+        self.cfg = cfg
+
+    def __call__(self, environ, start_response):
+        # TODO: locate project based on start of environ['PATH']
+        project = self.cfg['projects'][0]
+        project['path'] = os.path.realpath(project['path'])
+        environ['PROJECT'] = project
+        return self.next_handler(environ, start_response)
 
 def main():
     cwd = os.getcwd()
 
-    cfg = load_settings(cwd)
+    cfg = load_settings()
 
     handlers = []
     handlers.append(ConnectHandler(cfg))
     handlers.append(PermissionHandler(cfg))
-    handlers.append(FileListing(cwd, cfg))
-    handlers.append(SaveHandler(cwd))
-    handlers.append(DeleteHandler(cwd))
-    handlers.append(ProjectFilesServer(cwd))
+    handlers.append(ProjectFinder(cfg))
+    handlers.append(FileListing())
+    handlers.append(FileHandler())
     handlers.append(NotFoundHandler())
 
     i = 0
@@ -299,7 +244,7 @@ def main():
     host = 'localhost';
     port = 8888
     
-    if len(sys.argv) > 0:
+    if len(sys.argv) > 1:
         port = int(sys.argv[1])
         
     try:
