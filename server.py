@@ -79,7 +79,12 @@ class FileHandler():
     def POST(self, environ, start_response, filename):
         length = int(environ['CONTENT_LENGTH'])
         params = dict(parse_qsl(environ['wsgi.input'].read(length)))
-        open(filename, 'w').write(params.get('body', ''))
+        body = params.get('body', '')
+
+        f = open(filename, 'w')
+        f.write(body)
+        f.close()
+
         msg = 'File "%s" saved' % filename
         start_response("200 OK", [
             ('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS'),
@@ -87,11 +92,21 @@ class FileHandler():
             ('Content-Type', 'application/json'),
             ('Content-Length', str(len(msg))),
         ])
-        return [msg]
+        return [str(msg)]
 
     def DELETE(self, environ, start_response, filename):
         os.remove(filename)
         msg = 'File "%s" deleted' % filename
+        start_response("200 OK", [
+            ('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS'),
+            ('Access-Control-Allow-Origin', '*'),
+            ('Content-Type', 'application/json'),
+            ('Content-Length', str(len(msg))),
+        ])
+        return [str(msg)]
+
+    def OPTIONS(self, environ, start_response, filename):
+        msg = ''
         start_response("200 OK", [
             ('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS'),
             ('Access-Control-Allow-Origin', '*'),
@@ -109,7 +124,7 @@ class FileHandler():
         filename = environ['PATH_INFO'][7:]
         filename = os.path.join(project_path, filename)
         filename = os.path.realpath(filename)
-        
+
         # The file must be under the project directory
         if not filename.startswith(project_path):
             print "Forbidden attempt to access file %s (path does not start with %s)" % (filename, project_path)
@@ -127,6 +142,8 @@ class FileHandler():
         if environ['REQUEST_METHOD'] == 'POST':
             return self.POST(environ, start_response, filename)
         if environ['REQUEST_METHOD'] == 'DELETE':
+            return self.DELETE(environ, start_response, filename)
+        if environ['REQUEST_METHOD'] == 'OPTIONS':
             return self.DELETE(environ, start_response, filename)
 
 class NotFoundHandler:
