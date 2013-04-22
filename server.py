@@ -58,7 +58,6 @@ class FileListing():
         response = json.dumps(self.get_project_files(environ['PROJECT']))
 
         start_response("200 OK", [
-            ('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS'),
             ('Access-Control-Allow-Origin', '*'),
             ('Content-Type', 'application/json'),
             ('Content-Length', str(len(response))),
@@ -69,7 +68,6 @@ class FileHandler():
 
     def GET(self, environ, start_response, filename):
         start_response("200 OK", [
-            ('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS'),
             ('Access-Control-Allow-Origin', '*'),
             ('Content-Type', mimetypes.guess_type(filename)[0] or 'text/plain'),
             ('Content-Length', str(os.path.getsize(filename))),
@@ -87,7 +85,6 @@ class FileHandler():
 
         msg = 'File "%s" saved' % filename
         start_response("200 OK", [
-            ('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS'),
             ('Access-Control-Allow-Origin', '*'),
             ('Content-Type', 'application/json'),
             ('Content-Length', str(len(msg))),
@@ -98,7 +95,6 @@ class FileHandler():
         os.remove(filename)
         msg = 'File "%s" deleted' % filename
         start_response("200 OK", [
-            ('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS'),
             ('Access-Control-Allow-Origin', '*'),
             ('Content-Type', 'application/json'),
             ('Content-Length', str(len(msg))),
@@ -110,7 +106,7 @@ class FileHandler():
         start_response("200 OK", [
             ('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS'),
             ('Access-Control-Allow-Origin', '*'),
-            ('Content-Type', 'application/json'),
+            ('Content-Type', 'text/plain'),
             ('Content-Length', str(len(msg))),
         ])
         return [msg]
@@ -130,7 +126,6 @@ class FileHandler():
             print "Forbidden attempt to access file %s (path does not start with %s)" % (filename, project_path)
             msg = 'Forbidden'
             start_response("403 Forbidden", [
-                ('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS'),
                 ('Access-Control-Allow-Origin', '*'),
                 ('Content-Type', 'text/plain'),
                 ('Content-Length', str(len(msg))),
@@ -151,7 +146,6 @@ class NotFoundHandler:
     def __call__(self, environ, start_response):
         msg = "404 Not Found"
         start_response("200 OK", [
-            ('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS'),
             ('Access-Control-Allow-Origin', '*'),
             ('Content-Type', 'text/plain'),
             ('Content-Length', str(len(msg))),
@@ -173,7 +167,6 @@ class ConnectHandler:
                     'authToken': md5(password).hexdigest()
                 })
                 start_response("200 OK", [
-                    ('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS'),
                     ('Access-Control-Allow-Origin', '*'),
                     ('Content-Type', 'text/plain'),
                     ('Content-Length', str(len(msg))),
@@ -182,7 +175,6 @@ class ConnectHandler:
             else:
                 msg = "Incorrect password"
                 start_response("401 Unauthorized", [
-                    ('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS'),
                     ('Access-Control-Allow-Origin', '*'),
                     ('Content-Type', 'text/plain'),
                     ('Content-Length', str(len(msg))),
@@ -200,7 +192,6 @@ class PermissionHandler:
         if params.get('token') != md5(self.cfg['password']).hexdigest():
             msg = "Incorrect authToken"
             start_response("401 Unauthorized", [
-                ('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS'),
                 ('Access-Control-Allow-Origin', '*'),
                 ('Content-Type', 'text/plain'),
                 ('Content-Length', str(len(msg))),
