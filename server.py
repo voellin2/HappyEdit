@@ -79,6 +79,8 @@ class FileHandler():
         params = dict(parse_qsl(environ['wsgi.input'].read(length)))
         body = params.get('body', '')
 
+        print "Saving %s" % filename
+
         f = open(filename, 'w')
         f.write(body)
         f.close()
@@ -242,6 +244,32 @@ class ProjectFinder:
         environ['PROJECT'] = project
         return self.next_handler(environ, start_response)
 
+class ProjectsListing:
+
+    def __init__(self, cfg):
+        self.cfg = cfg
+
+    def __call__(self, environ, start_response):
+        if not (environ['REQUEST_METHOD'] == 'GET' and environ['PATH_INFO'] == '/projects'):
+            return self.next_handler(environ, start_response)
+        
+        projects = []
+        
+        for project in self.cfg['projects']:
+            projects.append({
+                'title': project['title'],
+            })
+        
+        response = json.dumps(projects)
+
+        start_response("200 OK", [
+            ('Access-Control-Allow-Origin', '*'),
+            ('Content-Type', 'application/json'),
+            ('Content-Length', str(len(response))),
+        ])
+        
+        return [response]
+
 def main():
     cwd = os.getcwd()
 
@@ -251,6 +279,7 @@ def main():
     handlers.append(ConnectHandler(cfg))
     handlers.append(PermissionHandler(cfg))
     handlers.append(ProjectFinder(cfg))
+    handlers.append(ProjectsListing(cfg))
     handlers.append(FileListing())
     handlers.append(FileHandler())
     handlers.append(NotFoundHandler())
