@@ -12,48 +12,49 @@ from wsgiref.simple_server import make_server
 
 PROTOCOL_VERSION = "0.1"
 
-def get_project_files(project):
-    tree = {}
-
-    ignored_directories = project.get('ignoredDirectories', [])
-    ignored_extensions = project.get('ignoredExtensions', [])
-
-    for dirpath, dirnames, filenames in os.walk(project['path']):
-        for dirname in ignored_directories:
-            if dirname in dirnames:
-                dirnames.remove(dirname)
-
-        for dirname in dirnames:
-            if dirname.startswith('.'):
-                dirnames.remove(dirname)
-
-        files = []
-        for filename in filenames:
-            ext = os.path.splitext(filename)[1]
-            if not ext in ignored_extensions:
-                files.append(filename)
-
-        tree[os.path.relpath(dirpath)] = {
-            'directories': dirnames,
-            'files': files,
-        }
-
-    return tree
-
 class FileListing():
 
+    def get_project_files(self, project):
+        tree = {}
+
+        ignored_directories = project.get('ignoredDirectories', [])
+        ignored_extensions = project.get('ignoredExtensions', [])
+
+        for dirpath, dirnames, filenames in os.walk(project['path']):
+            for dirname in ignored_directories:
+                if dirname in dirnames:
+                    dirnames.remove(dirname)
+
+            for dirname in dirnames:
+                if dirname.startswith('.'):
+                    dirnames.remove(dirname)
+
+            files = []
+            for filename in filenames:
+                ext = os.path.splitext(filename)[1]
+                if not ext in ignored_extensions:
+                    files.append(filename)
+
+            tree[os.path.relpath(dirpath)] = {
+                'directories': dirnames,
+                'files': files,
+            }
+
+        return tree
+
     def __call__(self, environ, start_response):
-        if environ['PATH_INFO'] in ['/files', '/files/']:
-            params = dict(parse_qsl(environ['QUERY_STRING']))
-            response = json.dumps(get_project_files(environ['PROJECT']))
-            start_response("200 OK", [
-                ('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS'),
-                ('Access-Control-Allow-Origin', '*'),
-                ('Content-Type', 'application/json'),
-                ('Content-Length', str(len(response))),
-            ])
-            return [response]
-        return self.next_handler(environ, start_response)
+        if not environ['PATH_INFO'] in ['/files', '/files/']:
+            return self.next_handler(environ, start_response)
+
+        response = json.dumps(self.get_project_files(environ['PROJECT']))
+
+        start_response("200 OK", [
+            ('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS'),
+            ('Access-Control-Allow-Origin', '*'),
+            ('Content-Type', 'application/json'),
+            ('Content-Length', str(len(response))),
+        ])
+        return [response]
 
 class FileHandler():
 
