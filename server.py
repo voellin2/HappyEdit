@@ -20,7 +20,16 @@ class FileListing():
         ignored_directories = project.get('ignoredDirectories', [])
         ignored_extensions = project.get('ignoredExtensions', [])
 
-        for dirpath, dirnames, filenames in os.walk(project['path']):
+        project_path = project['path']
+
+        strip_length = len(project_path) + 1
+
+        for dirpath, dirnames, filenames in os.walk(project_path):
+            rel_dirpath = dirpath[strip_length:]
+
+            if rel_dirpath == '':
+                rel_dirpath = '.'
+
             for dirname in ignored_directories:
                 if dirname in dirnames:
                     dirnames.remove(dirname)
@@ -35,7 +44,7 @@ class FileListing():
                 if not ext in ignored_extensions:
                     files.append(filename)
 
-            tree[os.path.relpath(dirpath)] = {
+            tree[rel_dirpath] = {
                 'directories': dirnames,
                 'files': files,
             }
@@ -96,11 +105,13 @@ class FileHandler():
             return self.next_handler(environ, start_response)
 
         project_path = environ['PROJECT']['path']
-        filename = os.path.join(project_path, environ['PATH_INFO'][7:])
+
+        filename = environ['PATH_INFO'][7:]
+        filename = os.path.join(project_path, filename)
         filename = os.path.realpath(filename)
         
-        # The file must be under the cwd
-        if not os.path.realpath(filename).startswith(project_path):
+        # The file must be under the project directory
+        if not filename.startswith(project_path):
             print "Forbidden attempt to access file %s (path does not start with %s)" % (filename, project_path)
             msg = 'Forbidden'
             start_response("403 Forbidden", [
