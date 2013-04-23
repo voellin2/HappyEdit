@@ -6,19 +6,26 @@ function TabState(happyEdit) {
     var self = this;
     
     self.project = null;
-    self.server = null;
     
     var eventSystem = happyEdit.eventSystem;
     var dataStore = happyEdit.dataStore;
     
+    self.tabState = dataStore.get('tabState', {});
+    
+    // Make sure dataStore has a reference to our tabState.
+    dataStore.set('tabState', self.tabState);
+    
     self.getKey = function() {
-        if (self.server && self.project) { 
-            return self.server.host + ':' + self.project.id;
-        }
+        return happyEdit.server.host + ':' + self.project.id;
     };
     
     self.restore = function() {
-        var tabs = dataStore.get(self.getKey(), []);
+        var key = self.getKey();
+        var tabs = [];
+        
+        if (self.tabState.hasOwnProperty(key)) {
+            tabs = self.tabState[key];
+        }
         
         if (tabs.length === 0) {
             happyEdit.openFileExplorer();
@@ -43,7 +50,9 @@ function TabState(happyEdit) {
             }
         });
         
-        dataStore.set(self.getKey(), tabs);
+        self.tabState[self.getKey()] = tabs;
+        
+        // dataStore has a reference to self.tabState
         dataStore.save();
     };
     
