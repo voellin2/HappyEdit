@@ -4,6 +4,7 @@ import sys
 import os
 import mimetypes
 import json
+import re
 from os.path import expanduser
 from hashlib import md5
 from urlparse import parse_qsl
@@ -12,7 +13,16 @@ from wsgiref.simple_server import make_server
 
 PROTOCOL_VERSION = "0.1"
 
+def get_project_by_id(cfg, project_id):
+    for project in cfg['projects']:
+        if project['id'] == project_id:
+            return project
+
 class FileListing():
+    
+    def __init__(self, cfg):
+        self.cfg = cfg
+        self.regexp = re.compile(r'/(.*)/files$')
 
     def get_project_files(self, project):
         tree = {}
@@ -20,7 +30,7 @@ class FileListing():
         ignored_directories = project.get('ignoredDirectories', [])
         ignored_extensions = project.get('ignoredExtensions', [])
 
-        project_path = project['path']
+        project_path = os.path.realpath(project['path'])
 
         strip_length = len(project_path) + 1
 
@@ -52,10 +62,15 @@ class FileListing():
         return tree
 
     def __call__(self, environ, start_response):
-        if not environ['PATH_INFO'] in ['/files', '/files/']:
+        match = self.regexp.match(environ['PATH_INFO'])
+        
+        if not match:
             return self.next_handler(environ, start_response)
-
-        response = json.dumps(self.get_project_files(environ['PROJECT']))
+            
+        groups = match.groups()
+        project = get_project_by_id(self.cfg,  groups[0])
+            
+        response = json.dumps(self.get_project_files(project))
 
         start_response("200 OK", [
             ('Access-Control-Allow-Origin', '*'),
@@ -65,6 +80,10 @@ class FileListing():
         return [response]
 
 class FileHandler():
+    
+    def __init__(self, cfg):
+        self.cfg = cfg
+        self.regexp = re.compile(r'/(.*)/files/(.*)')
 
     def GET(self, environ, start_response, filename):
         start_response("200 OK", [
@@ -114,12 +133,16 @@ class FileHandler():
         return [msg]
 
     def __call__(self, environ, start_response):
-        if not environ['PATH_INFO'].startswith('/files'):
+        match = self.regexp.match(environ['PATH_INFO'])
+        
+        if not match:
             return self.next_handler(environ, start_response)
+            
+        groups = match.groups()
+        project = get_project_by_id(self.cfg,  groups[0])
+        project_path = os.path.realpath(project['path'])
 
-        project_path = environ['PROJECT']['path']
-
-        filename = environ['PATH_INFO'][7:]
+        filename = groups[1]
         filename = os.path.join(project_path, filename)
         filename = os.path.realpath(filename)
 
@@ -230,19 +253,10 @@ def load_settings():
     if len(cfg['projects']) == 0:
         raise Exception("You must configure at least one project in " + filepath)
 
+    for project in cfg['projects']:
+        project['id'] = md5(project['path']).hexdigest()
+
     return cfg
-
-class ProjectFinder:
-
-    def __init__(self, cfg):
-        self.cfg = cfg
-
-    def __call__(self, environ, start_response):
-        # TODO: locate project based on start of environ['PATH']
-        project = self.cfg['projects'][0]
-        project['path'] = os.path.realpath(project['path'])
-        environ['PROJECT'] = project
-        return self.next_handler(environ, start_response)
 
 class ProjectsListing:
 
@@ -257,7 +271,7 @@ class ProjectsListing:
         
         for project in self.cfg['projects']:
             projects.append({
-                'id': len(projects),
+                'id': project['id'],
                 'title': project['title'],
             })
         
@@ -279,10 +293,9 @@ def main():
     handlers = []
     handlers.append(ConnectHandler(cfg))
     handlers.append(PermissionHandler(cfg))
-    handlers.append(ProjectFinder(cfg))
     handlers.append(ProjectsListing(cfg))
-    handlers.append(FileListing())
-    handlers.append(FileHandler())
+    handlers.append(FileListing(cfg))
+    handlers.append(FileHandler(cfg))
     handlers.append(NotFoundHandler())
 
     i = 0
