@@ -229,6 +229,8 @@ def load_settings():
     filepath = os.path.join(home, '.happyedit.json')
 
     cfg = {
+        "host": "localhost",
+        "port": "8888",
         "password": "",
         "projects": [],
     }
@@ -304,12 +306,9 @@ def main():
         if i < len(handlers):
             handler.next_handler = handlers[i]
             
-    host = 'localhost';
-    port = 8888
-    
-    if len(sys.argv) > 1:
-        port = int(sys.argv[1])
-        
+    host = cfg['host']
+    port = int(cfg['port'])
+
     try:
         print "Serving " + cwd + " to http://%s:%s" % (host, port)
         make_server(host, port, handlers[0]).serve_forever()
