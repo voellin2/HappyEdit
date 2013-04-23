@@ -30,7 +30,7 @@ function CommandLine(happyEdit) {
 
             case 'project':
             self.hide();
-            happyEdit.projectManager.switchProject(model.project.host);
+            happyEdit.projectManager.switchProject(model.project);
             break;
 
             case 'lineJump':
@@ -227,12 +227,12 @@ function CommandLine(happyEdit) {
         var ret = [];
         var results = projectManager.autoCompletions.getSuggestions(q);
         
-        results.forEach(function(host) {
-            var project = projectManager.getProjectByHost(host);
+        results.forEach(function(projectId) {
+            var project = projectManager.getProjectById(projectId);
             ret.push({
                 type: 'project',
-                title: project.name || project.host,
-                extra: 'Switch to project (' + project.host + ')',
+                title: project.title,
+                extra: 'Switch to project (' + project.title + ')',
                 project: project
             });
         });

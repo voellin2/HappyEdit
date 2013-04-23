@@ -28,9 +28,23 @@ function ProjectManager(happyEdit) {
         xhr.onload = function() {
             self.projects = JSON.parse(xhr.responseText);
             eventSystem.callEventListeners('projects_loaded', self.projects);
+            self.createAutoCompletions();
         };
         
         xhr.send();
+    };
+    
+    self.getProjectById = function(id) {
+        var ret;
+        
+        self.projects.forEach(function(project) {
+            if (project.id === id) {
+                ret = project;
+                return false;
+            }
+        });
+        
+        return ret;
     };
     
     self.getProjects = function() {
@@ -51,14 +65,10 @@ function ProjectManager(happyEdit) {
         var projects = self.projects || [];
         
         var map = projects.map(function(project) {
-            var keys = [project.host, 'switch', 'change'];
-
-            if (project.name) {
-                keys.push(project.name);
-            }
+            var keys = [project.title, 'switch', 'change'];
 
             return {
-                value: project.host,
+                value: project.id,
                 keys: keys
             };
         });
