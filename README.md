@@ -39,10 +39,11 @@ users edit files on your server.
 Your server must implement a simple REST interface:
 
  * POST    /connect
- * GET     /files
- * GET     /files/:path
- * POST    /files/:path
- * DELETE  /files/:path
+ * GET     /projects
+ * GET     /:project/files
+ * GET     /:project/files/:path
+ * POST    /:project/files/:path
+ * DELETE  /:project/files/:path
 
 See server.py for reference.
 

@@ -4,18 +4,28 @@
  */
 function TabState(happyEdit) {
     var self = this;
+    
     self.project = null;
+    self.server = null;
     
     var eventSystem = happyEdit.eventSystem;
     var dataStore = happyEdit.dataStore;
     
+    self.getKey = function() {
+        if (self.server && self.project) { 
+            return self.server.host + ':' + self.project.id;
+        }
+    };
+    
     self.restore = function() {
-        if (self.project.tabs.length === 0) {
+        var tabs = dataStore.get(self.getKey(), []);
+        
+        if (tabs.length === 0) {
             happyEdit.openFileExplorer();
             return;
         }
         
-        self.project.tabs.forEach(function(filename) {
+        tabs.forEach(function(filename) {
             happyEdit.openRemoteFile(filename);
         });
     };
@@ -33,19 +43,18 @@ function TabState(happyEdit) {
             }
         });
         
-        self.project.tabs = tabs;
-        
-        // project is a reference to an item in dataStore.
+        dataStore.set(self.getKey(), tabs);
         dataStore.save();
     };
     
-    eventSystem.addEventListener('project_loaded', function(project) {
+    eventSystem.addEventListener('project_switched', function(project) {
         self.project = project;
         self.restore();
     });
     
     eventSystem.addEventListener('disconnected', function() {
         self.project = null;
+        self.server = null;
     });
     
     eventSystem.addEventListener('file_loaded', self.save);

@@ -9,6 +9,7 @@ function HappyEdit(dataStore) {
     
     self.dataStore = dataStore;
     self.eventSystem = new EventSystem();
+    self.server = new Server(self);
     self.commands = new CommandList(self);
     self.commandLine = new CommandLine(self);
     self.menu = new Menu(self);
@@ -245,13 +246,7 @@ function HappyEdit(dataStore) {
         return txt;
     };
     
-    self.openDummyBuffer();
-
-    var host = dataStore.get('currentProjectHost');
-    if (host) {
-        self.projectManager.loadProject(host);
-    }
-    
+    self.server.reconnect();
     self.editor.focus();
 }
 

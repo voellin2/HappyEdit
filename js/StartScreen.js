@@ -5,17 +5,21 @@ function StartScreen(happyEdit) {
     self.id = Utils.count();
     self.list = new SelectableList();
     
+    var eventSystem = happyEdit.eventSystem;
+    
     self.list.onOpen = function(item) {
-        happyEdit.projectManager.loadProject(item.model.host);
+        happyEdit.projectManager.switchProject(item.model);
     };
     
-    happyEdit.projectManager.getProjects().forEach(function(project) {
-        var $view = HTML.createStartScreenProjectItem(project);
-        self.list.addItem({
-            model: project,
-            $view: $view
+    eventSystem.addEventListener('projects_loaded', function(projects) {
+        projects.forEach(function(project) {
+            var $view = HTML.createStartScreenProjectItem(project);
+            self.list.addItem({
+                model: project,
+                $view: $view
+            });
+            self.$ul.appendChild($view);
         });
-        self.$ul.appendChild($view);
     });
     
     self.keyDown = function(event) {

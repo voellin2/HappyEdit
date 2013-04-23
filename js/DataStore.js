@@ -2,8 +2,10 @@ function DataStore() {
     var self = this;
     
     self.defaults = {
-        currentProjectHost: null,
-        projects: []
+        server: {
+            host: null,
+            authToken: null
+        }
     };
 
     self.data = Utils.extend({}, self.defaults);

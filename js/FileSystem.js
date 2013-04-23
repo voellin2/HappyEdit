@@ -5,8 +5,17 @@ function FileSystem(eventSystem) {
     var self = this;
     self.fileTree = {};
     self.PROTOCOL_VERSION = "0.1";
-    self.authToken = null;
-    self.host = null;
+    self.server = null;
+    self.project = null;
+    
+    eventSystem.addEventListener('project_switched', function(project) {
+        self.project = project;
+        self.loadFiles();
+    });
+    
+    eventSystem.addEventListener('connected', function(server) {
+        self.server = server;
+    });
     
     self.getFlatList = function() {
         var ret = [];
@@ -31,13 +40,13 @@ function FileSystem(eventSystem) {
         return ret;
     };
 
-    self.loadFiles = function(host, authToken) {
-        var xhr = new XMLHttpRequest();
-        var url = host + '/files?token=' + authToken;
+    self.loadFiles = function() {
+        var project = self.project;
+        var server = self.server;
         
-        self.host = host;
-        self.authToken = authToken;
-    
+        var xhr = new XMLHttpRequest();
+        var url = server.host + '/' + project.id + '/files?token=' + server.authToken;
+        
         xhr.open("GET", url);
         xhr.onreadystatechange = function() {
             if (xhr.readyState == 4) {
@@ -64,9 +73,12 @@ function FileSystem(eventSystem) {
         if (!filename) {
             throw "No filename given";
         }
+        
+        var project = self.project;
+        var server = self.server;
 
         var xhr = new XMLHttpRequest();
-        var url = self.host + '/files/' + encodeURIComponent(filename) + '?token=' + self.authToken;
+        var url = server.host + '/' + project.id + '/files/' + encodeURIComponent(filename) + '?token=' + server.authToken;
         var params = 'body=' + encodeURIComponent(buffer.getBody());
 
         xhr.open("POST", url);
@@ -96,9 +108,12 @@ function FileSystem(eventSystem) {
         if (!filename) {
             throw "No filename given";
         }
+        
+        var project = self.project;
+        var server = self.server;
 
         var xhr = new XMLHttpRequest();
-        var url = self.host + '/files/' + encodeURIComponent(filename) + '?token=' + self.authToken;
+        var url = server.host + '/' + project.id + '/files/' + encodeURIComponent(filename) + '?token=' + server.authToken;
 
         xhr.open("DELETE", url);
 
@@ -118,8 +133,11 @@ function FileSystem(eventSystem) {
     };
 
     self.getFile = function(filename, callback) {
+        var project = self.project;
+        var server = self.server;
+        
         var xhr = new XMLHttpRequest();
-        var url = self.host + '/files/' + filename + '?token=' + self.authToken;
+        var url = server.host + '/' + project.id + '/files/' + filename + '?token=' + server.authToken;
         xhr.open("GET", url);
         xhr.onload = function() {
             body = xhr.responseText;
@@ -130,50 +148,5 @@ function FileSystem(eventSystem) {
             });
         };
         xhr.send();
-    };
-
-    self.connect = function(args, callback) {
-        args = args.split(' ');
-
-        var host = args[0];
-        var password = args[1];
-
-        if (!host || !password) {
-            throw "Host or password missing";
-        }
-
-        if (host.split(':')[0] !== 'http') {
-            host = 'http://' + host;
-        }
-
-        var xhr = new XMLHttpRequest();
-        var url = host + '/connect';
-        var params = 'password=' + encodeURIComponent(password);
-
-        xhr.open("POST", url);
-        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-
-        xhr.onload = function() {
-            if (xhr.status !== 200) {
-                callback(xhr.responseText || 'Unknown error');
-                return;
-            }
-            
-            var json = JSON.parse(xhr.responseText);
-            
-            eventSystem.callEventListeners('connected', {
-                host: host,
-                authToken: json.authToken
-            });
-            
-            self.loadFiles(host, json.authToken);
-            callback();
-        };
-
-        xhr.onerror = function()  {
-            callback(xhr.responseText || 'Unknown error');
-        };
-
-        xhr.send(params);
     };
 }

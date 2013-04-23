@@ -112,7 +112,7 @@ var HTML = {
 
     createStartScreenProjectItem: function(model) {
         var $li = document.createElement('li');
-        $li.innerHTML = model.name || model.host;
+        $li.innerHTML = model.title;
         return $li;
     },
     

@@ -20,11 +20,15 @@ function BottomBar(happyEdit) {
 			self.$status = "REC";
         }*/
 	});    
-
-    happyEdit.eventSystem.addEventListener('project_loaded', function(project) {
-        self.$indicatorText.innerHTML = 'Connected: ' + (project.name || project.host);
+    
+    happyEdit.eventSystem.addEventListener('connected', function(server) {
+        self.$indicatorText.innerHTML = 'Connected: ' + server.host;
         Utils.addClass(self.$indicator, 'connected');
         Utils.removeClass(self.$indicator, 'disconnected');
+    });
+
+    happyEdit.eventSystem.addEventListener('project_switched', function(project) {
+        self.$indicatorText.innerHTML = 'Connected: ' + project.title;
     });
 
     happyEdit.eventSystem.addEventListener('disconnected', function() {

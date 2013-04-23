@@ -5,123 +5,50 @@
 function ProjectManager(happyEdit) {
     var self = this;
     
+    self.server = null;
     self.project = null;
+    self.projects = [];
     
     var eventSystem = happyEdit.eventSystem;
     var dataStore = happyEdit.dataStore;
     var fileSystem = happyEdit.fileSystem;
     
-    eventSystem.addEventListener('connected', function(data) {
-        self.addOrUpdateProject(data.host, data.authToken);
-        self.loadProject(data.host);
+    eventSystem.addEventListener('connected', function(server) {
+        self.server = server;
+        self.loadProjects();
     });
     
-    self.addOrUpdateProject = function(host, authToken) {
-        var project = self.getProjectByHost(host);
-        var projects = dataStore.get('projects');
+    self.loadProjects = function() {
+        var server = self.server;
+        var xhr = new XMLHttpRequest();
+        var url = server.host + '/projects?token=' + server.authToken;
         
-        if (project ) {
-            project .authToken = authToken;
-        } else {
-            project = {
-                host: host,
-                authToken: authToken,
-                name: null,
-                tabs: []
-            };
-            projects.push(project);
-            self.createAutoCompletions();
-        }
-
-        dataStore.save();
+        xhr.open("GET", url);
         
-        self.loadProject(project.host);
-    };
-    
-    self.removeProject = function(host) {
-        var projects = dataStore.get('projects');
-        var newProjects = [];
+        xhr.onload = function() {
+            self.projects = JSON.parse(xhr.responseText);
+            eventSystem.callEventListeners('projects_loaded', self.projects);
+        };
         
-        projects.forEach(function(project) {
-            if (project.host !== host) {
-                newProjects.push(project);
-            }
-        });
-        
-        dataStore.set('projects', newProjects);
+        xhr.send();
     };
     
     self.getProjects = function() {
-        return dataStore.get('projects');
+        return self.projects;
     };
     
-    self.renameCurrentProject = function(name) {
-        if (!self.project) {
-            throw "No current project";
-        }
-        
-        self.project.name = name;
-        dataStore.save();
-    };
-    
-    self.switchProject = function(host) {
-        self.project;
-        
-        if (self.project) {
-            self.disconnect();
-        }
-        
-        self.loadProject(host);
-    };
-
-    self.disconnect = function() {
-        happyEdit.reset();
-        happyEdit.openDummyBuffer();
-        
-        dataStore.set('currentProjectHost', null);
-        dataStore.save();
-        
-        eventSystem.callEventListeners('disconnected');
-    };
-    
-    self.loadProject = function(host) {
-        var project = self.getProjectByHost(host);
-        
-        if (!project) {
-            throw "No project found for " + host;
-        }
-        
-        happyEdit.reset();
-        
+    self.switchProject = function(project) {
         self.project = project;
-        
-        dataStore.set('currentProjectHost', project.host);
-        dataStore.save();
-        
-        fileSystem.loadFiles(project.host, project.authToken);
-        eventSystem.callEventListeners('project_loaded', project);
+        eventSystem.callEventListeners('project_switched', project);
     };
     
     self.getCurrentProject = function() {
         return self.project;
     };
     
-    self.getProjectByHost = function(host) {
-        var ret;
-        var projects = dataStore.get('projects');
-        
-        projects.forEach(function(project) {
-            if (project.host === host) {
-                ret = project;
-                return false;
-            }
-        });
-        
-        return ret;
-    };
-    
     self.createAutoCompletions = function() {
-        var projects = dataStore.get('projects');
+        var projects = self.projects || [];
+        
         var map = projects.map(function(project) {
             var keys = [project.host, 'switch', 'change'];
 

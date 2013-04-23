@@ -91,8 +91,8 @@ function CommandList(happyEdit) {
             alias: [],
             title: "Connect to a remote server",
             callback: function(args, callback) {
-                happyEdit.projectManager.disconnect();
-                happyEdit.fileSystem.connect(args, callback);
+                happyEdit.server.disconnect();
+                happyEdit.server.connect(args, callback);
             }
         },
         {
@@ -101,21 +101,6 @@ function CommandList(happyEdit) {
             title: "Disconnect from any connected server",
             callback: function(args, callback) {
                 happyEdit.projectManager.disconnect();
-                callback();
-            }
-        },
-        {
-            name: "renameProject",
-            alias: [],
-            title: "Rename the current project",
-            callback: function(args, callback) {
-                var name = args;
-                
-                if (!name) {
-                    throw "A name must be given";
-                }
-                
-                happyEdit.projectManager.renameCurrentProject(name);
                 callback();
             }
         },
