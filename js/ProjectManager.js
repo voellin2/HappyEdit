@@ -38,6 +38,7 @@ function ProjectManager(happyEdit) {
     };
     
     self.switchProject = function(project) {
+        happyEdit.reset();
         self.project = project;
         eventSystem.callEventListeners('project_switched', project);
     };
