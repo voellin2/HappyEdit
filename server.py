@@ -257,6 +257,7 @@ class ProjectsListing:
         
         for project in self.cfg['projects']:
             projects.append({
+                'id': len(projects),
                 'title': project['title'],
             })
         
