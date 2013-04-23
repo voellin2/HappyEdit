@@ -1,14 +1,7 @@
 function DataStore() {
     var self = this;
     
-    self.defaults = {
-        server: {
-            host: null,
-            authToken: null
-        }
-    };
-
-    self.data = Utils.extend({}, self.defaults);
+    self.data = {};
 
     self.set = function(key, value) {
         self.data[key] = value;
