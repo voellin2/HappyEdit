@@ -135,11 +135,7 @@ function HappyEdit(dataStore) {
     self.closePane = function(pane) {
         var tab = self.topBar.getTabForPane(pane);
         
-        if (self.topBar.getNumberOfTabs() === 1) {
-            return;
-        }
-        
-        if (pane === self.currentPane) {
+        if (pane === self.currentPane && self.topBar.getNumberOfTabs() > 1) {
             var sibling = self.topBar.getClosestSibling(tab);
             sibling.select();
         }
@@ -247,6 +243,7 @@ function HappyEdit(dataStore) {
     };
     
     self.server.reconnect();
+    self.editor.focus();
     self.showStartScreen();
 }
 
