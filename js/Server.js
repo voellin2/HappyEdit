@@ -10,7 +10,7 @@ function Server(happyEdit) {
     self.reconnect = function() {
         var server = dataStore.get('server');
         
-        if (server) {
+        if (server && server.host) {
             self.host = server.host;
             self.authToken = server.authToken;
             eventSystem.callEventListeners('connected', self);
