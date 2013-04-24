@@ -5,6 +5,7 @@
 function ProjectManager(happyEdit) {
     var self = this;
     
+    self.filterList = new FilterList();
     self.server = null;
     self.project = null;
     self.projects = [];
@@ -28,7 +29,7 @@ function ProjectManager(happyEdit) {
         xhr.onload = function() {
             self.projects = JSON.parse(xhr.responseText);
             eventSystem.callEventListeners('projects_loaded', self.projects);
-            self.createAutoCompletions();
+            self.createFilterList();
         };
         
         xhr.send();
@@ -61,7 +62,7 @@ function ProjectManager(happyEdit) {
         return self.project;
     };
     
-    self.createAutoCompletions = function() {
+    self.createFilterList = function() {
         var projects = self.projects || [];
         
         var map = projects.map(function(project) {
@@ -73,8 +74,8 @@ function ProjectManager(happyEdit) {
             };
         });
         
-        self.autoCompletions = new FilterList(map);
+        self.filterList.load(map);
     };
     
-    self.createAutoCompletions();
+    self.createFilterList();
 }

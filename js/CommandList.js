@@ -277,7 +277,7 @@ function CommandList(happyEdit) {
         }
     ];
 
-    self.autoCompletions = new FilterList(self._commands.map(function(x) {
+    self.filterList = new FilterList(self._commands.map(function(x) {
         var keys = [x.name];
         keys = keys.concat(x.title.toLowerCase().split(' '));
         keys = keys.concat(x.alias);

@@ -206,7 +206,7 @@ function CommandLine(happyEdit) {
     self.getCommandSuggestions = function(q) {
         var commandList = happyEdit.commands;
         var ret = [];
-        var results = commandList.autoCompletions.getSuggestions(q);
+        var results = commandList.filterList.getSuggestions(q);
         
         results.forEach(function(suggestion) {
             var command = commandList.getCommandByName(suggestion);
@@ -225,7 +225,7 @@ function CommandLine(happyEdit) {
     self.getProjectSuggestions = function(q) {
         var projectManager = happyEdit.projectManager;
         var ret = [];
-        var results = projectManager.autoCompletions.getSuggestions(q);
+        var results = projectManager.filterList.getSuggestions(q);
         
         results.forEach(function(projectId) {
             var project = projectManager.getProjectById(projectId);
