@@ -423,6 +423,15 @@ body.hide-window-controls #top .controls div {
     color: white;
 }
 
+/* START SCREEN
+******************************************************************************/
+
+#start .projects { display: none; }
+#start .connect-dialog { display: block; }
+
+.connected #start .projects { display: block; }
+.connected #start .connect-dialog { display: none; }
+
 /* LIST VIEW
 ******************************************************************************/
  

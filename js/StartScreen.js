@@ -11,6 +11,11 @@ function StartScreen(happyEdit) {
         happyEdit.projectManager.switchProject(item.model);
     };
     
+    eventSystem.addEventListener('disconnected', function() {
+        self.list.clear();
+        self.$ul.innerHTML = '';
+    });
+    
     eventSystem.addEventListener('projects_loaded', function(projects) {
         projects.forEach(function(project) {
             var $view = HTML.createStartScreenProjectItem(project);
