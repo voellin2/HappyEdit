@@ -26,6 +26,16 @@ function HappyEdit(dataStore) {
     self.startScreen = new StartScreen(self);
     self.globalCommandManager = new GlobalCommandManager(self);
     self.dragAndDropHandler = new DragAndDropHandler(self);
+    
+    self.eventSystem.addEventListener('connected', function() {
+        var $body = document.querySelector('body');
+        Utils.addClass($body, 'connected');
+    });
+    
+    self.eventSystem.addEventListener('disconnected', function() {
+        var $body = document.querySelector('body');
+        Utils.removeClass($body, 'connected');
+    });
 
     window.onresize = function(event) {
         var w = window.innerWidth;
