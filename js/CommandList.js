@@ -100,7 +100,7 @@ function CommandList(happyEdit) {
             alias: [],
             title: "Disconnect from any connected server",
             callback: function(args, callback) {
-                happyEdit.projectManager.disconnect();
+                happyEdit.server.disconnect();
                 callback();
             }
         },
