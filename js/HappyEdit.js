@@ -243,8 +243,8 @@ function HappyEdit(dataStore) {
     };
     
     self.server.reconnect();
-    self.editor.focus();
     self.showStartScreen();
+    self.editor.focus();
 }
 
 window.onload = function() {
