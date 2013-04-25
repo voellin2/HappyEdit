@@ -15,7 +15,7 @@ function DataStore() {
     };
 
     self.load = function(callback) {
-        Storage.get('dataStore', self.defaults, function(data) {
+        Storage.get('dataStore', self.data, function(data) {
             self.data = data;
             if (callback) {
                 callback(self);
