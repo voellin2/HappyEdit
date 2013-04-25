@@ -432,6 +432,10 @@ body.hide-window-controls #top .controls div {
 .connected #start .projects { display: block; }
 .connected #start .connect-dialog { display: none; }
 
+#start .connect-dialog p {
+    padding: 10px 5px;
+}
+
 /* LIST VIEW
 ******************************************************************************/
  
