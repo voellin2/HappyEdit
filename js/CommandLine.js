@@ -275,7 +275,7 @@ function CommandLine(happyEdit) {
     };
     
     self.showAlert = function(e) {
-        self.$alertContent.innerHTML = e; // TODO escape?
+        self.$alertContent.innerHTML = Utils.htmlEscape(e);
         self.$alert.style.display = 'block';
     };
 
