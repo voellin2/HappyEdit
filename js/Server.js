@@ -17,16 +17,7 @@ function Server(happyEdit) {
         }
     };
     
-    self.connect = function(args, callback) {
-        args = args.split(' ');
-
-        var host = args[0];
-        var password = args[1];
-
-        if (!host || !password) {
-            throw "Host or password missing";
-        }
-
+    self.connect = function(host, password, callback) {
         if (host.split(':')[0] !== 'http') {
             host = 'http://' + host;
         }

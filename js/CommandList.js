@@ -91,8 +91,21 @@ function CommandList(happyEdit) {
             alias: [],
             title: "Connect to a remote server",
             callback: function(args, callback) {
+                if (!args) {
+                    throw "Usage: connect <host> <password>";
+                }
+                
+                args = args.split(' ');
+        
+                var host = args[0];
+                var password = args[1];
+        
+                if (!host || !password) {
+                    throw "Host or password missing";
+                }
+                
                 happyEdit.server.disconnect();
-                happyEdit.server.connect(args, callback);
+                happyEdit.server.connect(host, password, callback);
             }
         },
         {
