@@ -1,9 +1,29 @@
 function StartScreen(happyEdit) {
     var self = this;
     self.$view = document.querySelector('#start');
+    self.$projects = self.$view.querySelector('.projects');
     self.$ul = self.$view.querySelector('ul');
+    self.$connectButton = self.$view.querySelector('.connect-button');
     self.id = Utils.count();
     self.list = new SelectableList();
+    
+    self.$connectButton.onclick = function(event) {
+        var host = self.$view.querySelector('input[name=host]').value;
+        var password = self.$view.querySelector('input[name=password]').value;
+        
+        console.log('connect', host, password);
+        
+        if (!host || !password) {
+            // TODO: Alert that host and password needs to be provided.
+        }
+        
+        happyEdit.server.connect(host, password, function() {
+            // done
+        });
+        
+        event.stopPropagation();
+        event.preventDefault();
+    };
     
     var eventSystem = happyEdit.eventSystem;
     
@@ -28,6 +48,9 @@ function StartScreen(happyEdit) {
     });
     
     self.keyDown = function(event) {
+        if (self.$projects.display === 'none') {
+            return;
+        }
         self.list.keyDown(event);
     };
     
