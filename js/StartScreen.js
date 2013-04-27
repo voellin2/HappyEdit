@@ -15,8 +15,12 @@ function StartScreen(happyEdit) {
             // TODO: Alert that host and password needs to be provided.
         }
         
-        happyEdit.server.connect(host, password, function() {
-            // done
+        happyEdit.server.connect(host, password, function(error) {
+            if (error) {
+                happyEdit.notifications.show(error);
+            } else {
+                happyEdit.notifications.hide();
+            }
         });
         
         event.stopPropagation();
