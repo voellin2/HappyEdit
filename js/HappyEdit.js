@@ -9,6 +9,7 @@ function HappyEdit(dataStore) {
     
     self.dataStore = dataStore;
     self.eventSystem = new EventSystem();
+    self.notifications = new Notifications(self);
     self.server = new Server(self);
     self.commands = new CommandList(self);
     self.commandLine = new CommandLine(self);
@@ -16,7 +17,7 @@ function HappyEdit(dataStore) {
     self.autoCompleter = new AutoCompleteBox(self);
     self.topBar = new TopBar(self);
     self.bottomBar = new BottomBar(self);
-    self.fileSystem = new FileSystem(self.eventSystem);
+    self.fileSystem = new FileSystem(self.eventSystem, self.notifications);
     self.projectManager = new ProjectManager(self);
     self.tabState = new TabState(self);
     self.commandT = new CommandT(self.eventSystem, self.fileSystem);
