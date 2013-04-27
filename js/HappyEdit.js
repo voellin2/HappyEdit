@@ -35,6 +35,8 @@ function HappyEdit(dataStore) {
     self.eventSystem.addEventListener('disconnected', function() {
         var $body = document.querySelector('body');
         Utils.removeClass($body, 'connected');
+        self.reset();
+        self.showStartScreen();
     });
 
     window.onresize = function(event) {
