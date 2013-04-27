@@ -11,8 +11,6 @@ function StartScreen(happyEdit) {
         var host = self.$view.querySelector('input[name=host]').value;
         var password = self.$view.querySelector('input[name=password]').value;
         
-        console.log('connect', host, password);
-        
         if (!host || !password) {
             // TODO: Alert that host and password needs to be provided.
         }
