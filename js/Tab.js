@@ -1,4 +1,4 @@
-function Tab(pane, topBar, happyEdit) {
+function Tab(pane, happyEdit) {
     var self = this;
     self.pane = pane;
     self.$view = HTML.createTab(pane);

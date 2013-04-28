@@ -144,7 +144,7 @@ function TopBar(happyEdit) {
         var tab = self.getTabForPane(pane);
         
         if (tab === undefined) {
-            tab = new Tab(pane, self, happyEdit);
+            tab = new Tab(pane, happyEdit);
             self.tabs.push(tab);
             self.$tabs.appendChild(tab.$view);
         }
