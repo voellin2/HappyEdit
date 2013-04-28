@@ -11,8 +11,14 @@ function StartScreen(happyEdit) {
         var host = self.$view.querySelector('input[name=host]').value;
         var password = self.$view.querySelector('input[name=password]').value;
         
-        if (!host || !password) {
-            // TODO: Alert that host and password needs to be provided.
+        if (!host) {
+            happyEdit.notifications.show('A hostname must be provided.');
+            return;
+        }
+        
+        if (!password) {
+            happyEdit.notifications.show('A password must be provided.');
+            return;
         }
         
         happyEdit.server.connect(host, password, function(error) {
