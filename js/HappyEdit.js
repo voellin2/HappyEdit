@@ -153,7 +153,7 @@ function HappyEdit(dataStore) {
             sibling.select();
         }
 
-        tab.close();
+        self.topBar.closeTab(tab);
 
         delete self.openPanes[pane.id];
         

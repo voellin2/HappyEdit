@@ -152,4 +152,11 @@ function TopBar(happyEdit) {
         
         self.updateTabPositions();
     };
+
+    self.closeTab = function(tab) {
+        var i = self.getIndexForTab(tab);
+        self.tabs.splice(i, 1);
+        self.$tabs.removeChild(tab.$view);
+        self.updateTabPositions();
+    };
 }

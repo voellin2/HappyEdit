@@ -25,15 +25,5 @@ function Tab(pane, topBar, happyEdit) {
         }
     };
 
-    /**
-     * Removes this tab from the TopBar.
-     */
-    self.close = function() {
-        var i = topBar.getIndexForTab(self);
-        topBar.tabs.splice(i, 1);
-        topBar.$tabs.removeChild(self.$view);
-        topBar.updateTabPositions();
-    };
-
     self.$view.onclick = self.select;
 }
