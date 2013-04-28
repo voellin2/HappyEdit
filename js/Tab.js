@@ -12,18 +12,5 @@ function Tab(pane, topBar, happyEdit) {
         self.$title.innerHTML = pane.getTabLabel();
     });
 
-    self.select = function() {
-        if (topBar.selectedTab) {
-            Utils.removeClass(topBar.selectedTab.$view, 'selected');
-        }
-
-        Utils.addClass(self.$view, 'selected');
-        topBar.selectedTab = self;
-
-        if (self.pane !== happyEdit.currentPane) {
-            happyEdit.switchPane(self.pane, false);
-        }
-    };
-
     self.$view.onclick = self.select;
 }

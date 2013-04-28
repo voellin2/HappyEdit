@@ -150,7 +150,7 @@ function HappyEdit(dataStore) {
         
         if (pane === self.currentPane && self.topBar.getNumberOfTabs() > 1) {
             var sibling = self.topBar.getClosestSibling(tab);
-            sibling.select();
+            self.topBar.selectTab(sibling);
         }
 
         self.topBar.closeTab(tab);

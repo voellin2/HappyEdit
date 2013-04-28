@@ -75,7 +75,8 @@ function TopBar(happyEdit) {
         } else if (i < 0) {
             i = self.tabs.length - 1;
         }
-        self.tabs[i].select();
+        var tab = self.tabs[i];
+        self.selectTab(tab);
     };
 
     self.nextTab = function() {
@@ -148,7 +149,7 @@ function TopBar(happyEdit) {
             self.$tabs.appendChild(tab.$view);
         }
         
-        tab.select();
+        self.selectTab(tab);
         
         self.updateTabPositions();
     };
@@ -158,5 +159,18 @@ function TopBar(happyEdit) {
         self.tabs.splice(i, 1);
         self.$tabs.removeChild(tab.$view);
         self.updateTabPositions();
+    };
+
+    self.selectTab = function(tab) {
+        if (self.selectedTab) {
+            Utils.removeClass(self.selectedTab.$view, 'selected');
+        }
+
+        Utils.addClass(tab.$view, 'selected');
+        self.selectedTab = tab;
+
+        if (tab.pane !== happyEdit.currentPane) {
+            happyEdit.switchPane(tab.pane, false);
+        }
     };
 }
