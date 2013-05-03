@@ -4,13 +4,16 @@ function Tab(pane, happyEdit) {
     self.$view = HTML.createTab(pane);
     self.$title = self.$view.querySelector('.title');
     
-    self.$view.querySelector('.close').onclick = function() {
+    self.$view.onclick = function() {
+        happyEdit.topBar.selectTab(self);
+    };
+    
+    self.$view.querySelector('.close').onclick = function(event) {
         happyEdit.closePane(self.pane);
+        event.stopPropagation();
     };
 
     pane.onChange(function(pane) {
         self.$title.innerHTML = pane.getTabLabel();
     });
-
-    self.$view.onclick = self.select;
 }
