@@ -9,6 +9,10 @@ function AutoSuggestIndexer(happyEdit) {
         }
     });
     
+    happyEdit.eventSystem.addEventListener('project_switched', function() {
+        self.data = {};
+    });
+    
     var timeout = null;
     happyEdit.editor.on('change', function() {
         if (timeout) {
