@@ -377,6 +377,20 @@ body.hide-window-controls #top .controls div {
     margin-right: 10px;
 }
 
+/* GREP
+ ******************************************************************************/
+ 
+#grep input {
+    margin: 5px;
+    font-size: 14px;
+}
+
+#grep .progress {
+    color: #888;
+    display: block;
+    margin: 5px;
+}
+
 /* EXPLORER
  ******************************************************************************/
  
