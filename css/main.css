@@ -339,44 +339,6 @@ body.hide-window-controls #top .controls div {
     margin: 10px 0;
 }
 
-#bottom {
-    line-height: 20px;
-    background: blue;
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    color: #333;
-    background:-webkit-linear-gradient(rgb(243, 243, 243), rgb(235, 235, 235));
-    background:-moz-linear-gradient(rgb(243, 243, 243), rgb(235, 235, 235));
-    background:-ie-linear-gradient(rgb(243, 243, 243), rgb(235, 235, 235));
-    background:-o-linear-gradient(rgb(243, 243, 243), rgb(235, 235, 235));
-    background:linear-gradient(rgb(243, 243, 243), rgb(235, 235, 235));
-    border-top: 1px solid rgb(202, 202, 202);
-    cursor: default;
-}
-#bottom * {
-    display: inline-block;
-}
-#bottom .indicator {
-}
-#bottom .indicator .action {
-    display: none;
-}
-#bottom .indicator.disconnected {
-    cursor: pointer;
-    color: red;
-}
-#bottom .indicator.connected {
-    color: green;
-}
-#bottom .left {
-    margin-left: 10px;
-}
-#bottom .right {
-    float: right;
-    margin-right: 10px;
-}
-
 /* GREP
  ******************************************************************************/
  

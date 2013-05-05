@@ -16,7 +16,6 @@ function HappyEdit(dataStore) {
     self.menu = new Menu(self);
     self.autoCompleter = new AutoCompleteBox(self);
     self.topBar = new TopBar(self);
-    self.bottomBar = new BottomBar(self);
     self.fileSystem = new FileSystem(self.eventSystem, self.notifications);
     self.projectManager = new ProjectManager(self);
     self.tabState = new TabState(self);
@@ -42,7 +41,7 @@ function HappyEdit(dataStore) {
 
     window.onresize = function(event) {
         var w = window.innerWidth;
-        var h = window.innerHeight - document.querySelector('#top').offsetHeight - document.querySelector('#bottom').offsetHeight;
+        var h = window.innerHeight - document.querySelector('#top').offsetHeight;
 
         self.$editor.style.width = w + 'px';
         self.$editor.style.height = h + 'px';
