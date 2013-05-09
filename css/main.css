@@ -11,7 +11,7 @@ li {
 body {
     background: white;
     margin: 0;
-    font-family: "Lucida Grande";
+    font-family: "Lucida Grande", sans-serif;
     font-size: 11px;
     font-variant: normal;
     overflow: hidden;
