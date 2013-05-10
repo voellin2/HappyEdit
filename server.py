@@ -177,28 +177,29 @@ class NotFoundHandler:
         ])
         return [msg]
 
-class ConnectHandler:
+class LoginHandler:
 
     def __init__(self, cfg):
         self.cfg = cfg
 
     def __call__(self, environ, start_response):
-        if environ['REQUEST_METHOD'] == 'POST' and environ['PATH_INFO'] == '/connect':
+        if environ['REQUEST_METHOD'] == 'POST' and environ['PATH_INFO'] == '/login':
             length = int(environ['CONTENT_LENGTH'])
             params = dict(parse_qsl(environ['wsgi.input'].read(length)))
+            user = params.get('user')
             password = params.get('password')
-            if password == self.cfg['password']:
+            if user == self.cfg['user'] and password == self.cfg['password']:
                 msg = json.dumps({
                     'authToken': md5(password).hexdigest()
                 })
                 start_response("200 OK", [
                     ('Access-Control-Allow-Origin', '*'),
-                    ('Content-Type', 'text/plain'),
+                    ('Content-Type', 'application/json'),
                     ('Content-Length', str(len(msg))),
                 ])
                 return [msg]
             else:
-                msg = "Incorrect password"
+                msg = "Incorrect user or password"
                 start_response("401 Unauthorized", [
                     ('Access-Control-Allow-Origin', '*'),
                     ('Content-Type', 'text/plain'),
@@ -231,6 +232,7 @@ def load_settings():
     cfg = {
         "host": "localhost",
         "port": "8888",
+        "user": "",
         "password": "",
         "projects": [],
     }
@@ -248,8 +250,10 @@ def load_settings():
         f.write(json.dumps(cfg, sort_keys=True, indent=4))
         f.close()
 
+    if not cfg['user']:
+        raise Exception("You must set a user in " + filepath)
+
     if not cfg['password']:
-        print cfg
         raise Exception("You must set a password in " + filepath)
 
     if len(cfg['projects']) == 0:
@@ -293,7 +297,7 @@ def main():
     cfg = load_settings()
 
     handlers = []
-    handlers.append(ConnectHandler(cfg))
+    handlers.append(LoginHandler(cfg))
     handlers.append(PermissionHandler(cfg))
     handlers.append(ProjectsListing(cfg))
     handlers.append(FileListing(cfg))

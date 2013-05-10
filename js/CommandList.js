@@ -98,14 +98,15 @@ function CommandList(happyEdit) {
                 args = args.split(' ');
         
                 var host = args[0];
-                var password = args[1];
+                var user = args[1];
+                var password = args[2];
         
-                if (!host || !password) {
-                    throw "Host or password missing";
+                if (!host || !user || !password) {
+                    throw "Host, user or password is missing";
                 }
                 
                 happyEdit.server.disconnect();
-                happyEdit.server.connect(host, password, callback);
+                happyEdit.server.connect(host, user, password, callback);
             }
         },
         {

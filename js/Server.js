@@ -17,14 +17,14 @@ function Server(happyEdit) {
         }
     };
     
-    self.connect = function(host, password, callback) {
+    self.connect = function(host, user, password, callback) {
         if (host.split(':')[0] !== 'http') {
             host = 'http://' + host;
         }
 
         var xhr = new XMLHttpRequest();
-        var url = host + '/connect';
-        var params = 'password=' + encodeURIComponent(password);
+        var url = host + '/login';
+        var params = 'user=' + encodeURIComponent(user) + '&password=' + encodeURIComponent(password);
 
         xhr.open("POST", url);
         xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");

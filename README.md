@@ -38,7 +38,7 @@ users edit files on your server.
 
 Your server must implement a simple REST interface:
 
- * POST    /connect
+ * POST    /login
  * GET     /projects
  * GET     /:project/files
  * GET     /:project/files/:path
