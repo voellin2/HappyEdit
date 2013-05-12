@@ -5,6 +5,19 @@ var Utils = {
         return s.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
     },
 
+    createPostParams: function(params) {
+        var key;
+        var l = [];
+        
+        for (key in params) {
+            if (params.hasOwnProperty(key)) {
+                l.push(key + '=' + encodeURIComponent(params[key]));
+            }
+        }
+        
+        return l.join('&');
+    },
+
     count: function() {
         return ++Utils.counter;
     },

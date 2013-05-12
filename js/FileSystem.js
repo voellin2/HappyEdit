@@ -79,7 +79,9 @@ function FileSystem(eventSystem, notifications) {
 
         var xhr = new XMLHttpRequest();
         var url = server.host + '/' + project.id + '/files/' + encodeURIComponent(filename) + '?token=' + server.authToken;
-        var params = 'body=' + encodeURIComponent(buffer.getBody());
+        var params = Utils.createPostParams({
+            body: buffer.getBody()
+        });
 
         xhr.open("POST", url);
         xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");

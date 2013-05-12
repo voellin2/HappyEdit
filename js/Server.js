@@ -26,7 +26,10 @@ function Server(happyEdit) {
         
         var xhr = new XMLHttpRequest();
         var url = host + '/login';
-        var params = 'user=' + encodeURIComponent(user) + '&password=' + encodeURIComponent(password);
+        var params = Utils.createPostParams({
+            user: user,
+            password: password
+        });
 
         xhr.open("POST", url);
         xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
