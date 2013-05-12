@@ -2,26 +2,28 @@ function Server(happyEdit) {
     var self = this;
 
     self.host = null;
+    self.user = null;
     self.authToken = null;
 
     var dataStore = happyEdit.dataStore;
     var eventSystem = happyEdit.eventSystem;
-
+    
     self.reconnect = function() {
         var server = dataStore.get('server');
         
         if (server && server.host) {
             self.host = server.host;
+            self.user = server.user;
             self.authToken = server.authToken;
             eventSystem.callEventListeners('connected', self);
         }
     };
     
-    self.connect = function(host, user, password, callback) {
+    self.login = function(host, user, password, callback) {
         if (host.split(':')[0] !== 'http') {
             host = 'http://' + host;
         }
-
+        
         var xhr = new XMLHttpRequest();
         var url = host + '/login';
         var params = 'user=' + encodeURIComponent(user) + '&password=' + encodeURIComponent(password);
@@ -64,6 +66,7 @@ function Server(happyEdit) {
         }
         
         self.host = null;
+        self.user = null;
         self.authToken = null;
         
         dataStore.set('server', self.toJSON());
@@ -75,6 +78,7 @@ function Server(happyEdit) {
     self.toJSON = function() {
         return {
             host: self.host,
+            user: self.user,
             authToken: self.authToken
         };
     };

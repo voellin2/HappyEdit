@@ -53,7 +53,10 @@
         <div class="blocker menu">
         </div>
         
-        <div class="popup command-line" style="display:none">
+        <div class="blocker login">
+        </div>
+        
+        <div class="popup middle command-line" style="display:none">
             <div>
                 <div class="loading-animation"><div></div><div></div><div></div></div>
                 <input type="text" class="cmd" />
@@ -62,6 +65,16 @@
                     <span class="content">test alert-error</span>
                 </div>
                 <ul class="suggestions filelist"></ul>
+            </div>
+        </div>
+        
+        <div class="popup middle login" style="display:none">
+            <div>
+                <div class="alert" style="display:none">
+                    <span class="content">test alert-error</span>
+                </div>
+                <input type="text" name="user" />
+                <input type="password" name="password" />
             </div>
         </div>
 
@@ -104,16 +117,18 @@
                 <ul class="my-projects"></ul>
             </div>
             <div class="connect-dialog">
-                <h1>Not Connected</h1>
-                <p>HappyEdit is based on a server-client architecture. Read <a href="https://github.com/pthulin/HappyEdit#try-it-out" target="_blank">here</a> how to setup and connect to a HappyEdit server.</p>
+                <h1>Login</h1>
                 
-                <label for="host">Host:</label>
-                <input type="text" name="host" />
+                <label for="host">Host</label>
+                <input type="text" name="host" placeholder="localhost:8888" />
                 
-                <label for="password">Password:</label>
+                <label for="user">User</label>
+                <input type="text" name="user" placeholder="username" />
+                
+                <label for="user">Password</label>
                 <input type="password" name="password" />
                 
-                <button class="connect-button">Connect</button>
+                <button class="connect-button">Login</button>
             </div>
         </div>
 

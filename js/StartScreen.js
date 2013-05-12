@@ -9,10 +9,16 @@ function StartScreen(happyEdit) {
     
     self.$connectButton.onclick = function(event) {
         var host = self.$view.querySelector('input[name=host]').value;
+        var user = self.$view.querySelector('input[name=user]').value;
         var password = self.$view.querySelector('input[name=password]').value;
         
         if (!host) {
-            happyEdit.notifications.show('A hostname must be provided.');
+            happyEdit.notifications.show('A host must be provided.');
+            return;
+        }
+        
+        if (!user) {
+            happyEdit.notifications.show('A user must be provided.');
             return;
         }
         
@@ -21,7 +27,7 @@ function StartScreen(happyEdit) {
             return;
         }
         
-        happyEdit.server.connect(host, password, function(error) {
+        happyEdit.server.login(host, user, password, function(error) {
             if (error) {
                 happyEdit.notifications.show(error);
             } else {
