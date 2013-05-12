@@ -9,6 +9,7 @@
         }
     },
     "permissions": [
+        "fullscreen",
         "storage",
         "app.window",
         "clipboardRead",

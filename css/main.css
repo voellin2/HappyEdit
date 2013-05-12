@@ -245,7 +245,8 @@ body {
     cursor: default;
     line-height: 28px;
 }
-body.hide-window-controls #top .controls div {
+body.hide-window-controls #top .controls div,
+body.fullscreen #top .controls div {
     display: none;
 }
 #top .controls div {

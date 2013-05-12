@@ -2,6 +2,25 @@ function CommandList(happyEdit) {
     var self = this;
     self._commands = [
         {
+            name: "fullscreen",
+            title: "Toggle fullscreen",
+            showInMenu: true,
+            alias: [],
+            callback: function(args, callback) {
+                var $body = document.querySelector('body');
+                
+                if (Utils.hasClass($body, 'fullscreen')) {
+                    document.webkitExitFullscreen();
+                    Utils.removeClass($body,'fullscreen');
+                } else {
+                    $body.webkitRequestFullscreen();
+                    Utils.addClass($body,'fullscreen');
+                }
+                
+                callback();
+            }
+        },
+        {
             name: "edit",
             title: "Edit File",
             alias: ["e", "open"],
