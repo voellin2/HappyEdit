@@ -4,7 +4,6 @@ function TopBar(happyEdit) {
     self.selectedTab = null;
     self.tabs = [];
     self.$view = document.querySelector('#top');
-    self.$menuButton = self.$view.querySelector('.menu');
     self.$closeButton = self.$view.querySelector('.controls .close');
     self.$minButton = self.$view.querySelector('.controls .min');
     self.$maxButton = self.$view.querySelector('.controls .max');
@@ -13,10 +12,6 @@ function TopBar(happyEdit) {
     
     self.getNumberOfTabs = function() {
         return self.tabs.length;
-    };
-
-    self.$menuButton.onclick = function() {
-        happyEdit.menu.show();
     };
 
     self.$closeButton.onclick = function() {

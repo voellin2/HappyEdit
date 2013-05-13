@@ -13,7 +13,6 @@ function HappyEdit(dataStore) {
     self.server = new Server(self);
     self.commands = new CommandList(self);
     self.commandLine = new CommandLine(self);
-    self.menu = new Menu(self);
     self.autoCompleter = new AutoCompleteBox(self);
     self.topBar = new TopBar(self);
     self.fileSystem = new FileSystem(self.eventSystem, self.notifications);

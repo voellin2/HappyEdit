@@ -25,7 +25,6 @@
         <script src="js/CommandList.js" type="text/javascript" charset="utf-8"></script>
         <script src="js/CommandLine.js" type="text/javascript" charset="utf-8"></script>
         <script src="js/DataStore.js" type="text/javascript" charset="utf-8"></script>
-        <script src="js/Menu.js" type="text/javascript" charset="utf-8"></script>
         <script src="js/Tab.js" type="text/javascript" charset="utf-8"></script>
         <script src="js/TopBar.js" type="text/javascript" charset="utf-8"></script>
         <script src="js/Mode.js" type="text/javascript" charset="utf-8"></script>
@@ -50,13 +49,7 @@
         <div class="blocker command-line">
         </div>
         
-        <div class="blocker menu">
-        </div>
-        
-        <div class="blocker login">
-        </div>
-        
-        <div class="popup middle command-line" style="display:none">
+        <div class="popup command-line" style="display:none">
             <div>
                 <div class="loading-animation"><div></div><div></div><div></div></div>
                 <input type="text" class="cmd" />
@@ -68,21 +61,6 @@
             </div>
         </div>
         
-        <div class="popup middle login" style="display:none">
-            <div>
-                <div class="alert" style="display:none">
-                    <span class="content">test alert-error</span>
-                </div>
-                <input type="text" name="user" />
-                <input type="password" name="password" />
-            </div>
-        </div>
-
-        <div class="menu popup" style="display: none">
-            <ul>
-            </ul>
-        </div>
-        
         <span id="notification"></span>
 
         <div id="top">
@@ -92,12 +70,6 @@
                 <div class="max">+</div>
             </div>
             <ul class="tabs"></ul>
-            <span class="menu">
-                <span class="line"></span>
-                <span class="line"></span>
-                <span class="line"></span>
-                <span class="indicator"></span>
-            </span>
         </div>
 
         <div id="editor"></div>

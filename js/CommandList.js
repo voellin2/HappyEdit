@@ -4,7 +4,6 @@ function CommandList(happyEdit) {
         {
             name: "fullscreen",
             title: "Toggle fullscreen",
-            showInMenu: true,
             alias: [],
             callback: function(args, callback) {
                 var $body = document.querySelector('body');
@@ -134,7 +133,6 @@ function CommandList(happyEdit) {
             name: "start",
             alias: ["projects", "new"],
             title: "Show Start Screen",
-            showInMenu: true,
             callback: function(args, callback) {
                 happyEdit.showStartScreen();
                 callback();
@@ -145,7 +143,6 @@ function CommandList(happyEdit) {
             alias: [],
             title: "Quick Open File",
             global: true,
-            showInMenu: true,
             shortcut: {
                 win: "Ctrl-T",
                 mac: "Command-T",
@@ -174,7 +171,6 @@ function CommandList(happyEdit) {
             name: "save",
             alias: ["w", "write"],
             title: "Save Current File",
-            showInMenu: true,
             shortcut: {
                 win: "Ctrl-S",
                 mac: "Command-S",
@@ -253,7 +249,6 @@ function CommandList(happyEdit) {
             name: "explore",
             alias: [],
             title: "Open File Browser",
-            showInMenu: true,
             shortcut: {
                 win: "Ctrl-E",
                 mac: "Command-E",

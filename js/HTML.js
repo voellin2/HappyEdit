@@ -106,7 +106,7 @@ var HTML = {
 
     createGrepListItem: function(model) {
         var $li = document.createElement('li');
-        $li.innerHTML = model.filename + '(' + model.lineNumber + ')' + ' ' + model.snippet;
+        $li.innerText = model.filename + '(' + model.lineNumber + ')' + ' ' + model.snippet;
         return $li;
     },
 
