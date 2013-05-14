@@ -50,6 +50,9 @@ function HappyEdit(dataStore) {
 
         self.grepView.$view.style.width = w + 'px';
         self.grepView.$view.style.height = h + 'px';
+
+        self.startScreen.$view.style.width = w + 'px';
+        self.startScreen.$view.style.height = h + 'px';
         
         self.topBar.updateTabPositions();
     };
