@@ -19,7 +19,7 @@ function SelectableList(args) {
     args = Utils.extend(defaults, (args || {}));
     
     self.items = [];
-    self.index = null;
+    self.index = 0;
     self.$parent = args.$parent;
     
     self.clear = function() {
@@ -62,10 +62,6 @@ function SelectableList(args) {
         
         if (self.$parent) {
             self.$parent.appendChild(item.$view);
-        }
-        
-        if (self.index === null) {
-            self.selectIndex(0);
         }
     };
     
