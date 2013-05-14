@@ -245,8 +245,11 @@ body {
     line-height: 28px;
 }
 body.hide-window-controls #top .controls div,
-body.fullscreen #top .controls div {
+body.fullscreen #top .controls {
     display: none;
+}
+body.fullscreen #top {
+    padding: 0;
 }
 #top .controls div {
     margin-right: 3px;
