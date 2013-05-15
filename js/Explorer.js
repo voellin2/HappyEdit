@@ -7,10 +7,6 @@ function Explorer(happyEdit) {
         hover: false
     });
     
-    self.list.onSelect = function(item) {
-        self.removeAllColumnsToTheRight();
-    };
-    
     self.isDummy = function() {
         return false;
     };
@@ -24,11 +20,13 @@ function Explorer(happyEdit) {
             $view: col.$view
         });
         
-        self.list.navigateDown(); // select the newly added column
+        if (self.list.getLength() === 1) {
+            col.list.selectIndex(0);
+        }
     };
 
-    self.removeAllColumnsToTheRight = function() {
-        var count = (self.list.getLength() - 1) - self.list.getIndex();
+    self.removeAllColumnsToTheRight = function(index) {
+        var count = (self.list.getLength() - 1) - index;
         var i;
         for (i = 0; i < count; i += 1) {
             self.list.removeItemAtIndex(self.list.getLength() - 1);
@@ -57,10 +55,10 @@ function Explorer(happyEdit) {
     self.keyDown = function(event) {
         var keyCode = event.keyCode;
 
-        if (keyCode === 78 || keyCode === 74) {
-            keyCode = 40;
-        } else if (keyCode === 80 || keyCode === 75) {
-            keyCode = 38;
+        if (keyCode === 72) {
+            keyCode = 37;
+        } else if (keyCode === 76) {
+            keyCode = 39;
         }
 
         switch (keyCode) {
@@ -68,8 +66,12 @@ function Explorer(happyEdit) {
             // Leave?
             break;
 
-            case 72:
+            case 37:
             self.list.navigateUp();
+            break;
+            
+            case 39:
+            self.list.navigateDown();
             break;
 
             default:
@@ -85,5 +87,6 @@ function Explorer(happyEdit) {
     happyEdit.eventSystem.addEventListener('filesystem_loaded', function(fs) {
         self.reset();
         self.addColumn('.');
+        self.list.selectIndex(0);
     });
 }

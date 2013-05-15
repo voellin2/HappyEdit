@@ -3,7 +3,25 @@ function ExplorerColumn(explorer, happyEdit, dir, key) {
     self.$view = HTML.createDirectoryView(dir);
     self.activeIndex = 0;
     self.dirname = key;
-    self.list = new SelectableList();
+    self.list = new SelectableList({
+        hover: false
+    });
+    
+    self.list.onSelect = function(item) {
+        var model = item.model;
+        var path = model.path;
+        var myIndex = self.$view.dataset.index;
+        
+        explorer.removeAllColumnsToTheRight(myIndex);
+        
+        if (path.substr(0, 2) === './') {
+            path = path.substr(2);
+        }
+        
+        if (model.type === 'directory') {
+            explorer.addColumn(path);
+        }
+    };
     
     self.list.onOpen = function(item) {
         var model = item.model;
@@ -13,9 +31,7 @@ function ExplorerColumn(explorer, happyEdit, dir, key) {
             path = path.substr(2);
         }
 
-        if (model.type === 'directory') {
-            explorer.addColumn(path);
-        } else {
+        if (model.type === 'file') {
             happyEdit.openRemoteFile(path);
         }
     };
@@ -47,6 +63,9 @@ function ExplorerColumn(explorer, happyEdit, dir, key) {
     };
     
     self.focus = function() {
+        if (!self.list.getIndex()) {
+            self.list.selectIndex(0);
+        }
         Utils.addClass(self.$view, 'active');
         self.$view.scrollIntoViewIfNeeded();
     };

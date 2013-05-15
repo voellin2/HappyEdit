@@ -88,12 +88,13 @@ function SelectableList(args) {
         
         if (self.index !== null) {
             var oldItem = self.items[self.index];
-            
-            if (oldItem.model.blur) {
-                oldItem.model.blur();
-            } 
-            
-            Utils.removeClass(oldItem.$view, 'active');
+            if (oldItem) {
+                if (oldItem.model.blur) {
+                    oldItem.model.blur();
+                } 
+                
+                Utils.removeClass(oldItem.$view, 'active');
+            }
         }
         
         var newItem = self.items[index];
@@ -126,10 +127,6 @@ function SelectableList(args) {
             keyCode = 40;
         } else if (keyCode === 80 || keyCode === 75) {
             keyCode = 38;
-        }
-        
-        if (keyCode === 76 || keyCode === 108) { // 'L' 'l'
-            keyCode = 13;
         }
         
         switch (keyCode) {
