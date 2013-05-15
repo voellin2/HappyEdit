@@ -182,6 +182,8 @@ function CommandLine(happyEdit) {
             self.$suggestions.appendChild($view);
         });
         
+        self.list.selectIndex(0);
+        
         self.$suggestions.style.display = 'block';
     };
 
