@@ -263,7 +263,7 @@ function CommandList(happyEdit) {
             alias: ["q", "exit"],
             title: "Quit HappyEdit",
             callback: function(args, callback) {
-                happyEdit.closePane(happyEdit.currentPane);
+                happyEdit.exit();
                 callback();
             }
         },

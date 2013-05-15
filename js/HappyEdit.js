@@ -256,6 +256,10 @@ function HappyEdit(dataStore) {
         return txt;
     };
     
+    self.exit = function() {
+        window.close();
+    };
+    
     self.server.reconnect();
     self.showStartScreen();
     self.editor.focus();
