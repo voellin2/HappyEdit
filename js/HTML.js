@@ -98,6 +98,12 @@ var HTML = {
         return $li;
     },
     
+    createProjectsList: function() {
+        var $ul = document.createElement('ul');
+        $ul.setAttribute('class', 'list-view');
+        return $ul;
+    },
+    
     createDirectoryView: function(dir) {
         var $ul = document.createElement('ul');
         $ul.setAttribute('class', 'list-view');

@@ -261,7 +261,7 @@ function HappyEdit(dataStore) {
     };
     
     self.server.reconnect();
-    self.showStartScreen();
+    self.openFileExplorer();
     self.editor.focus();
 }
 

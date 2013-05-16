@@ -11,6 +11,15 @@ function Explorer(happyEdit) {
         return false;
     };
 
+    self.addProjectsColumn = function() {
+        var col = new ProjectsColumn(self, happyEdit);
+        
+        self.list.addItem({
+            model: col,
+            $view: col.$view
+        });
+    };
+
     self.addColumn = function(key) {
         var dir = happyEdit.fileSystem.fileTree[key];
         var col = new ExplorerColumn(self, happyEdit, dir, key);
@@ -80,8 +89,7 @@ function Explorer(happyEdit) {
     };
     
     self.reset = function() {
-        self.$view.innerHTML = '';
-        self.list.clear();
+        self.removeAllColumnsToTheRight(1);
     };
     
     happyEdit.eventSystem.addEventListener('filesystem_loaded', function(fs) {
@@ -89,4 +97,7 @@ function Explorer(happyEdit) {
         self.addColumn('.');
         self.list.selectIndex(0);
     });
+
+    self.addProjectsColumn();
+    self.list.selectIndex(0);
 }

@@ -2,10 +2,8 @@ function StartScreen(happyEdit) {
     var self = this;
     self.$view = document.querySelector('#start');
     self.$projects = self.$view.querySelector('.projects');
-    self.$ul = self.$view.querySelector('ul');
     self.$connectButton = self.$view.querySelector('.connect-button');
     self.id = Utils.count();
-    self.list = new SelectableList();
     
     self.$connectButton.onclick = function(event) {
         var host = self.$view.querySelector('input[name=host]').value;
@@ -41,31 +39,10 @@ function StartScreen(happyEdit) {
     
     var eventSystem = happyEdit.eventSystem;
     
-    self.list.onOpen = function(item) {
-        happyEdit.projectManager.switchProject(item.model);
-    };
-    
     eventSystem.addEventListener('disconnected', function() {
-        self.list.clear();
-        self.$ul.innerHTML = '';
     });
-    
-    eventSystem.addEventListener('projects_loaded', function(projects) {
-        projects.forEach(function(project) {
-            var $view = HTML.createStartScreenProjectItem(project);
-            self.list.addItem({
-                model: project,
-                $view: $view
-            });
-            self.$ul.appendChild($view);
-        });
-    });
-    
+
     self.keyDown = function(event) {
-        if (self.$projects.display === 'none') {
-            return;
-        }
-        self.list.keyDown(event);
     };
     
     self.getTabLabel = function() {
