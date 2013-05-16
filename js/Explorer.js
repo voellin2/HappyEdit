@@ -90,7 +90,7 @@ function Explorer(happyEdit) {
     };
     
     self.reset = function() {
-        self.removeAllColumnsToTheRight(1);
+        self.removeAllColumnsToTheRight(0);
     };
     
     happyEdit.eventSystem.addEventListener('filesystem_loaded', function(fs) {
