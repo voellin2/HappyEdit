@@ -196,6 +196,9 @@ body {
     background: transparent;
     color: #888;
 }
+#top .tabs li.sticky .close {
+    display: none;
+}
 #top .tabs li .close:hover {
     color: red;
 }

@@ -18,6 +18,10 @@ var HTML = {
         $view.appendChild($fader);
         $view.appendChild($close);
         
+        if (pane.sticky === true) {
+            Utils.addClass($view, 'sticky');
+        }
+        
         return $view;
     },
     

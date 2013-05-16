@@ -1,5 +1,6 @@
 function Explorer(happyEdit) {
     var self = this;
+    self.sticky = true;
     self.id = Utils.count();
     self.$view = document.getElementById('explorer');
     self.list = new SelectableList({

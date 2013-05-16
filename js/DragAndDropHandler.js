@@ -22,6 +22,10 @@ function DragAndDropHandler(happyEdit) {
             $tab = target.parentElement;
         }
         
+        if (Utils.hasClass($tab, 'sticky')) {
+            return;
+        }
+        
         if ($tab) {
             var x = event.clientX - self.topBarLeft;
             var d = x - $tab.x;
@@ -57,10 +61,10 @@ function DragAndDropHandler(happyEdit) {
         for (i = 0; i < self.$tabs.children.length; i += 1) {
             $tab = self.$tabs.children[i];
             
-            if ($tab === self.$target) {
+            if ($tab === self.$target || Utils.hasClass($tab, 'sticky')) {
                 continue;
             }
-            
+        
             var d = Math.abs(self.$target.x - $tab.x);
             
             if (d < (TAB_WIDTH/2)) {

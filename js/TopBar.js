@@ -32,10 +32,25 @@ function TopBar(happyEdit) {
         }
     };
     
+    self.getStickyTabs = function() {
+    };
+    
+    /**
+     * Remove all regular tabs, but preserve sticky tabs.
+     */
     self.reset = function() {
-        self.selectedTab = null;
-        self.tabs = [];
-        self.$tabs.innerHTML = '';
+        var stickyTabs = [];
+        
+        self.tabs.forEach(function(tab) {
+            if (tab.pane.sticky === true) {
+                stickyTabs.push(tab);
+            } else {
+                self.$tabs.removeChild(tab.$view);
+            }
+        });
+        
+        self.selectedTab = stickyTabs[0];
+        self.tabs = stickyTabs;
     };
     
     self.getTabForPane = function(pane) {

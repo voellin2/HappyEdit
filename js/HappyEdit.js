@@ -143,10 +143,15 @@ function HappyEdit(dataStore) {
 
     self.reset = function() {
         self.openPanes = {};
+        self.openPanes[self.explorer.id] = self.explorer;
         self.topBar.reset();
     };
     
     self.closePane = function(pane) {
+        if (pane.sticky === true) {
+            return;
+        } 
+        
         var tab = self.topBar.getTabForPane(pane);
         
         if (pane === self.currentPane && self.topBar.getNumberOfTabs() > 1) {
