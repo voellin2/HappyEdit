@@ -55,6 +55,7 @@ function HappyEdit(dataStore) {
         self.startScreen.$view.style.height = h + 'px';
         
         self.topBar.updateTabPositions();
+        self.homeScreen.resize(w, h);
     };
     window.onresize();
 

@@ -37,4 +37,10 @@ function HomeScreen(happyEdit) {
     self.keyDown = function(event) {
         self.explorer.keyDown(event);
     };
+    
+    self.resize = function(w, h) {
+        var controlsHeight = self.$controls.offsetHeight;
+        self.explorer.$view.style.width = w + 'px';
+        self.explorer.$view.style.height = (h - controlsHeight) + 'px';
+    };
 }
