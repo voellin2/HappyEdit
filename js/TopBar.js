@@ -150,17 +150,10 @@ function TopBar(happyEdit) {
         return self.tabs[i + 1];
     };
 
-    self.updateView = function(pane) {
-        var tab = self.getTabForPane(pane);
-        
-        if (tab === undefined) {
-            tab = new Tab(pane, happyEdit);
-            self.tabs.push(tab);
-            self.$tabs.appendChild(tab.$view);
-        }
-        
-        self.selectTab(tab);
-        
+    self.addTabForPane = function(pane) {
+        var tab = new Tab(pane, happyEdit);
+        self.tabs.push(tab);
+        self.$tabs.appendChild(tab.$view);
         self.updateTabPositions();
     };
 

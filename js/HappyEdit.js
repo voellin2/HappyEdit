@@ -126,7 +126,7 @@ function HappyEdit(dataStore) {
         }
     };
 
-    self.switchPane = function(pane, updateTabs) {
+    self.switchPane = function(pane) {
         if (self.currentPane) {
             self.currentPane.blur();
         }
@@ -134,9 +134,8 @@ function HappyEdit(dataStore) {
         self.currentPane = pane;
         self.currentPane.focus();
 
-        if (updateTabs || updateTabs === undefined) {
-            self.topBar.updateView(pane);
-        }
+        var tab = self.topBar.getTabForPane(pane);
+        self.topBar.selectTab(tab);
 
         self.eventSystem.callEventListeners('file_changed', pane);
     };
@@ -196,6 +195,7 @@ function HappyEdit(dataStore) {
     self.createBuffer = function(filename, body) {
         var buffer = new Buffer(self, filename, body);
         self.openPanes[buffer.id] = buffer;
+        self.topBar.addTabForPane(buffer);
         return buffer;
     };
 
@@ -231,6 +231,7 @@ function HappyEdit(dataStore) {
     self.openFileExplorer = function() {
         if (!self.openPanes.hasOwnProperty(self.explorer.id)) {
             self.openPanes[self.explorer.id] = self.explorer;
+            self.topBar.addTabForPane(self.explorer);
         }
         self.switchPane(self.explorer);
     };
@@ -238,6 +239,7 @@ function HappyEdit(dataStore) {
     self.showGrepResults = function(q) {
         if (!self.openPanes.hasOwnProperty(self.grepView.id)) {
             self.openPanes[self.grepView.id] = self.grepView;
+            self.topBar.addTabForPane(self.grepView);
         }
         self.grepView.load(q);
         self.switchPane(self.grepView);
@@ -246,6 +248,7 @@ function HappyEdit(dataStore) {
     self.showStartScreen = function(q) {
         if (!self.openPanes.hasOwnProperty(self.startScreen.id)) {
             self.openPanes[self.startScreen.id] = self.startScreen;
+            self.topBar.addTabForPane(self.startScreen);
         }
         self.switchPane(self.startScreen);
     };
