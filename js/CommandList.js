@@ -114,31 +114,6 @@ function CommandList(happyEdit) {
             }
         },
         {
-            name: "deleteProject",
-            alias: [],
-            title: "Delete current project",
-            callback: function(args, callback) {
-                var project = happyEdit.projectManager.getCurrentProject();
-                
-                if (!project) {
-                    throw "There is no current project";
-                }
-                
-                happyEdit.projectManager.removeProject(project.host);
-                happyEdit.projectManager.disconnect();
-                callback();
-            }
-        },
-        {
-            name: "start",
-            alias: ["projects", "new"],
-            title: "Show Start Screen",
-            callback: function(args, callback) {
-                happyEdit.showStartScreen();
-                callback();
-            }
-        },
-        {
             name: "openFile",
             alias: [],
             title: "Quick Open File",
@@ -233,28 +208,6 @@ function CommandList(happyEdit) {
             },
             callback: function(args, callback) {
                 happyEdit.closePane(happyEdit.currentPane);
-                callback();
-            }
-        },
-        {
-            name: "openMenu",
-            alias: [],
-            title: "Open Menu",
-            callback: function(args, callback) {
-                happyEdit.menu.show();
-                callback();
-            }
-        },
-        {
-            name: "explore",
-            alias: [],
-            title: "Open File Browser",
-            shortcut: {
-                win: "Ctrl-E",
-                mac: "Command-E",
-            },
-            callback: function(args, callback) {
-                happyEdit.openFileExplorer();
                 callback();
             }
         },
