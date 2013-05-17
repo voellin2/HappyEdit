@@ -219,9 +219,11 @@ function HappyEdit(dataStore) {
         });
     };
 
-    self.openRemoteFile = function(filename, lineNumber) {
+    self.openRemoteFile = function(filename, lineNumber, switchPane) {
         self.getOrLoadRemoteFile(filename, lineNumber, function(buffer) {
-            self.switchPane(buffer);
+            if (switchPane !== false) {
+                self.switchPane(buffer);
+            }
             if (lineNumber) {
                 self.editor.gotoLine(lineNumber);
             }

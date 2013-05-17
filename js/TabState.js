@@ -33,7 +33,7 @@ function TabState(happyEdit) {
         }
         
         tabs.forEach(function(filename) {
-            happyEdit.openRemoteFile(filename);
+            happyEdit.openRemoteFile(filename, 0, false);
         });
     };
     
