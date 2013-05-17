@@ -1,17 +1,11 @@
 function Explorer(happyEdit) {
     var self = this;
-    self.sticky = true;
-    self.id = Utils.count();
     self.$view = document.getElementById('explorer');
     self.list = new SelectableList({
         $parent: self.$view,
         hover: false
     });
     
-    self.isDummy = function() {
-        return false;
-    };
-
     self.addProjectsColumn = function() {
         var col = new ProjectsColumn(self, happyEdit);
         
@@ -41,25 +35,6 @@ function Explorer(happyEdit) {
         for (i = 0; i < count; i += 1) {
             self.list.removeItemAtIndex(self.list.getLength() - 1);
         }
-    };
-    
-    self.getTabLabel = function() {
-        return 'Explore';
-    };
-    
-    self.onChange = function(callback) {
-    };
-    
-    self.blur = function() {
-        self.$view.style.display = 'none';
-        happyEdit.$editor.style.display = 'block';
-        happyEdit.popTabSpecificKeyboardHandler();
-    };
-
-    self.focus = function() {
-        self.$view.style.display = 'block';
-        happyEdit.$editor.style.display = 'none';
-        happyEdit.pushTabSpecificKeyboardHandler(self.keyDown);
     };
     
     self.keyDown = function(event) {

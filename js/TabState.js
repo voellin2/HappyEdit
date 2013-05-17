@@ -28,7 +28,7 @@ function TabState(happyEdit) {
         }
         
         if (tabs.length === 0) {
-            happyEdit.openFileExplorer();
+            happyEdit.openHomeScreen();
             return;
         }
         

@@ -20,7 +20,7 @@ function HappyEdit(dataStore) {
     self.tabState = new TabState(self);
     self.commandT = new CommandT(self.eventSystem, self.fileSystem);
     self.tabSpecificKeyboardHandlers = [];
-    self.explorer = new Explorer(self);
+    self.homeScreen = new HomeScreen(self);
     self.grepView = new GrepView(self);
     self.startScreen = new StartScreen(self);
     self.globalCommandManager = new GlobalCommandManager(self);
@@ -45,8 +45,8 @@ function HappyEdit(dataStore) {
         self.$editor.style.width = w + 'px';
         self.$editor.style.height = h + 'px';
 
-        self.explorer.$view.style.width = w + 'px';
-        self.explorer.$view.style.height = h + 'px';
+        self.homeScreen.$view.style.width = w + 'px';
+        self.homeScreen.$view.style.height = h + 'px';
 
         self.grepView.$view.style.width = w + 'px';
         self.grepView.$view.style.height = h + 'px';
@@ -142,7 +142,7 @@ function HappyEdit(dataStore) {
 
     self.reset = function() {
         self.openPanes = {};
-        self.openPanes[self.explorer.id] = self.explorer;
+        self.openPanes[self.homeScreen.id] = self.homeScreen;
         self.topBar.reset();
     };
     
@@ -230,12 +230,12 @@ function HappyEdit(dataStore) {
         });
     };
 
-    self.openFileExplorer = function() {
-        if (!self.openPanes.hasOwnProperty(self.explorer.id)) {
-            self.openPanes[self.explorer.id] = self.explorer;
-            self.topBar.addTabForPane(self.explorer);
+    self.openHomeScreen = function() {
+        if (!self.openPanes.hasOwnProperty(self.homeScreen.id)) {
+            self.openPanes[self.homeScreen.id] = self.homeScreen;
+            self.topBar.addTabForPane(self.homeScreen);
         }
-        self.switchPane(self.explorer);
+        self.switchPane(self.homeScreen);
     };
 
     self.showGrepResults = function(q) {
@@ -271,7 +271,7 @@ function HappyEdit(dataStore) {
     };
     
     self.server.reconnect();
-    self.openFileExplorer();
+    self.openHomeScreen();
     self.editor.focus();
 }
 

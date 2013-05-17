@@ -36,6 +36,7 @@
         <script src="js/ExplorerColumn.js" type="text/javascript" charset="utf-8"></script>
         <script src="js/ProjectsColumn.js" type="text/javascript" charset="utf-8"></script>
         <script src="js/Explorer.js" type="text/javascript" charset="utf-8"></script>
+        <script src="js/HomeScreen.js" type="text/javascript" charset="utf-8"></script>
         <script src="js/GlobalCommandManager.js" type="text/javascript" charset="utf-8"></script>
         <script src="js/GrepWorker.js" type="text/javascript" charset="utf-8"></script>
         <script src="js/GrepView.js" type="text/javascript" charset="utf-8"></script>
@@ -75,7 +76,9 @@
 
         <div id="editor"></div>
         
-        <div id="explorer" style="display:none"></div>
+        <div id="home" style="display:none">
+            <div id="explorer"></div>
+        </div>
         
         <div id="grep" style="display:none" class="list-view">
             <input type="search" tabindex="1" />
