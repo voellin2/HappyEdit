@@ -57,41 +57,21 @@ body {
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
     background: rgb(240, 240, 240);
 }
-.popup input,
-.popup textarea,
-.popup .action {
+.command-line input {
     outline: none;
     border: 0;
     background: rgb(220, 220, 220);
     padding: 5px;
     width: 100%;
+    font-size: 22px;
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
-}
-.popup .close {
-    position: absolute;
-    right: 10px;
-    cursor: pointer;
-}
-.popup label {
-    display: block;
-    margin: 10px 0 5px 0;
 }
 .command-line {
     max-height: 70%;
     overflow-y: auto;
     overflow-x: hidden;
-}
-.command-line .loading-animation {
-    position: absolute;
-    top: 25px;
-    right: 15px;
-    display: none;
-}
-.command-line input {
-    width: 100%;
-    font-size: 22px;
 }
 .command-line ul {
     margin: 10px 0 0 0;
@@ -101,7 +81,6 @@ body {
     font-size: 16px;
     position: relative;
 }
-.popup .clickme,
 .command-line li.active {
     background: rgb(93, 52, 249);
     color: white;
