@@ -226,13 +226,6 @@ body {
     cursor: default;
     line-height: 28px;
 }
-body.hide-window-controls #top .controls div,
-body.fullscreen #top .controls {
-    display: none;
-}
-body.fullscreen #top {
-    padding: 0;
-}
 #top .controls div {
     margin-right: 3px;
     vertical-align: top;
@@ -398,4 +391,24 @@ body.fullscreen #top {
 #autocomplete li.active {
     background: rgb(93, 52, 249);
     color: white;
+}
+
+/* FULLSCREEN
+ ******************************************************************************/
+ 
+.fullscreen #top .tabs li {
+    border-top: 0;
+    height: 26px;
+    line-height: 26px;
+    box-shadow: 0;
+}
+.fullscreen #top .tabs li:first-child {
+    border-left: 0;
+}
+.hide-window-controls #top .controls div,
+.fullscreen #top .controls {
+    display: none;
+}
+.fullscreen #top {
+    padding: 0;
 }
