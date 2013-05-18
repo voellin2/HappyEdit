@@ -290,6 +290,7 @@ body.fullscreen #top {
     font-size: 12px;
     font-variant: normal;
     overflow: scroll;
+    border-top: 1px solid #ccc;
 }
 #explorer ul {
     border-right: 1px solid #ccc;
