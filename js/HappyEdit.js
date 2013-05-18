@@ -21,6 +21,7 @@ function HappyEdit(dataStore) {
     self.commandT = new CommandT(self.eventSystem, self.fileSystem);
     self.tabSpecificKeyboardHandlers = [];
     self.homeScreen = new HomeScreen(self);
+    self.settings = new Settings(self);
     self.grepView = new GrepView(self);
     self.startScreen = new StartScreen(self);
     self.globalCommandManager = new GlobalCommandManager(self);
@@ -239,6 +240,14 @@ function HappyEdit(dataStore) {
         self.switchPane(self.homeScreen);
     };
 
+    self.showSettings = function() {
+        if (!self.openPanes.hasOwnProperty(self.settings.id)) {
+            self.openPanes[self.settings.id] = self.settings;
+            self.topBar.addTabForPane(self.settings);
+        }
+        self.switchPane(self.settings);
+    };
+
     self.showGrepResults = function(q) {
         if (!self.openPanes.hasOwnProperty(self.grepView.id)) {
             self.openPanes[self.grepView.id] = self.grepView;
@@ -248,7 +257,7 @@ function HappyEdit(dataStore) {
         self.switchPane(self.grepView);
     };
 
-    self.showStartScreen = function(q) {
+    self.showStartScreen = function() {
         if (!self.openPanes.hasOwnProperty(self.startScreen.id)) {
             self.openPanes[self.startScreen.id] = self.startScreen;
             self.topBar.addTabForPane(self.startScreen);

@@ -5,10 +5,10 @@ function HomeScreen(happyEdit) {
     self.explorer = new Explorer(happyEdit);
     self.$view = document.getElementById('home');
     self.$controls = self.$view.querySelector('.controls');
-    self.$commandLineButton = self.$controls.querySelector('.command-line');
+    self.$settingsButton = self.$controls.querySelector('.settings');
     
-    self.$commandLineButton.onclick = function() {
-        happyEdit.commandLine.show();
+    self.$settingsButton.onclick = function() {
+        happyEdit.showSettings();
     };
     
     self.isDummy = function() {
