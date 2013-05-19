@@ -26,27 +26,6 @@ $ python make.py
 2. Go to Tools -> Extensions, enable the developer mode, then press "Load unpacked extension" select the HAPPYEDIT_CHECKOUT/build/chrome folder.
 3. Open a new tab and click the HappyEdit icon.
 
-**Running HappyEdit within the browser:**
-
-1. In your browser, open HAPPYEDIT_CHECKOUT/build/browser/index.html.
-
-Integrating HappyEdit
----------------------
-
-It's possible to write your own server implementation to, for example, let
-users edit files on your server.
-
-Your server must implement a simple REST interface:
-
- * POST    /login
- * GET     /projects
- * GET     /:project/files
- * GET     /:project/files/:path
- * POST    /:project/files/:path
- * DELETE  /:project/files/:path
-
-See server.py for reference.
-
 JavaScript Code standards:
 --------------------------
 
