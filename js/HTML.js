@@ -50,32 +50,6 @@ var HTML = {
         return $li;
     },
 
-    createMenuOption: function(args) {
-        var callback = args.callback;
-        var $li = document.createElement('li');
-        var $title = document.createElement('span');
-        var $shortcut = document.createElement('span');
-
-        $li.setAttribute('class', args.className);
-
-        $title.setAttribute('class', 'title');
-        $title.innerHTML = args.title,
-        $li.appendChild($title);
-        $li.setAttribute('rel', args.rel);
-        $li.onclick = function() {
-            callback();
-            window.happyEdit.menu.hide();
-        };
-
-        if (args.shortcut) {
-            $shortcut.setAttribute('class', 'shortcut');
-            $shortcut.innerHTML = args.shortcut;
-            $li.appendChild($shortcut);
-        }
-
-        return $li;
-    },
-
     createExplorerItem: function(model) {
         var $li;
         var $icon;
@@ -86,29 +60,23 @@ var HTML = {
 
         $title = document.createElement('span');
         $title.setAttribute('class', 'title');
-        $title.innerHTML = model.filename;
+        $title.innerHTML = model.title;
         $li.appendChild($title);
 
-        if (model.type === 'directory') {
+        if (model.type === 'directory' || model.type === 'project') {
             $icon = document.createElement('span');
             $icon.setAttribute('class', 'icon');
             $li.appendChild($icon);
         }
 
-        if (model.filename[0] === '.') {
+        if (model.title[0] === '.') {
             Utils.addClass($li, 'hidden');
         }
 
         return $li;
     },
     
-    createProjectsList: function() {
-        var $ul = document.createElement('ul');
-        $ul.setAttribute('class', 'list-view');
-        return $ul;
-    },
-    
-    createDirectoryView: function(dir) {
+    createDirectoryView: function() {
         var $ul = document.createElement('ul');
         $ul.setAttribute('class', 'list-view');
         return $ul;
@@ -120,12 +88,6 @@ var HTML = {
         return $li;
     },
 
-    createStartScreenProjectItem: function(model) {
-        var $li = document.createElement('li');
-        $li.innerHTML = model.title;
-        return $li;
-    },
-    
     createAutoCompleteItem: function(word) {
         var $li = document.createElement('li');
         $li.setAttribute('class', 'item');

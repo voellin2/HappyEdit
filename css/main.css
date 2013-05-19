@@ -297,7 +297,8 @@ body {
     vertical-align: middle;
     position: relative;
 }
-#explorer li.directory .icon {
+#explorer li.directory .icon,
+#explorer li.project .icon {
     position: absolute;
     top: 8px;
     right: 5px;

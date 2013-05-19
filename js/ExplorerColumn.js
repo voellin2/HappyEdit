@@ -40,7 +40,7 @@ function ExplorerColumn(explorer, happyEdit, dir, key) {
         list.forEach(function(filename) {
             var model = {
                 path: self.dirname + '/' + filename,
-                filename: filename,
+                title: filename,
                 type: type
             };
             

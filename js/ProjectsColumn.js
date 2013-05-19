@@ -1,7 +1,7 @@
 function ProjectsColumn(explorer, happyEdit) {
     var self = this;
     var eventSystem = happyEdit.eventSystem;
-    self.$view = HTML.createProjectsList();
+    self.$view = HTML.createDirectoryView();
     self.activeIndex = 0;
     self.list = new SelectableList({
         hover: false
@@ -12,7 +12,10 @@ function ProjectsColumn(explorer, happyEdit) {
         self.$view.innerHTML = '';
         
         projects.forEach(function(project) {
-            var $view = HTML.createStartScreenProjectItem(project);
+            var $view = HTML.createExplorerItem({
+                title: project.title,
+                type: 'project'
+            });
             self.list.addItem({
                 model: project,
                 $view: $view
@@ -23,7 +26,7 @@ function ProjectsColumn(explorer, happyEdit) {
         self.list.selectIndex(0);
     });
     
-    self.list.onOpen = function(item) {
+    self.list.onSelect = function(item) {
         var model = item.model;
         happyEdit.projectManager.switchProject(item.model);
     };
