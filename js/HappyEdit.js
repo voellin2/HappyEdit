@@ -23,20 +23,23 @@ function HappyEdit(dataStore) {
     self.homeScreen = new HomeScreen(self);
     self.settings = new Settings(self);
     self.grepView = new GrepView(self);
-    self.startScreen = new StartScreen(self);
+    self.loginScreen= new LoginScreen(self);
     self.globalCommandManager = new GlobalCommandManager(self);
     self.dragAndDropHandler = new DragAndDropHandler(self);
     
     self.eventSystem.addEventListener('connected', function() {
         var $body = document.querySelector('body');
         Utils.addClass($body, 'connected');
+        self.closePane(self.loginScreen, true);
+        self.openHomeScreen();
     });
     
     self.eventSystem.addEventListener('disconnected', function() {
         var $body = document.querySelector('body');
         Utils.removeClass($body, 'connected');
         self.reset();
-        self.showStartScreen();
+        self.closePane(self.homeScreen, true);
+        self.showLoginScreen();
     });
 
     window.onresize = function(event) {
@@ -52,8 +55,8 @@ function HappyEdit(dataStore) {
         self.grepView.$view.style.width = w + 'px';
         self.grepView.$view.style.height = h + 'px';
 
-        self.startScreen.$view.style.width = w + 'px';
-        self.startScreen.$view.style.height = h + 'px';
+        self.loginScreen.$view.style.width = w + 'px';
+        self.loginScreen.$view.style.height = h + 'px';
         
         self.topBar.updateTabPositions();
         self.homeScreen.resize();
@@ -148,12 +151,20 @@ function HappyEdit(dataStore) {
         self.topBar.reset();
     };
     
-    self.closePane = function(pane) {
-        if (pane.sticky === true) {
+    /**
+     * Remove the passed in pane from and close its tab. Set force=true to
+     * force close sticky tabs.
+     */
+    self.closePane = function(pane, force) {
+        if (pane.sticky === true && force !== true) {
             return;
         } 
         
         var tab = self.topBar.getTabForPane(pane);
+        
+        if (!tab) {
+            return;
+        }
         
         if (pane === self.currentPane && self.topBar.getNumberOfTabs() > 1) {
             var sibling = self.topBar.getClosestSibling(tab);
@@ -257,12 +268,12 @@ function HappyEdit(dataStore) {
         self.switchPane(self.grepView);
     };
 
-    self.showStartScreen = function() {
-        if (!self.openPanes.hasOwnProperty(self.startScreen.id)) {
-            self.openPanes[self.startScreen.id] = self.startScreen;
-            self.topBar.addTabForPane(self.startScreen);
+    self.showLoginScreen = function() {
+        if (!self.openPanes.hasOwnProperty(self.loginScreen.id)) {
+            self.openPanes[self.loginScreen.id] = self.loginScreen;
+            self.topBar.addTabForPane(self.loginScreen);
         }
-        self.switchPane(self.startScreen);
+        self.switchPane(self.loginScreen);
     };
 
     self.openDummyBuffer = function() {
@@ -280,8 +291,8 @@ function HappyEdit(dataStore) {
         window.close();
     };
     
+    self.showLoginScreen();
     self.server.reconnect();
-    self.openHomeScreen();
     self.editor.focus();
 }
 

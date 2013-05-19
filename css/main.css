@@ -325,25 +325,18 @@ body {
 /* START SCREEN
 ******************************************************************************/
 
-#start .projects { display: none; }
-#start .connect-dialog { display: block; }
-
-.connected #start .projects { display: block; }
-.connected #start .connect-dialog { display: none; }
-
-#start .connect-dialog p,
-#start .connect-dialog form {
+#login {
     padding: 10px 5px;
 }
 
-#start .connect-dialog label {
-    padding: 10px 5px;
+#login input {
+    padding: 5px;
+    font-size: 14px;
+    margin-bottom: 10px;
     display: block;
-    font-weight: bold;
 }
 
-#start .connect-dialog button {
-    margin-top: 10px;
+#login button {
     display: block;
 }
 

@@ -45,7 +45,7 @@
         <script src="js/AutoSuggestIndexer.js" type="text/javascript" charset="utf-8"></script>
         <script src="js/TabState.js" type="text/javascript" charset="utf-8"></script>
         <script src="js/DragAndDropHandler.js" type="text/javascript" charset="utf-8"></script>
-        <script src="js/StartScreen.js" type="text/javascript" charset="utf-8"></script>
+        <script src="js/LoginScreen.js" type="text/javascript" charset="utf-8"></script>
         <script src="js/HappyEdit.js" type="text/javascript" charset="utf-8"></script>
     </head>
     <body class="$bodyClassNames">
@@ -94,25 +94,11 @@
             <ul tabindex="1"></ul>
         </div>
         
-        <div id="start" style="display:none" class="list-view">
-            <div class="projects">
-                <h1>My projects</h1>
-                <ul class="my-projects"></ul>
-            </div>
-            <div class="connect-dialog">
-                <h1>Login</h1>
-                
-                <label for="host">Host</label>
-                <input type="text" name="host" placeholder="localhost:8888" />
-                
-                <label for="user">User</label>
-                <input type="text" name="user" placeholder="username" />
-                
-                <label for="user">Password</label>
-                <input type="password" name="password" />
-                
-                <button class="connect-button">Login</button>
-            </div>
+        <div id="login" style="display:none" class="list-view">
+            <input type="text" name="host" placeholder="Host"/>
+            <input type="text" name="user" placeholder="Username"/>
+            <input type="password" name="password" placeholder="Password"/>
+            <button class="connect-button">Login</button>
         </div>
 
         <div id="autocomplete" style="display:none">

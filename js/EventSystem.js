@@ -23,6 +23,8 @@ function EventSystem() {
     };
 
     self.callEventListeners = function(type, data) {
+        console.log(type, data);
+        
         var i,
             fn,
             handlers = self.listeners[type];

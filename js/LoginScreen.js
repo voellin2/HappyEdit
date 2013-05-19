@@ -1,14 +1,20 @@
-function StartScreen(happyEdit) {
+function LoginScreen(happyEdit) {
     var self = this;
-    self.$view = document.querySelector('#start');
-    self.$projects = self.$view.querySelector('.projects');
-    self.$connectButton = self.$view.querySelector('.connect-button');
+    var eventSystem = happyEdit.eventSystem;
+    
+    self.sticky = true;
+    self.$view = document.querySelector('#login');
+    self.$button = self.$view.querySelector('.connect-button');
     self.id = Utils.count();
     
-    self.$connectButton.onclick = function(event) {
-        var host = self.$view.querySelector('input[name=host]').value;
-        var user = self.$view.querySelector('input[name=user]').value;
-        var password = self.$view.querySelector('input[name=password]').value;
+    self.$host = self.$view.querySelector('input[name=host]');
+    self.$user = self.$view.querySelector('input[name=user]');
+    self.$password = self.$view.querySelector('input[name=password]');
+    
+    self.$button.onclick = function(event) {
+        var host = self.$host.value;
+        var user = self.$user.value;
+        var password = self.$password.value;
         
         if (!host) {
             happyEdit.notifications.show('A host must be provided.');
@@ -37,16 +43,21 @@ function StartScreen(happyEdit) {
         event.preventDefault();
     };
     
-    var eventSystem = happyEdit.eventSystem;
-    
     eventSystem.addEventListener('disconnected', function() {
+        self.reset();
     });
+    
+    self.reset = function() {
+        self.$host.value = '';
+        self.$user.value = '';
+        self.$password.value = '';
+    };
 
     self.keyDown = function(event) {
     };
     
     self.getTabLabel = function() {
-        return 'Start';
+        return 'Login';
     };
     
     self.onChange = function(callback) {
@@ -62,5 +73,6 @@ function StartScreen(happyEdit) {
         self.$view.style.display = 'block';
         happyEdit.$editor.style.display = 'none';
         happyEdit.pushTabSpecificKeyboardHandler(self.keyDown);
+        self.$host.focus();
     };
 }
