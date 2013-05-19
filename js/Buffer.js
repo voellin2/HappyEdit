@@ -23,11 +23,13 @@ function Buffer(happyEdit, filename, body) {
 
     self.focus = function() {
         happyEdit.editor.setSession(self.session);
+        happyEdit.editor.show();
         happyEdit.editor.focus();
     };
 
     self.blur = function() {
         happyEdit.editor.blur();
+        happyEdit.editor.hide();
     };
 
     self.callOnChangeListeners = function() {

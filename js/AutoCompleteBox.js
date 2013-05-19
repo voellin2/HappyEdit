@@ -33,23 +33,6 @@ function AutoCompleteBox(happyEdit) {
     self.keyboardHandler = new HashHandler();
     self.keyboardHandler.bindKeys(self.commands);
     
-    /**
-     * From https://gist.github.com/rnetocombr/3789861
-     */
-    function getWordAtLeft() {
-        var word;
-        var range;
-        var pos = editor.getCursorPosition();
-        
-        editor.selection.selectWordLeft();
-        range = editor.selection.getRange();
-        word = editor.session.getDocument().getTextRange(range);
-        editor.selection.clearSelection();
-        editor.moveCursorTo(pos.row, pos.column);
-
-        return word || '';
-    }
-    
     self.insertMatch = function() {
         var text = self.list.getSelectedItem().model;
         self.hide();
@@ -58,10 +41,8 @@ function AutoCompleteBox(happyEdit) {
     };
     
     self.updatePosition = function() {
-        var cursor = editor.getCursorPosition();
-        var coords = editor.renderer.textToScreenCoordinates(cursor.row, cursor.column);
-        var lineHeight = editor.renderer.layerConfig.lineHeight;
-
+        var coords = editor.getCursorScreenCoordinates();
+        var lineHeight = editor.getLineHeight();
         self.$view.style.top = coords.pageY + lineHeight + 'px';
         self.$view.style.left = coords.pageX + 'px';
     };
@@ -79,14 +60,14 @@ function AutoCompleteBox(happyEdit) {
     };
     
     self.attachKeyboardHandler = function() {
-        editor.keyBinding.addKeyboardHandler(self.keyboardHandler);
+        editor.addKeyboardHandler(self.keyboardHandler);
         editor.on("changeSelection", self.changeSelectionListener);
         editor.on("blur", self.blurListener);
         editor.on("mousedown", self.mousedownListener);
     };
     
     self.detachKeyboardHandler = function() {
-        editor.keyBinding.removeKeyboardHandler(self.keyboardHandler);
+        editor.removeKeyboardHandler(self.keyboardHandler);
         editor.removeEventListener("changeSelectionListener", self.changeSelectionListener);
         editor.removeEventListener("blur", self.blurListener);
         editor.removeEventListener("mousedown", self.mousedownListener);
@@ -121,7 +102,7 @@ function AutoCompleteBox(happyEdit) {
     };
     
     self.show = function() {
-        var word = getWordAtLeft();
+        var word = editor.getWordAtLeft();
         var matches = self.getMatches(word);
         if (matches.length) {
             self.populateList(matches);

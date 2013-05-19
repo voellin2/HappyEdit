@@ -3,13 +3,12 @@ function HappyEdit(dataStore) {
     
     self.currentPane;
     self.openPanes = {};
-    self.editor = ace.edit("editor");
-    self.$editor = document.getElementById('editor');
     self.config = require('ace/config');
     
     self.dataStore = dataStore;
     self.eventSystem = new EventSystem();
     self.notifications = new Notifications(self);
+    self.editor = new Editor(self);
     self.server = new Server(self);
     self.commands = new CommandList(self);
     self.commandLine = new CommandLine(self);
@@ -46,8 +45,7 @@ function HappyEdit(dataStore) {
         var w = window.innerWidth;
         var h = window.innerHeight - document.querySelector('#top').offsetHeight;
 
-        self.$editor.style.width = w + 'px';
-        self.$editor.style.height = h + 'px';
+        self.editor.resize(w, h);
 
         self.homeScreen.$view.style.width = w + 'px';
         self.homeScreen.$view.style.height = h + 'px';
@@ -82,54 +80,29 @@ function HappyEdit(dataStore) {
         self.tabSpecificKeyboardHandlers.pop();
     };
 
-    self.editor.setKeyboardHandler(require("ace/keyboard/vim").handler);
-    self.editor.setAnimatedScroll(true);
-
     self.commands.each(function(command) {
         if (command.global) {
             self.globalCommandManager.addCommand(command);
         } else if (command.shortcut) {
-            self.editor.commands.addCommand({ name: command.name,
-                bindKey: {
-                    win: command.shortcut.win,
-                    mac: command.shortcut.mac,
-                    sender: "editor"
-                },
-                exec: function(aceEditor) {
-                    // We wrap this function call because Ace sends
-                    // in the Editor object as the argument otherwise.
-                    command.callback(null, function(error) {
-                        if (error) {
-                            // TODO display error some way.
-                            console.log('Error: ', error);
-                        }
-                    });
-                }
-            });
+            self.editor.addCommand(command);
         }
     });
 
-    self.editor.getKeyboardHandler().actions[':'] = {
-        fn: function(editor, range, count, param) {
-            self.commandLine.show();
-        }
-    };
+    self.editor.bind(':', function() {
+        self.commandLine.show();
+    });
 
-    self.editor.getKeyboardHandler().actions['/'] = {
-        fn: function(editor, range, count, param) {
-            self.config.loadModule('ace/ext/searchbox', function(e) {
-                e.Search(self.editor);
-            });
-        }
-    };
+    self.editor.bind('/', function() {
+        self.config.loadModule('ace/ext/searchbox', function(e) {
+            e.Search(self.editor);
+        });
+    });
 
-    self.editor.getKeyboardHandler().actions['?'] = {
-        fn: function(editor, range, count, param) {
-            self.config.loadModule('ace/ext/searchbox', function(e) {
-                e.Search(self.editor);
-            });
-        }
-    };
+    self.editor.bind('?', function() {
+        self.config.loadModule('ace/ext/searchbox', function(e) {
+            e.Search(self.editor);
+        });
+    });
 
     self.switchPane = function(pane) {
         if (self.currentPane) {
@@ -279,12 +252,6 @@ function HappyEdit(dataStore) {
     self.openDummyBuffer = function() {
         var buffer = self.createBuffer(null, '');
         self.switchPane(buffer);
-    };
-    
-    self.getSelection = function() {
-        var range = self.editor.selection.getRange();
-        var txt = self.editor.session.getDocument().getTextRange(range);
-        return txt;
     };
     
     self.exit = function() {

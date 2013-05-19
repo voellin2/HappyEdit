@@ -93,13 +93,11 @@ function GrepView(happyEdit) {
     
     self.blur = function() {
         self.$view.style.display = 'none';
-        happyEdit.$editor.style.display = 'block';
         happyEdit.popTabSpecificKeyboardHandler();
     };
 
     self.focus = function() {
         self.$view.style.display = 'block';
-        happyEdit.$editor.style.display = 'none';
         happyEdit.pushTabSpecificKeyboardHandler(self.keyDown);
     };
 }
