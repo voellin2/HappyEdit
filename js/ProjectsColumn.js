@@ -8,6 +8,9 @@ function ProjectsColumn(explorer, happyEdit) {
     });
     
     eventSystem.addEventListener('projects_loaded', function(projects) {
+        self.list.clear();
+        self.$view.innerHTML = '';
+        
         projects.forEach(function(project) {
             var $view = HTML.createStartScreenProjectItem(project);
             self.list.addItem({
@@ -16,6 +19,7 @@ function ProjectsColumn(explorer, happyEdit) {
             });
             self.$view.appendChild($view);
         });
+        
         self.list.selectIndex(0);
     });
     
