@@ -60,6 +60,16 @@ function HappyEdit(dataStore) {
     window.onresize();
 
     window.onkeydown = function(event) {
+        if (event.metaKey && event.shiftKey && event.keyCode === 219) {
+            self.topBar.prevTab();
+            event.stopPropagation();
+            return;
+        } else if (event.metaKey && event.shiftKey && event.keyCode === 221) {
+            self.topBar.nextTab();
+            event.stopPropagation();
+            return;
+        }
+
         if (self.commandLine.isVisible) {
             self.commandLine.$input.focus();
             return;
