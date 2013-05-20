@@ -3,6 +3,7 @@ function Editor(happyEdit) {
     
     self.$editor = document.getElementById('editor');
     self.cm = CodeMirror(self.$editor, {
+        styleActiveLine: true,
         lineNumbers: true,
         keyMap: "vim",
         showCursorWhenSelecting: true

@@ -1,3 +1,6 @@
+.CodeMirror-activeline-background {
+    background: rgba(0, 0, 0, 0.07) !important;
+}
 h2,
 ul {
     margin: 0;
