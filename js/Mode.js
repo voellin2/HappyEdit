@@ -13,13 +13,13 @@ var scriptTypes = [
 ];
 
 var modes = [
-    new Mode({name:'htmlmixed', scriptTypes: scriptTypes, startState: 'vbscript'}, ['html', 'htm']),
+    new Mode({name:'htmlmixed', scriptTypes: scriptTypes}, ['html', 'htm']),
     new Mode({name:'css'}, ['css']),
     new Mode({name: 'javascript'}, ['js']),
     new Mode({name: 'python'}, ['py']),
     new Mode({name: 'php'}, ['php']),
-    new Mode({name: 'ruby'}, ['ruby']),
-    new Mode({name: 'markdown'}, ['markdown']),
+    new Mode({name: 'ruby'}, ['rb']),
+    new Mode({name: 'markdown'}, ['md']),
     new Mode({name: 'go'}, ['go']),
 ];
 
