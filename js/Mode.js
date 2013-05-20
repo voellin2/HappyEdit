@@ -1,9 +1,5 @@
-var Mode = function(name, desc, clazz, extensions) {
-    this.name = name;
-    this.desc = desc;
-    this.clazz = clazz;
-    this.mode = new clazz();
-    this.mode.name = name;
+var Mode = function(mode, extensions) {
+    this.mode = mode;
     this.extRe = new RegExp("^.*\\.(" + extensions.join("|") + ")$", "g");
 };
 
@@ -11,16 +7,35 @@ Mode.prototype.supportsFile = function(filename) {
     return filename.match(this.extRe);
 };
 
-var modes = [
-    new Mode("text", "Text", require("ace/mode/text").Mode, ["txt"]),
-    new Mode("html", "HTML", require("ace/mode/html").Mode, ["html", "htm"]),
-    new Mode("css", "CSS", require("ace/mode/css").Mode, ["css"]),
-    new Mode("javascript", "JavaScript", require("ace/mode/javascript").Mode, ["js"]),
-    new Mode("json", "JSON", require("ace/mode/json").Mode, ["json"]),
-    new Mode("python", "Python", require("ace/mode/python").Mode, ["py"]),
-    new Mode("ruby", "Ruby", require("ace/mode/ruby").Mode, ["rb"]),
-    new Mode("php", "PHP",require("ace/mode/php").Mode, ["php"]),
-    new Mode("text", "Text", require("ace/mode/text").Mode, ["txt"]),
-    new Mode("diff", "Diff", require("ace/mode/diff").Mode, ["diff"]),
-    new Mode("markdown", "Markdown", require("ace/mode/markdown").Mode, ["md"])
+var scriptTypes = [
+    {matches: /\/x-handlebars-template|\/x-mustache/i, mode: null},
+    {matches: /(text|application)\/(x-)?vb(a|script)/i, mode: 'vbscript'}
 ];
+
+var modes = [
+    new Mode({name:'htmlmixed', scriptTypes: scriptTypes, startState: 'vbscript'}, ['html', 'htm']),
+    new Mode({name:'css'}, ['css']),
+    new Mode({name: 'javascript'}, ['js']),
+    new Mode({name: 'python'}, ['py']),
+    new Mode({name: 'php'}, ['php']),
+    new Mode({name: 'ruby'}, ['ruby']),
+    new Mode({name: 'markdown'}, ['markdown']),
+    new Mode({name: 'go'}, ['go']),
+];
+
+function getMode(filename) {
+    var mode;
+
+    if (!filename) {
+        return null;
+    }
+
+    for (var i = 0; i < window.modes.length; i += 1) {
+        mode = modes[i];
+        if (mode.supportsFile(filename)) {
+            return mode.mode;
+        }
+    }
+
+    return null;
+};

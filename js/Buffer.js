@@ -1,5 +1,3 @@
-var EditSession = require('ace/edit_session').EditSession;
-var UndoManager = require('ace/undomanager').UndoManager;
 var PATH_SEPARATOR = '/';
 
 function Buffer(happyEdit, filename, body) {
@@ -9,12 +7,11 @@ function Buffer(happyEdit, filename, body) {
     self.displayPath = null;
     self.basename = null;
     self.dirname = null;
-    self.session = new EditSession(body || '');
-    self.session.setUndoManager(new UndoManager());
+    self.doc = new CodeMirror.Doc(body, window.getMode(filename));
     self.onChangeListeners = [];
 
     self.isDummy = function() {
-        return !self.filename && !self.session.getValue();
+        return !self.filename && !self.getBody();
     };
 
     self.onChange = function(callback) {
@@ -22,7 +19,7 @@ function Buffer(happyEdit, filename, body) {
     };
 
     self.focus = function() {
-        happyEdit.editor.setSession(self.session);
+        happyEdit.editor.setBuffer(self);
         happyEdit.editor.show();
         happyEdit.editor.focus();
     };
@@ -37,19 +34,6 @@ function Buffer(happyEdit, filename, body) {
         for (i = 0; i < self.onChangeListeners.length; i += 1) {
             self.onChangeListeners[i](self);
         }
-    };
-
-    self.getMode = function() {
-        var mode = window.modes[0];
-        if (self.filename) {
-            for (var i = 0; i < window.modes.length; i += 1) {
-                if (modes[i].supportsFile(self.filename)) {
-                    mode = modes[i];
-                    break;
-                }
-            }
-        }
-        return mode.mode;
     };
 
     self.getTabLabel = function() {
@@ -72,23 +56,16 @@ function Buffer(happyEdit, filename, body) {
             self.basename = null;
             self.dirname = null;
         }
-        self.session.setMode(self.getMode());
-
-        if (self.session.getMode().name === 'text') {
-            self.session.setUseWrapMode(true);
-        } else {
-            self.session.setUseWrapMode(false);
-        }
 
         self.callOnChangeListeners();
     };
 
     self.setBody = function(body) {
-        self.session.setValue(body);
+        self.doc.setValue(body);
     };
 
     self.getBody = function(body) {
-        return self.session.getValue(body);
+        return self.doc.getValue();
     };
     
     self.rename(filename);

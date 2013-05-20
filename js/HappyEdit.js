@@ -3,7 +3,6 @@ function HappyEdit(dataStore) {
     
     self.currentPane;
     self.openPanes = {};
-    self.config = require('ace/config');
     
     self.dataStore = dataStore;
     self.eventSystem = new EventSystem();
@@ -12,7 +11,6 @@ function HappyEdit(dataStore) {
     self.server = new Server(self);
     self.commands = new CommandList(self);
     self.commandLine = new CommandLine(self);
-    self.autoCompleter = new AutoCompleteBox(self);
     self.topBar = new TopBar(self);
     self.fileSystem = new FileSystem(self.eventSystem, self.notifications);
     self.projectManager = new ProjectManager(self);
@@ -90,18 +88,6 @@ function HappyEdit(dataStore) {
 
     self.editor.bind(':', function() {
         self.commandLine.show();
-    });
-
-    self.editor.bind('/', function() {
-        self.config.loadModule('ace/ext/searchbox', function(e) {
-            e.Search(self.editor);
-        });
-    });
-
-    self.editor.bind('?', function() {
-        self.config.loadModule('ace/ext/searchbox', function(e) {
-            e.Search(self.editor);
-        });
     });
 
     self.switchPane = function(pane) {

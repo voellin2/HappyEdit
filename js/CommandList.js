@@ -220,19 +220,6 @@ function CommandList(happyEdit) {
                 callback();
             }
         },
-        {
-            name: "autocomplete",
-            alias: [],
-            title: "Autocomplete current word",
-            shortcut: {
-                win: "Ctrl-Space",
-                mac: "Ctrl-Space",
-            },
-            callback: function(args, callback) {
-                happyEdit.autoCompleter.show();
-                callback();
-            }
-        }
     ];
 
     self.filterList = new FilterList(self._commands.map(function(x) {
