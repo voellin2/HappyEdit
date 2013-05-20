@@ -7,6 +7,10 @@ function Editor(happyEdit) {
         keyMap: "vim",
         showCursorWhenSelecting: true
     });
+    
+    self.cm.getWrapperElement().style["font-family"] = "'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace";
+    self.cm.getWrapperElement().style["line-height"] = "normal";
+    self.cm.getWrapperElement().style["font-size"] = "12px";
 
     self.addCommand = function(command) {
     };
