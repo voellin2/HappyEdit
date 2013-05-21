@@ -22,7 +22,7 @@ function Buffer(happyEdit, filename, body) {
     };
 
     self.focus = function() {
-        happyEdit.editor.setSession(self.session);
+        happyEdit.editor.setBuffer(self);
         happyEdit.editor.show();
         happyEdit.editor.focus();
     };

@@ -104,8 +104,8 @@ function Editor(happyEdit) {
         self.ace.gotoLine(lineNumber);
     };
     
-    self.setSession = function(session) {
-        self.ace.setSession(session);
+    self.setBuffer = function(buffer) {
+        self.ace.setSession(buffer.session);
     };
     
     self.focus = function() {
