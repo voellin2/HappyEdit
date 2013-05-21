@@ -66,7 +66,16 @@ function HappyEdit(dataStore) {
             self.commandLine.$input.focus();
             return;
         }
+        
+        if (event.keyCode === 186 && event.shiftKey && self.currentPane.constructor !== Buffer) {
+            event.stopPropagation();
+            event.preventDefault();
+            self.commandLine.show();
+            return;
+        }
+        
         var len = self.tabSpecificKeyboardHandlers.length;
+        
         if (len) {
             self.tabSpecificKeyboardHandlers[len-1](event);
         }
@@ -87,7 +96,7 @@ function HappyEdit(dataStore) {
             self.editor.addCommand(command);
         }
     });
-
+    
     self.editor.bind(':', function() {
         self.commandLine.show();
     });

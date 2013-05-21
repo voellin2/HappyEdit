@@ -114,20 +114,6 @@ function CommandList(happyEdit) {
             }
         },
         {
-            name: "openFile",
-            alias: [],
-            title: "Quick Open File",
-            global: true,
-            shortcut: {
-                win: "Ctrl-T",
-                mac: "Command-T",
-            },
-            callback: function(args, callback) {
-                happyEdit.commandLine.show();
-                callback();
-            }
-        },
-        {
             name: "grep",
             alias: ["search", "find"],
             title: "Search in all files",
