@@ -2,7 +2,7 @@ function Editor(happyEdit) {
     var self = this;
     
     self.ace = ace.edit("editor");
-    self.$editor = document.getElementById('editor');
+    self.$view = document.getElementById('editor');
 
     self.ace.setKeyboardHandler(require("ace/keyboard/vim").handler);
     self.ace.setAnimatedScroll(true);
@@ -43,16 +43,16 @@ function Editor(happyEdit) {
     };
 
     self.show = function() {
-        self.$editor.style.display = 'block';
+        self.$view.style.display = 'block';
     };
     
     self.hide = function() {
-        self.$editor.style.display = 'none';
+        self.$view.style.display = 'none';
     };
     
     self.resize = function(w, h) {
-        self.$editor.style.width = w + 'px';
-        self.$editor.style.height = h + 'px';
+        self.$view.style.width = w + 'px';
+        self.$view.style.height = h + 'px';
     };
     
     /**
