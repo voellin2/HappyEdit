@@ -212,6 +212,11 @@ function CommandLine(happyEdit) {
         
         results.forEach(function(suggestion) {
             var command = commandList.getCommandByName(suggestion);
+            
+            if (command.hideFromCommandLine === true) {
+                return true;
+            }
+            
             ret.push({
                 type: 'command',
                 title: command.name,

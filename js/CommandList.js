@@ -2,6 +2,21 @@ function CommandList(happyEdit) {
     var self = this;
     self._commands = [
         {
+            name: "openCommandLine",
+            title: "Open the command line",
+            alias: [],
+            hideFromCommandLine: true,
+            global: true,
+            shortcut: {
+                win: "Ctrl-T",
+                mac: "Command-T",
+            },
+            callback: function(args, callback) {
+                happyEdit.commandLine.show();
+                callback();
+            }
+        },
+        {
             name: "fullscreen",
             title: "Toggle fullscreen",
             alias: [],
