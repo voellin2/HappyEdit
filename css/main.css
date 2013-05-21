@@ -394,7 +394,7 @@ body {
     border-top: 0;
     height: 26px;
     line-height: 26px;
-    box-shadow: 0;
+    box-shadow: none;
 }
 .fullscreen #top .tabs li:first-child {
     border-left: 0;
