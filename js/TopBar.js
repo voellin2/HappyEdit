@@ -126,18 +126,25 @@ function TopBar(happyEdit) {
     };
     
     self.updateTabPositions = function() {
-        var tabWidth = self.calculateTabWidth();
-        var x;
+        var standardTabWidth = self.calculateTabWidth();
+        var x = 0;
 
         self.tabs.forEach(function(tab, i) {
+            var tabWidth = standardTabWidth;
+            
+            if (tab.pane.tabCssClass === 'home') {
+                tabWidth = 60;
+            }
+            
             tab.$view.style.width = tabWidth  + 'px';
+            
             if (!Utils.hasClass(tab.$view, 'drag')) {
-                x = i * tabWidth;
                 Utils.moveX(tab.$view, x);
+                x += tabWidth;
             }
         });
         
-        self.$tabs.style.width = self.tabs.length * tabWidth + 'px';
+        self.$tabs.style.width = x + 'px';
     };
     
     self.getClosestSibling = function(tab) {
