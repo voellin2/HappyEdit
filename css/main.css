@@ -167,6 +167,10 @@ body {
     z-index: 2;
 }
 #top .tabs li .close {
+    display: none;
+}
+#top .tabs li:hover .close {
+    display: block;
     position: absolute;
     top: 0;
     right: 5px;
