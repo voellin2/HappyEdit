@@ -133,13 +133,8 @@ function CommandList(happyEdit) {
             alias: ["search", "find"],
             title: "Search in all files",
             callback: function(args, callback) {
-                var selection = happyEdit.getSelection();
-                
-                if (!args && !selection) {
-                    throw "A search query must be provided.";
-                }
-                
-                happyEdit.showGrepResults(args || selection);
+                var selection = happyEdit.editor.getSelection();
+                happyEdit.showGrepResults(args || selection || null);
                 callback();
             }
         },

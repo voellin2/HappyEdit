@@ -1,4 +1,4 @@
-function GrepView(happyEdit) {
+    function GrepView(happyEdit) {
     var self = this;
     self.id = Utils.count();
     self.list = new SelectableList();
@@ -62,8 +62,10 @@ function GrepView(happyEdit) {
     self.load = function(q) {
         self.reset();
         self.$input.value = q;
-        self.worker.findInAllFiles(q, self.progressCallback, self.matchFoundCallback);
-        self.$input.blur();
+        
+        if (q) {
+            self.worker.findInAllFiles(q, self.progressCallback, self.matchFoundCallback);
+        }
     };
     
     self.reset = function() {
@@ -99,5 +101,11 @@ function GrepView(happyEdit) {
     self.focus = function() {
         self.$view.style.display = 'block';
         happyEdit.pushTabSpecificKeyboardHandler(self.keyDown);
+        
+        if (self.$input.value) {
+            self.$input.blur();
+        } else {
+            self.$input.focus();
+        }
     };
 }
