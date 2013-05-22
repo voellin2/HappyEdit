@@ -22,6 +22,10 @@ var HTML = {
             Utils.addClass($view, 'sticky');
         }
         
+        if (pane.tabCssClass) {
+            Utils.addClass($view, pane.tabCssClass);
+        }
+        
         return $view;
     },
     

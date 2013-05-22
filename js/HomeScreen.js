@@ -1,6 +1,7 @@
 function HomeScreen(happyEdit) {
     var self = this;
     self.sticky = true;
+    self.tabCssClass= 'home';
     self.id = Utils.count();
     self.explorer = new Explorer(happyEdit);
     self.$view = document.getElementById('home');
