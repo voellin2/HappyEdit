@@ -67,7 +67,10 @@ function HappyEdit(dataStore) {
             return;
         }
         
-        if (event.keyCode === 186 && event.shiftKey && self.currentPane.constructor !== Buffer) {
+        if (event.keyCode === 186 && event.shiftKey &&
+            self.currentPane.constructor !== Buffer &&
+            self.currentPane.constructor !== LoginScreen) {
+                
             event.stopPropagation();
             event.preventDefault();
             self.commandLine.show();
