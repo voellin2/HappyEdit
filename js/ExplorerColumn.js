@@ -4,7 +4,8 @@ function ExplorerColumn(explorer, happyEdit, dir, key) {
     self.activeIndex = 0;
     self.dirname = key;
     self.list = new SelectableList({
-        hover: false
+        hover: false,
+        autoSuggestFirst: false
     });
     
     self.list.onSelect = function(item) {

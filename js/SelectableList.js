@@ -13,6 +13,7 @@ function SelectableList(args) {
     
     var defaults = {
         $parent: null,
+        autoSuggestFirst: true,
         hover: true
     };
     
@@ -62,6 +63,10 @@ function SelectableList(args) {
         
         if (self.$parent) {
             self.$parent.appendChild(item.$view);
+        }
+        
+        if (args.autoSuggestFirst && self.getLength() === 1) {
+            self.selectIndex(0);
         }
     };
     

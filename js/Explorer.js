@@ -75,5 +75,4 @@ function Explorer(happyEdit) {
     });
 
     self.addProjectsColumn();
-    self.list.selectIndex(0);
 }
