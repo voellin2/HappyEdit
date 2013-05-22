@@ -32,9 +32,6 @@ function TopBar(happyEdit) {
         }
     };
     
-    self.getStickyTabs = function() {
-    };
-    
     /**
      * Remove all regular tabs, but preserve sticky tabs.
      */
