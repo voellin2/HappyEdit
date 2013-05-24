@@ -30,10 +30,10 @@ function FileSystem(eventSystem, notifications) {
                 var dirname = key;
                 
                 if (dirname !== '.') {
-                    dirname = './' + dirname;
+                    filename = dirname + '/' + filename;
                 }
                 
-                ret.push(dirname + '/' + filename);
+                ret.push(filename);
             });
         }
         
@@ -137,6 +137,12 @@ function FileSystem(eventSystem, notifications) {
     self.getFile = function(filename, callback) {
         var project = self.project;
         var server = self.server;
+        
+        if (Utils.startsWith(filename, './')) {
+            filename = filename.substr(2);
+        }
+        
+        console.log(filename);
         
         var xhr = new XMLHttpRequest();
         var url = server.host + '/' + project.id + '/files/' + filename + '?token=' + server.authToken;

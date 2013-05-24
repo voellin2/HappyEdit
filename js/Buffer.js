@@ -58,8 +58,8 @@ function Buffer(happyEdit, filename, body) {
 
     self.rename = function(filename) {
         if (filename) {
-            if (!Utils.startsWith(filename, '.' + PATH_SEPARATOR)) {
-                filename = '.' + PATH_SEPARATOR + filename;
+            if (Utils.startsWith(filename, './')) {
+                filename = filename.substr(2);
             }
             var split = filename.split(PATH_SEPARATOR);
             self.filename = filename;
