@@ -13,7 +13,6 @@ body {
     margin: 0;
     font-family: "Lucida Grande", sans-serif;
     font-size: 11px;
-    font-variant: normal;
     overflow: hidden;
 }
 #notification {
@@ -295,7 +294,6 @@ body {
 #explorer {
     font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;
     font-size: 12px;
-    font-variant: normal;
     overflow: scroll;
     border-top: 1px solid #ccc;
 }
@@ -380,6 +378,12 @@ body {
     padding: 5px;
     white-space: nowrap;
     overflow: hidden;
+}
+.list-view li {
+    cursor: pointer;
+}
+.list-view li:hover {
+    text-decoration: underline;
 }
 .list-view li.active {
     background: rgb(93, 52, 249);

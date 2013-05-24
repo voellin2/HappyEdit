@@ -1,13 +1,16 @@
     function GrepView(happyEdit) {
     var self = this;
     self.id = Utils.count();
-    self.list = new SelectableList();
     self.$view = document.querySelector('#grep');
     self.$input = self.$view.querySelector('input');
     self.$ul = self.$view.querySelector('ul');
     self.$progress = self.$view.querySelector('.progress');
     self.$error = self.$view.querySelector('.error');
     self.worker = new GrepWorker(happyEdit.fileSystem);
+    
+    self.list = new SelectableList({
+        hover: false
+    });
     
     self.list.onOpen = function(item) {
         var model = item.model;
@@ -65,6 +68,7 @@
         
         if (q) {
             self.worker.findInAllFiles(q, self.progressCallback, self.matchFoundCallback);
+            self.$input.blur();
         }
     };
     
