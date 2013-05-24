@@ -355,6 +355,11 @@ body {
     display: block;
 }
 
+#login .help {
+    display: block;
+    margin-top: 20px;
+}
+
 /* LIST VIEW
 ******************************************************************************/
  
