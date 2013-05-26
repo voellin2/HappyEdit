@@ -210,6 +210,7 @@ body {
     background: white;
     border-bottom: 0;
     padding-bottom: 1px;
+    z-index: 9;
 }
 #top .tabs li.selected:hover {
     background: white;
