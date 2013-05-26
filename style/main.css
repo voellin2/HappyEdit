@@ -335,18 +335,29 @@ body {
     color: white;
 }
 
-/* START SCREEN
+/* FORM STYLES
+******************************************************************************/
+
+input,
+select {
+    display: block;
+    font-size: 14px;
+    padding: 5px;
+    margin-bottom: 10px;
+}
+
+/* SETTINGS
+******************************************************************************/
+
+#settings {
+    padding: 10px 5px;
+}
+
+/* LOGIN SCREEN
 ******************************************************************************/
 
 #login {
     padding: 10px 5px;
-}
-
-#login input {
-    padding: 5px;
-    font-size: 14px;
-    margin-bottom: 10px;
-    display: block;
 }
 
 #login button {
