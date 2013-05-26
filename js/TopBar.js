@@ -130,7 +130,7 @@ function TopBar(happyEdit) {
             var tabWidth = standardTabWidth;
             
             if (tab.pane.tabCssClass === 'home') {
-                tabWidth = 60;
+                tabWidth = tab.$view.offsetWidth;
             }
             
             tab.$view.style.width = tabWidth  + 'px';
