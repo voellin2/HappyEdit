@@ -1,3 +1,10 @@
+@font-face
+{
+font-family: entypo;
+src: url('entypo.woff'),
+     url('entypo.eot'); /* IE9 */
+}
+
 h2,
 ul {
     margin: 0;
@@ -252,14 +259,16 @@ body {
     background: #666
 }
 #top .tabs li.home {
-    background-image: url(home.png);
-    background-size: 18px 18px;
-    background-position: center center;
-    background-repeat: no-repeat;
     width: 22px;
+    text-align: center;
+}
+#top .tabs li.home .fader {
+    display: none;
 }
 #top .tabs li.home .title {
-    display: none;
+    font-family: "entypo";
+    font-size: 30px;
+    color: #333;
 }
 .popup .action:active {
     background: rgb(127, 127, 127);

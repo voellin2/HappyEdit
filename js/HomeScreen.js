@@ -17,7 +17,7 @@ function HomeScreen(happyEdit) {
     };
 
     self.getTabLabel = function() {
-        return '';
+        return '⌂';
     };
     
     self.onChange = function(callback) {
