@@ -7,6 +7,7 @@ function HappyEdit(dataStore) {
     
     self.dataStore = dataStore;
     self.eventSystem = new EventSystem();
+    self.settings = new Settings(self);
     self.notifications = new Notifications(self);
     self.editor = new Editor(self);
     self.server = new Server(self);
@@ -20,7 +21,6 @@ function HappyEdit(dataStore) {
     self.commandT = new CommandT(self.eventSystem, self.fileSystem);
     self.tabSpecificKeyboardHandlers = [];
     self.homeScreen = new HomeScreen(self);
-    self.settings = new Settings(self);
     self.grepView = new GrepView(self);
     self.loginScreen= new LoginScreen(self);
     self.globalCommandManager = new GlobalCommandManager(self);
