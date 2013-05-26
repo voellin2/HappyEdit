@@ -269,7 +269,8 @@ body {
 #top .tabs li.home .title {
     font-family: "entypo";
     font-size: 30px;
-    color: #333;
+    color: #555;
+    margin-left: 0;
 }
 .popup .action:active {
     background: rgb(127, 127, 127);
