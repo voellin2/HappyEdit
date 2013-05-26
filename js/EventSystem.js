@@ -2,6 +2,7 @@ function EventSystem() {
     var self = this;
 
     self.listeners = {
+        'settings_changed': [],
         'project_switched': [],
         'projects_loaded': [],
         'tabs_swapped': [],

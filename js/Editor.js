@@ -1,11 +1,44 @@
 function Editor(happyEdit) {
     var self = this;
+    var eventSystem = happyEdit.eventSystem;
+    var settings = happyEdit.settings;
     
     self.ace = ace.edit("editor");
     self.$view = document.getElementById('editor');
 
     self.ace.setKeyboardHandler(require("ace/keyboard/vim").handler);
     self.ace.setAnimatedScroll(true);
+    
+    self.applySettingsProperty = function(name, value) {
+        if (happyEdit.currentPane.constructor !== Buffer) {
+            return;
+        }
+        
+        var session = happyEdit.currentPane.session;
+        
+        switch (name) {
+            case 'indentType':
+            session.setUseSoftTabs(value === 'spaces');
+            break;
+            
+            case 'tabSize':
+            session.setTabSize(Number(value));
+            break;
+        }
+    };
+    
+    self.applySettings = function() {
+        var key;
+        for (key in settings.data) {
+            if (settings.data.hasOwnProperty(key)) {
+                self.applySettingsProperty(key, settings.data[key]);
+            }
+        }
+    };
+    
+    eventSystem.addEventListener('settings_changed', function(params) {
+        self.applySettingsProperty(params.name, params.value);
+    });
     
     self.addCommand = function(command) {
         self.ace.commands.addCommand({
@@ -110,6 +143,7 @@ function Editor(happyEdit) {
     
     self.focus = function() {
         self.ace.focus();
+        self.applySettings();
     };
     
     self.blur = function() {
