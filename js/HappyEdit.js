@@ -55,6 +55,9 @@ function HappyEdit(dataStore) {
 
         self.loginScreen.$view.style.width = w + 'px';
         self.loginScreen.$view.style.height = h + 'px';
+
+        self.settings.$view.style.width = w + 'px';
+        self.settings.$view.style.height = h + 'px';
         
         self.topBar.updateTabPositions();
         self.homeScreen.resize();
