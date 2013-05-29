@@ -28,11 +28,12 @@ function SelectableList(args) {
         self.index = null;
     };
     
-    self.onItemClick = function() {
+    self.onItemClick = function(event) {
         var $elem = this;
         var index = Number($elem.dataset.index);
+        var switchPane = !(event.ctrlKey || event.metaKey);
         self.selectIndex(index);
-        self.openSelectedItem();
+        self.openSelectedItem(switchPane);
     };
     
     self.onItemMouseMove = function() {
@@ -134,6 +135,8 @@ function SelectableList(args) {
             keyCode = 38;
         }
         
+        var switchPane = !(event.ctrlKey || event.metaKey);
+        
         switch (keyCode) {
             case 40:
             self.navigateDown();
@@ -147,7 +150,7 @@ function SelectableList(args) {
             break;
 
             case 13:
-            self.openSelectedItem();
+            self.openSelectedItem(switchPane);
             break;
 
             default:
@@ -155,14 +158,14 @@ function SelectableList(args) {
         }
     };
     
-    self.openSelectedItem = function() {
+    self.openSelectedItem = function(switchPane) {
         var item = self.getSelectedItem();
         if (item) {
-            self.onOpen(item);
+            self.onOpen(item, switchPane);
         }
     };
     
-    self.onOpen = function(item) {
+    self.onOpen = function(item, switchPane) {
     };
     
     self.onSelect = function(item) {

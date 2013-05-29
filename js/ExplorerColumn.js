@@ -24,7 +24,7 @@ function ExplorerColumn(explorer, happyEdit, dir, key) {
         }
     };
     
-    self.list.onOpen = function(item) {
+    self.list.onOpen = function(item, switchPane) {
         var model = item.model;
         var path = model.path;
 
@@ -33,7 +33,7 @@ function ExplorerColumn(explorer, happyEdit, dir, key) {
         }
 
         if (model.type === 'file') {
-            happyEdit.openRemoteFile(path);
+            happyEdit.openRemoteFile(path, 1, switchPane);
         }
     };
     
