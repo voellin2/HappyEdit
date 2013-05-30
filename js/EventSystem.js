@@ -7,7 +7,6 @@ function EventSystem() {
         'projects_loaded': [],
         'tabs_swapped': [],
         'file_created': [],
-        'file_changed': [],
         'file_loaded': [],
         'file_closed': [],
         'connected': [],

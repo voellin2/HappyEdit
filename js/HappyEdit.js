@@ -110,19 +110,32 @@ function HappyEdit(dataStore) {
             e.Search(self.editor);
         });
     });
-
+    
     self.switchPane = function(pane) {
-        if (self.currentPane) {
-            self.currentPane.blur();
+        var oldPane = self.currentPane;
+        var newPane = pane;
+        var tab;
+        
+        self.currentPane = newPane;
+        
+        // Simplify / speed up switching if we swap between buffers
+        if (oldPane && (oldPane.constructor === Buffer && newPane.constructor === Buffer)) {
+            happyEdit.editor.setBuffer(newPane);
+            tab = self.topBar.getTabForPane(newPane);
+            self.topBar.selectTab(tab);
+            return;
         }
+        
+        if (oldPane) {
+            oldPane.$view.style.display = 'none';
+            oldPane.blur();
+        }
+        
+        newPane.focus();
+        newPane.$view.style.display = 'block';
 
-        self.currentPane = pane;
-        self.currentPane.focus();
-
-        var tab = self.topBar.getTabForPane(pane);
+        tab = self.topBar.getTabForPane(newPane);
         self.topBar.selectTab(tab);
-
-        self.eventSystem.callEventListeners('file_changed', pane);
     };
 
     self.reset = function() {

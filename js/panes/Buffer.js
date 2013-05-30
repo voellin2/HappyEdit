@@ -12,6 +12,7 @@ function Buffer(happyEdit, filename, body) {
     self.session = new EditSession(body || '');
     self.session.setUndoManager(new UndoManager());
     self.onChangeListeners = [];
+    self.$view = happyEdit.editor.$view;
 
     self.isDummy = function() {
         return !self.filename && !self.session.getValue();
@@ -23,13 +24,11 @@ function Buffer(happyEdit, filename, body) {
 
     self.focus = function() {
         happyEdit.editor.setBuffer(self);
-        happyEdit.editor.show();
         happyEdit.editor.focus();
     };
 
     self.blur = function() {
         happyEdit.editor.blur();
-        happyEdit.editor.hide();
     };
 
     self.callOnChangeListeners = function() {

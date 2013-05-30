@@ -53,12 +53,10 @@ function Settings(happyEdit) {
     };
     
     self.blur = function() {
-        self.$view.style.display = 'none';
         happyEdit.popTabSpecificKeyboardHandler();
     };
 
     self.focus = function() {
-        self.$view.style.display = 'block';
         happyEdit.pushTabSpecificKeyboardHandler(self.keyDown);
     };
     

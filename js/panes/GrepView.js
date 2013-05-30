@@ -1,4 +1,4 @@
-    function GrepView(happyEdit) {
+function GrepView(happyEdit) {
     var self = this;
     self.id = Utils.count();
     self.$view = document.querySelector('#grep');
@@ -98,12 +98,10 @@
     };
     
     self.blur = function() {
-        self.$view.style.display = 'none';
         happyEdit.popTabSpecificKeyboardHandler();
     };
 
     self.focus = function() {
-        self.$view.style.display = 'block';
         happyEdit.pushTabSpecificKeyboardHandler(self.keyDown);
         
         if (self.$input.value) {
