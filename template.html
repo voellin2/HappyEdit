@@ -76,43 +76,41 @@
             <ul class="tabs"></ul>
         </div>
 
-        <div id="panes">
-            <div class="pane" id="editor"></div>
-            
-            <div class="pane" id="home">
-                <div class="controls">
-                    <button class="settings">Settings</button>
-                </div>
-                <div id="explorer"></div>
+        <div class="pane" id="editor"></div>
+        
+        <div class="pane" id="home">
+            <div class="controls">
+                <button class="settings">Settings</button>
             </div>
+            <div id="explorer"></div>
+        </div>
+        
+        <div class="pane" id="settings">
+            <select name="indentType">
+                <option value="spaces">Indent with spaces</option>
+                <option value="tabs">Indent with tabs</option>
+            </select>
             
-            <div class="pane" id="settings">
-                <select name="indentType">
-                    <option value="spaces">Indent with spaces</option>
-                    <option value="tabs">Indent with tabs</option>
-                </select>
-                
-                <select name="tabSize">
-                    <option value="2">Tab Level: 2 spaces</option>
-                    <option value="4">Tab Level: 4 spaces</option>
-                    <option value="8">Tab Level: 8 spaces</option>
-                </select>
-            </div>
-            
-            <div class="pane list-view" id="grep">
-                <input type="search" tabindex="1" />
-                <span class="progress"></span>
-                <span class="error" style="display:none"></span>
-                <ul tabindex="1"></ul>
-            </div>
-            
-            <div class="pane list-view" id="login">
-                <input type="text" name="host" placeholder="Host"/>
-                <input type="text" name="user" placeholder="Username"/>
-                <input type="password" name="password" placeholder="Password"/>
-                <button class="connect-button">Login</button>
-                <a class="help" href="http://www.happyedit.se/server" target="_blank">How to set up a HappyEdit server &raquo;</a>
-            </div>
+            <select name="tabSize">
+                <option value="2">Tab Level: 2 spaces</option>
+                <option value="4">Tab Level: 4 spaces</option>
+                <option value="8">Tab Level: 8 spaces</option>
+            </select>
+        </div>
+        
+        <div class="pane list-view" id="grep">
+            <input type="search" tabindex="1" />
+            <span class="progress"></span>
+            <span class="error" style="display:none"></span>
+            <ul tabindex="1"></ul>
+        </div>
+        
+        <div class="pane list-view" id="login">
+            <input type="text" name="host" placeholder="Host"/>
+            <input type="text" name="user" placeholder="Username"/>
+            <input type="password" name="password" placeholder="Password"/>
+            <button class="connect-button">Login</button>
+            <a class="help" href="http://www.happyedit.se/server" target="_blank">How to set up a HappyEdit server &raquo;</a>
         </div>
 
         <div id="autocomplete" style="display:none">

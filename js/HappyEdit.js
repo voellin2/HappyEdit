@@ -22,10 +22,9 @@ function HappyEdit(dataStore) {
     self.tabSpecificKeyboardHandlers = [];
     self.homeScreen = new HomeScreen(self);
     self.grepView = new GrepView(self);
-    self.loginScreen= new LoginScreen(self);
+    self.loginScreen = new LoginScreen(self);
     self.globalCommandManager = new GlobalCommandManager(self);
     self.dragAndDropHandler = new DragAndDropHandler(self);
-    self.$panes = document.getElementById('panes');
     
     self.eventSystem.addEventListener('connected', function() {
         var $body = document.querySelector('body');
@@ -44,12 +43,17 @@ function HappyEdit(dataStore) {
 
     window.onresize = function(event) {
         var w = window.innerWidth;
-        var h = window.innerHeight - document.querySelector('#top').offsetHeight;
-
+        var h = window.innerHeight - self.topBar.$view.offsetHeight;
+        var elems = document.querySelectorAll('.pane');
+        var $pane;
+        
         self.editor.resize(w, h);
-
-        self.$panes.style.width = w + 'px';
-        self.$panes.style.height = h + 'px';
+        
+        for (i = 0; i < elems.length; i += 1) {
+            $pane = elems[i];
+            $pane.style.width = w + 'px';
+            $pane.style.height = h + 'px';
+        }
         
         self.topBar.updateTabPositions();
         self.homeScreen.resize();
@@ -131,8 +135,8 @@ function HappyEdit(dataStore) {
             oldPane.blur();
         }
         
-        newPane.focus();
         newPane.$view.style.display = 'block';
+        newPane.focus();
 
         tab = self.topBar.getTabForPane(newPane);
         self.topBar.selectTab(tab);
