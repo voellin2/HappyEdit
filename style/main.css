@@ -5,6 +5,13 @@ src: url('entypo.woff'),
      url('entypo.eot'); /* IE9 */
 }
 
+.pane {
+    display: none;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+}
+
 h2,
 ul {
     margin: 0;

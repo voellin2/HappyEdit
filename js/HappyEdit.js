@@ -25,6 +25,7 @@ function HappyEdit(dataStore) {
     self.loginScreen= new LoginScreen(self);
     self.globalCommandManager = new GlobalCommandManager(self);
     self.dragAndDropHandler = new DragAndDropHandler(self);
+    self.$panes = document.getElementById('panes');
     
     self.eventSystem.addEventListener('connected', function() {
         var $body = document.querySelector('body');
@@ -47,17 +48,8 @@ function HappyEdit(dataStore) {
 
         self.editor.resize(w, h);
 
-        self.homeScreen.$view.style.width = w + 'px';
-        self.homeScreen.$view.style.height = h + 'px';
-
-        self.grepView.$view.style.width = w + 'px';
-        self.grepView.$view.style.height = h + 'px';
-
-        self.loginScreen.$view.style.width = w + 'px';
-        self.loginScreen.$view.style.height = h + 'px';
-
-        self.settings.$view.style.width = w + 'px';
-        self.settings.$view.style.height = h + 'px';
+        self.$panes.style.width = w + 'px';
+        self.$panes.style.height = h + 'px';
         
         self.topBar.updateTabPositions();
         self.homeScreen.resize();
