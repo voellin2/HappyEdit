@@ -50,19 +50,6 @@ function TopBar(happyEdit) {
         self.tabs = stickyTabs;
     };
     
-    self.getTabForPane = function(pane) {
-        var ret;
-        
-        self.tabs.forEach(function(tab) {
-            if (pane === tab.pane) {
-                ret = tab;
-                return false;
-            }
-        });
-        
-        return ret;
-    };
-
     self.getIndexForTab = function(tab1) {
         var ret;
         
@@ -159,6 +146,9 @@ function TopBar(happyEdit) {
 
     self.addTabForPane = function(pane) {
         var tab = new Tab(pane, happyEdit);
+        
+        pane.tab = tab;
+        
         self.tabs.push(tab);
         self.$tabs.appendChild(tab.$view);
         self.updateTabPositions();

@@ -118,15 +118,13 @@ function HappyEdit(dataStore) {
     self.switchPane = function(pane) {
         var oldPane = self.currentPane;
         var newPane = pane;
-        var tab;
         
         self.currentPane = newPane;
         
         // Simplify / speed up switching if we swap between buffers
         if (oldPane && (oldPane.constructor === Buffer && newPane.constructor === Buffer)) {
             happyEdit.editor.setBuffer(newPane);
-            tab = self.topBar.getTabForPane(newPane);
-            self.topBar.selectTab(tab);
+            self.topBar.selectTab(pane.tab);
             return;
         }
         
@@ -138,8 +136,7 @@ function HappyEdit(dataStore) {
         newPane.$view.style.display = 'block';
         newPane.focus();
 
-        tab = self.topBar.getTabForPane(newPane);
-        self.topBar.selectTab(tab);
+        self.topBar.selectTab(pane.tab);
     };
 
     self.reset = function() {
@@ -157,7 +154,7 @@ function HappyEdit(dataStore) {
             return;
         } 
         
-        var tab = self.topBar.getTabForPane(pane);
+        var tab = pane.tab;
         
         if (!tab) {
             return;
