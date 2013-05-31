@@ -2,10 +2,12 @@ function EventSystem() {
     var self = this;
 
     self.listeners = {
+        'pane_switched': [],
         'settings_changed': [],
         'project_switched': [],
         'projects_loaded': [],
         'tabs_swapped': [],
+        'file_saved': [],
         'file_created': [],
         'file_loaded': [],
         'file_closed': [],

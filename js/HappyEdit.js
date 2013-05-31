@@ -15,7 +15,7 @@ function HappyEdit(dataStore) {
     self.commandLine = new CommandLine(self);
     self.autoCompleter = new AutoCompleteBox(self);
     self.topBar = new TopBar(self);
-    self.fileSystem = new FileSystem(self.eventSystem, self.notifications);
+    self.fileSystem = new FileSystem(self.eventSystem);
     self.projectManager = new ProjectManager(self);
     self.tabState = new TabState(self);
     self.commandT = new CommandT(self.eventSystem, self.fileSystem);
@@ -120,6 +120,11 @@ function HappyEdit(dataStore) {
         var newPane = pane;
         
         self.currentPane = newPane;
+        
+        self.eventSystem.callEventListeners('pane_switched', {
+            newPane: newPane,
+            oldPane: oldPane
+        });
         
         // Simplify / speed up switching if we swap between buffers
         if (oldPane && (oldPane.constructor === Buffer && newPane.constructor === Buffer)) {

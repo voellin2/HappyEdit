@@ -1,7 +1,7 @@
 /**
  * System to read and write files from a remote server.
  */
-function FileSystem(eventSystem, notifications) {
+function FileSystem(eventSystem) {
     var self = this;
     self.fileTree = {};
     self.PROTOCOL_VERSION = "0.1";
@@ -86,13 +86,10 @@ function FileSystem(eventSystem, notifications) {
         xhr.open("POST", url);
         xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 
-        notifications.show('Saving...');
-        
         xhr.onreadystatechange = function() {
             if (xhr.readyState == 4) {
-                notifications.hide();
                 console.log(xhr.responseText);
-
+                
                 if (!buffer.filename) {
                     buffer.rename(filename);
                 }
@@ -100,6 +97,8 @@ function FileSystem(eventSystem, notifications) {
                 if (callback) {
                     callback();
                 }
+                
+                eventSystem.callEventListeners('file_saved', buffer);
             }
         };
 
@@ -119,15 +118,11 @@ function FileSystem(eventSystem, notifications) {
 
         xhr.open("DELETE", url);
 
-        notifications.show('Deleting...');
-
         xhr.onload = function() {
-            notifications.hide();
             console.log(xhr.responseText);
         };
         
         xhr.onerror = function() {
-            notifications.hide();
             console.log(xhr.responseText);
         };
 
