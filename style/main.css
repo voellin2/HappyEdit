@@ -289,12 +289,16 @@ body {
 #grep input {
     margin: 5px;
     font-size: 14px;
+    display: inline-block;
 }
 
 #grep .progress {
+    display: inline-block;
     color: #888;
-    display: block;
-    margin: 5px;
+}
+
+#grep ul:focus {
+    outline: none;
 }
 
 /* HOME
