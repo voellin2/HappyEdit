@@ -12,9 +12,9 @@ function GrepView(happyEdit) {
         hover: false
     });
     
-    self.list.onOpen = function(item) {
+    self.list.onOpen = function(item, switchPane) {
         var model = item.model;
-        happyEdit.openRemoteFile(model.filename, model.lineNumber);
+        happyEdit.openRemoteFile(model.filename, model.lineNumber, switchPane);
     };
     
     self.isSearchFieldFocused = function() {
