@@ -12,6 +12,7 @@ Mode.prototype.supportsFile = function(filename) {
 };
 
 var modes = [
+    new Mode("go", "Go", require("ace/mode/golang").Mode, ["go"]),
     new Mode("text", "Text", require("ace/mode/text").Mode, ["txt"]),
     new Mode("html", "HTML", require("ace/mode/html").Mode, ["html", "htm"]),
     new Mode("css", "CSS", require("ace/mode/css").Mode, ["css"]),
