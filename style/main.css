@@ -469,3 +469,6 @@ select {
 .fullscreen #top {
     padding: 0;
 }
+.fullscreen #top {
+    background: black;
+}
