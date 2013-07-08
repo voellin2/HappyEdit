@@ -17,6 +17,7 @@ var modes = [
     new Mode("html", "HTML", require("ace/mode/html").Mode, ["html", "htm"]),
     new Mode("css", "CSS", require("ace/mode/css").Mode, ["css"]),
     new Mode("javascript", "JavaScript", require("ace/mode/javascript").Mode, ["js"]),
+    new Mode("typescript", "TypeScript", require("ace/mode/typescript").Mode, ["ts"]),
     new Mode("json", "JSON", require("ace/mode/json").Mode, ["json"]),
     new Mode("python", "Python", require("ace/mode/python").Mode, ["py"]),
     new Mode("ruby", "Ruby", require("ace/mode/ruby").Mode, ["rb"]),
