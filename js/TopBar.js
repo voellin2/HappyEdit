@@ -7,12 +7,18 @@ function TopBar(happyEdit) {
     self.$closeButton = self.$view.querySelector('.controls .close');
     self.$minButton = self.$view.querySelector('.controls .min');
     self.$maxButton = self.$view.querySelector('.controls .max');
+    self.$settingsButton = self.$view.querySelector('.settings');
     self.$tabs = self.$view.querySelector('.tabs');
     self.PREFERRED_TAB_WIDTH = 120;
     
     self.getNumberOfTabs = function() {
         return self.tabs.length;
     };
+    
+    self.$settingsButton.click(function() {
+        alert('click');
+        happyEdit.showSettings();
+    });
 
     self.$closeButton.onclick = function() {
         window.close();

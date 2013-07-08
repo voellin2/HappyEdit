@@ -5,12 +5,6 @@ function HomeScreen(happyEdit) {
     self.id = Utils.count();
     self.explorer = new Explorer(happyEdit);
     self.$view = document.getElementById('home');
-    self.$controls = self.$view.querySelector('.controls');
-    self.$settingsButton = self.$controls.querySelector('.settings');
-    
-    self.$settingsButton.onclick = function() {
-        happyEdit.showSettings();
-    };
     
     self.isDummy = function() {
         return false;
@@ -39,9 +33,7 @@ function HomeScreen(happyEdit) {
     self.resize = function() {
         var w = self.$view.offsetWidth;
         var h = self.$view.offsetHeight;
-        var borderHeight = 1;
-        var controlsHeight = self.$controls.offsetHeight;
         self.explorer.$view.style.width = w + 'px';
-        self.explorer.$view.style.height = (h - controlsHeight - borderHeight) + 'px';
+        self.explorer.$view.style.height = h + 'px';
     };
 }
