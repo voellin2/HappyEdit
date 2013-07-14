@@ -15,10 +15,9 @@ function TopBar(happyEdit) {
         return self.tabs.length;
     };
     
-    self.$settingsButton.click(function() {
-        alert('click');
+    self.$settingsButton.onclick = function() {
         happyEdit.showSettings();
-    });
+    };
 
     self.$closeButton.onclick = function() {
         window.close();
@@ -128,7 +127,7 @@ function TopBar(happyEdit) {
             Utils.moveX(tab.$view, x);
             
             if (tab.pane.tabCssClass === 'home') {
-                x += tab.$view.offsetWidth;
+                x += tab.$view.offsetWidth - 1;
                 return true;
             }
             
